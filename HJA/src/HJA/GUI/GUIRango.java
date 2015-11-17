@@ -18,11 +18,16 @@ public class GUIRango {
 	
 	//Objetos
 	private JTable JtRango;
-	
+	private String[] rango;
+	private GUIPlayers vtnPlayers;
+	private int jugador;
 	//Constructor
-	public GUIRango(controlador miCont)
+	public GUIRango(GUIPlayers miGUI, controlador miCont,String[] rng,int player)
 	{
 		control=miCont;
+		rango=rng;
+		vtnPlayers=miGUI;
+		jugador=player;
 		initialize();
 	}
 
