@@ -1,12 +1,12 @@
 package HJA;
 
-import HJA.GUI.GUIRango;
+import HJA.GUI.GUIPlayers;
 import HJA.controlador.controlador;
 
 public class startClass 
 {
 	private controlador miControlador;
-	static public GUIRango vtnRango;
+	static public GUIPlayers vtnPlayers;
 	public static void main(String[] args)
 	{
 		startClass st;
@@ -28,8 +28,10 @@ public class startClass
 	{
 		//iniciamos los objetos
 		miControlador=new controlador();
-		vtnRango=new GUIRango();
+		vtnPlayers=new GUIPlayers(miControlador);
 		new constante();
+		
+		vtnPlayers.getFrame().setVisible(true);
 		
 		// ejemplo de llamada a la singleton
 		constante.getInstance().getManos();

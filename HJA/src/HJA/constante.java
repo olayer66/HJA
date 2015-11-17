@@ -10,7 +10,7 @@ public class constante
 	private HashMap<String,datosMano> manos;
 	
 	//clase privada para los datos relacionados con la mano
-	private class datosMano
+	public class datosMano
    {
 	   private int x;
 	   private int y;
