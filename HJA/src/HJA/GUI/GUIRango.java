@@ -13,6 +13,9 @@ import HJA.controlador.controlador;
 import javax.swing.border.BevelBorder;
 import java.awt.Color;
 import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.JTextField;
 import java.awt.Font;
 
@@ -55,7 +58,14 @@ public class GUIRango {
 				JtRango.setFont(new Font("Tahoma", Font.BOLD, 11));
 				JtRango.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 				JtRango.setBackground(new Color(240, 230, 140));
-				JtRango.addMouseListener(new misAcccionesRango(this));
+			//  Override default renderer on a specific Class
+		        TableCellRenderer colorRenderer = new cellRender();
+		        JtRango.setDefaultRenderer(String.class, colorRenderer);
+
+		        //  Override default renderer for a specific column
+		        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		        JtRango.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 				frmSeleccionDeRango.getContentPane().add(JtRango);
 				
 				JLabel lblRangoSeleccionado = new JLabel("Rango seleccionado:");
@@ -84,12 +94,18 @@ public class GUIRango {
 				data[e.getValue().getX()][e.getValue().getY()]=e.getKey();
 
 			}
-			JtRango= new JTable(data, names){
+			DefaultTableModel model = new DefaultTableModel(data, names);
+			JtRango= new JTable(model){
 		        private static final long serialVersionUID = 1L;
 
 		        public boolean isCellEditable(int row, int column) {                
 		                return false;               
 		        };
+		        @SuppressWarnings("unchecked")
+				@Override
+	            public Class getColumnClass(int column) {
+	                return getValueAt(0, column).getClass();
+	            }
 			};
 			
 		}
