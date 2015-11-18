@@ -9,6 +9,14 @@ public class startClass
 	static public GUIPlayers vtnPlayers;
 	public static void main(String[] args)
 	{
+		/*LLAMADA A TRANSFORMARSTRING
+		 * 1.Se le pasa al constructor el String con el rango de cartas.
+		 * 2.Se llama a procesarString, esto devuelve un array de Strings
+			
+			transformarString ejemplo = new transformarString(cadena);
+			String[] resultado = ejemplo.procesarString()
+		 
+		 **/
 		startClass st;
 		st=new startClass();
 		st.inicia();
