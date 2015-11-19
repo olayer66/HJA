@@ -1,10 +1,16 @@
 package HJA.controlador;
 
+import HJA.modelo.transformarString;
+
 public class controlador 
 {
-	public String[] transformarString(String Rango)
+	public String[] transformarString(String rango)
 	{
-		//Meter aqui la llamada a la funcion de transformar
+		transformarString  trans = new transformarString(rango);
+		return trans.procesarString();
+	}
+	
+	public String transformarRango(String[] cartas){
 		return null;
 	}
 }
