@@ -18,7 +18,7 @@ public class transformarRango {
 	}
 	
 	public String crearRango(){
-		String cadena="";
+		StringBuilder cadena= new StringBuilder();
 		char[] caracter;
 		int pos;
 		boolean pareja=false,offs=false,suit=false;//Lo usamos para si no hay ese tipo de par de cartas no recorremos su array
@@ -40,21 +40,82 @@ public class transformarRango {
 				}
 			}
 		}
-		int contPares=0;
-		String auxPar="";
-//		
+		String auxPar="", parFinal="";
+		char[] aux1, aux2;
+		int resultado;
+		boolean mas=false, rango=false;
 		if(pareja){
-			for(int i=parejas.length-1; i>=0; i--){
-				if(parejas[i]){
-					contPares++;
-					auxPar=parse.intToFigura(i);
-				}else if(contPares==1){
-					cadena+=auxPar+auxPar;
+			for(int i=parejas.length-2; i>=0; i--){
+				if(i+1 == 12 && parejas[12])
+					mas=true;
+				if(parejas[i+1]){
+					auxPar=parse.intToFigura(i+1);
+					if(!parejas[i]){
+						if(mas){
+							cadena.append(auxPar);
+							cadena.append(auxPar);
+							cadena.append("+");
+							cadena.append(",");
+							mas=false;
+						}else if(rango){
+							cadena.append(auxPar);
+							cadena.append(auxPar);
+							cadena.append("-");
+							cadena.append(parFinal);
+							cadena.append(parFinal);
+							cadena.append(",");
+							rango=false;
+						}else{
+							cadena.append(auxPar);
+							cadena.append(auxPar);
+							cadena.append(",");
+						}
+					}else if(!mas && !rango){
+						parFinal=auxPar;
+						rango=true;
+					}
+				}	
+			}
+		}
+		mas=false;
+		if(suit){
+			for(int i=suited.length-2; i>=0; i--){
+				if(suited[i+1]){
+					auxPar=parse.intTofiguraRango(i+1);
+					if(!suited[i]){
+						if(mas){
+							cadena.append(auxPar);
+							cadena.append("s");
+							cadena.append("+");
+							cadena.append(",");
+							mas=false;
+						}else{
+							cadena.append(auxPar);
+							cadena.append("s");
+							cadena.append(",");
+						}
+					}else{
+						aux1=auxPar.toCharArray();
+						aux2=parse.intTofiguraRango(i).toCharArray();
+						if(aux1[0]!=aux2[0]){
+							if(mas){
+								cadena.append(auxPar);
+								cadena.append("s");
+								cadena.append("+");
+								cadena.append(",");
+							    mas=false;
+							}
+						}else if(!mas){
+						resultado = Integer.parseInt(String.valueOf(aux1[0]))-Integer.parseInt(String.valueOf(aux1[1]));
+						if(resultado==1)mas=true;
+					}
+					}
 				}
 			}
 		}
 		
-		return cadena;
+		//Quitamos la ultima "," y devolvemos el string
+		return cadena.toString().substring(0, cadena.length()-1);
 	}
 
 }

@@ -1,6 +1,7 @@
 package HJA.controlador;
 
 import HJA.modelo.transformarString;
+import HJA.modelo.transformarRango;
 
 public class controlador 
 {
@@ -11,6 +12,8 @@ public class controlador
 	}
 	
 	public String transformarRango(String[] cartas){
-		return null;
+
+		transformarRango trans = new transformarRango(cartas);
+		return trans.crearRango();
 	}
 }

@@ -2,6 +2,7 @@ package HJA;
 
 import HJA.GUI.GUIPlayers;
 import HJA.controlador.controlador;
+import HJA.modelo.transformarRango;
 
 public class startClass 
 {
