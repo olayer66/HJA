@@ -1,23 +1,21 @@
 package HJA.GUI;
 
-import java.awt.EventQueue;
 import java.util.Map.Entry;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTable;
-
 import HJA.constante;
 import HJA.constante.datosMano;
 import HJA.controlador.controlador;
-import javax.swing.border.BevelBorder;
+
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+
 import java.awt.Color;
-import javax.swing.border.MatteBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
+
 import javax.swing.JTextField;
-import java.awt.Font;
+
+import javax.swing.SwingConstants;
 
 public class GUIRango {
 
@@ -25,10 +23,10 @@ public class GUIRango {
 	private controlador control;
 	
 	//Objetos
-	private JTable JtRango;
 	private String[] rango;
 	private GUIPlayers vtnPlayers;
 	private int jugador;
+	private JLabel[][] TablaRangos;
 	private JTextField tfRango;
 	//Constructor
 	public GUIRango(GUIPlayers miGUI, controlador miCont,String[] rng,int player)
@@ -46,68 +44,58 @@ public class GUIRango {
 	private void initialize() {
 		frmSeleccionDeRango = new JFrame();
 		frmSeleccionDeRango.setTitle("Seleccion de rango");
-		frmSeleccionDeRango.setBounds(100, 100, 397, 448);
+		frmSeleccionDeRango.setBounds(100, 100, 424, 448);
 		frmSeleccionDeRango.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmSeleccionDeRango.getContentPane().setLayout(null);
 		
 		//inicializadores de los objetos
-				creaTablaRangos();
-				
-				JtRango.setBounds(10, 11, 356, 208);
-				JtRango.setRowSelectionAllowed(false);
-				JtRango.setFont(new Font("Tahoma", Font.BOLD, 11));
-				JtRango.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-				JtRango.setBackground(new Color(240, 230, 140));
-			//  Override default renderer on a specific Class
-		        TableCellRenderer colorRenderer = new cellRender();
-		        JtRango.setDefaultRenderer(String.class, colorRenderer);
-
-		        //  Override default renderer for a specific column
-		        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-		        JtRango.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-				frmSeleccionDeRango.getContentPane().add(JtRango);
+				creaTablaRangos();			
 				
 				JLabel lblRangoSeleccionado = new JLabel("Rango seleccionado:");
-				lblRangoSeleccionado.setBounds(10, 230, 99, 14);
+				lblRangoSeleccionado.setBounds(10, 289, 127, 14);
 				frmSeleccionDeRango.getContentPane().add(lblRangoSeleccionado);
 				
 				tfRango = new JTextField();
 				tfRango.setBackground(new Color(255, 255, 255));
 				tfRango.setEnabled(false);
 				tfRango.setEditable(false);
-				tfRango.setBounds(112, 227, 254, 20);
+				tfRango.setBounds(133, 286, 265, 20);
 				frmSeleccionDeRango.getContentPane().add(tfRango);
 				tfRango.setColumns(10);
+				
 	}
 
 	//Crea la tabala de rangos.
 		private void creaTablaRangos()
 		{
-			Object[][] data;
-			String[] names ={"","","","","","","","","","","","",""};
-			data= new String[13][13];
+			TablaRangos=new JLabel[13][13];
+			int x=10;
+			int y=11;
+			int heigth=20;
+			int width=30;
+			Border border = LineBorder.createBlackLineBorder();
 			java.util.Iterator<Entry<String, datosMano>> it = constante.getInstance().getManos().entrySet().iterator();
-			while(it.hasNext())
+			for(int z=0;z<13;z++)
 			{
-				Entry<String, datosMano> e=it.next();
-				data[e.getValue().getX()][e.getValue().getY()]=e.getKey();
-
+				for(int i=0;i<13;i++)
+				{
+					if(it.hasNext())
+					{
+						Entry<String, datosMano> e=it.next();
+						TablaRangos[z][i]=new JLabel(e.getKey());
+						TablaRangos[z][i].setBounds(y, x, width, heigth);
+						y+=width;
+						TablaRangos[z][i].setHorizontalAlignment(SwingConstants.CENTER);
+						TablaRangos[z][i].setBackground(new Color(238, 232, 170));
+						TablaRangos[z][i].setBorder(border);
+						frmSeleccionDeRango.getContentPane().add(TablaRangos[z][i]);
+					}
+					
+				}
+				x+=heigth;
+				y=11;
 			}
-			DefaultTableModel model = new DefaultTableModel(data, names);
-			JtRango= new JTable(model){
-		        private static final long serialVersionUID = 1L;
-
-		        public boolean isCellEditable(int row, int column) {                
-		                return false;               
-		        };
-		        @SuppressWarnings("unchecked")
-				@Override
-	            public Class getColumnClass(int column) {
-	                return getValueAt(0, column).getClass();
-	            }
-			};
-			
+					
 		}
 	
 	//Getters y setters
@@ -115,13 +103,4 @@ public class GUIRango {
 	{
 		return frmSeleccionDeRango;
 	}
-
-	public JTable getJtRango() {
-		return JtRango;
-	}
-
-	public void setJtRango(JTable jtRango) {
-		JtRango = jtRango;
-	}
-	
 }
