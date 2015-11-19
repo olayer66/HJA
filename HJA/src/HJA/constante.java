@@ -1,13 +1,14 @@
 package HJA;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class constante 
 {
 	//Constante de la clase singleton
 	private static constante instance = null;
 	//Hashmap que contiene todos los pares de cartas posibles
-	private HashMap<String,datosMano> manos;
+	private LinkedHashMap<String,datosMano> manos;
 	
 	//clase privada para los datos relacionados con la mano
 	public class datosMano
@@ -44,7 +45,7 @@ public class constante
 	//Contructor de la clase
     protected constante() 
     {
-      manos= new HashMap<String,datosMano>();
+      manos= new LinkedHashMap<String,datosMano>();
       crearParejas();
     }
     //Devuelve la clase singleton en caso de que no exista la crea
@@ -75,17 +76,17 @@ public class constante
 	   manos.put("A2s",new datosMano(0, 12, 29, 500));
 	   manos.put("KAo",new datosMano(1, 0, 166, 500));
 	   manos.put("KK",new datosMano(1, 1, 477, 500));
-	   manos.put("KQo",new datosMano(1, 2, 43.3, 500));
-	   manos.put("KJo",new datosMano(1, 3, 36.3, 500));
-	   manos.put("KTo",new datosMano(1, 4, 31.4, 500));
-	   manos.put("K9o",new datosMano(1, 5, 23.9, 500));
-	   manos.put("K8o",new datosMano(1, 6, 19.9, 500));
-	   manos.put("K7o",new datosMano(1, 7, 18.6, 500));
-	   manos.put("K6o",new datosMano(1, 8, 17.4, 500));
-	   manos.put("K5o",new datosMano(1, 9, 16.1, 500));
-	   manos.put("K4o",new datosMano(1, 10, 15, 500));
-	   manos.put("K3o",new datosMano(1, 11, 14.1, 500));
-	   manos.put("K2o",new datosMano(1, 12, 13.3, 500));
+	   manos.put("KQs",new datosMano(1, 2, 43.3, 500));
+	   manos.put("KJs",new datosMano(1, 3, 36.3, 500));
+	   manos.put("KTs",new datosMano(1, 4, 31.4, 500));
+	   manos.put("K9s",new datosMano(1, 5, 23.9, 500));
+	   manos.put("K8s",new datosMano(1, 6, 19.9, 500));
+	   manos.put("K7s",new datosMano(1, 7, 18.6, 500));
+	   manos.put("K6s",new datosMano(1, 8, 17.4, 500));
+	   manos.put("K5s",new datosMano(1, 9, 16.1, 500));
+	   manos.put("K4s",new datosMano(1, 10, 15, 500));
+	   manos.put("K3s",new datosMano(1, 11, 14.1, 500));
+	   manos.put("K2s",new datosMano(1, 12, 13.3, 500));
 	   manos.put("QAo",new datosMano(2, 0, 96, 500));
 	   manos.put("QKo",new datosMano(2, 1, 29.3, 500));
 	   manos.put("QQ",new datosMano(2, 2, 239, 500));
