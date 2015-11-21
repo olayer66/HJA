@@ -7,9 +7,8 @@ public class controlador
 {
 	public String[] transformarString(String rango)
 	{
-		/*transformarString  trans = new transformarString(rango);
-		return trans.procesarString();*/
-		return null;
+		transformarString  trans = new transformarString(rango);
+		return trans.procesarString();
 	}
 	
 	public String transformarRango(String[] cartas){
