@@ -3,12 +3,18 @@ package HJA.GUI;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JLabel;
+
 public class detectaClick implements MouseListener {
 
+	private GUIRango vtnRango;
+	public detectaClick(GUIRango vtn) {
+		vtnRango=vtn;
+	}
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Apéndice de método generado automáticamente
-		
+	public void mouseClicked(MouseEvent e) 
+	{
+		vtnRango.cambiarColor((JLabel) e.getSource());		
 	}
 
 	@Override
