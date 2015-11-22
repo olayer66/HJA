@@ -85,7 +85,7 @@ public class GUIRango {
 				SlRango.setPaintTicks(true);
 				SlRango.setPaintLabels(true);
 				SlRango.setBounds(10, 283, 388, 56);
-				SlRango.addChangeListener(null);
+				SlRango.addChangeListener(new cambioSlide(control));
 				frmSeleccionDeRango.getContentPane().add(SlRango);
 				
 				JButton btnAceptar = new JButton("Aceptar");
