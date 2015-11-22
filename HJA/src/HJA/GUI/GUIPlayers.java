@@ -22,6 +22,7 @@ public class GUIPlayers {
 	private JFrame frame;
 	private controlador control;
 	private JTextField[] TfRango;
+	private misAccciones accion;
 	
 	private JTextField tfEquity1;
 	private JTextField textField_1;	
@@ -57,9 +58,6 @@ public class GUIPlayers {
 		btnPlayer1.setBounds(10, 45, 94, 23);
 		frame.getContentPane().add(btnPlayer1);
 		
-		TfRango[0].setBounds(121, 46, 182, 20);
-		frame.getContentPane().add(TfRango[0]);
-		TfRango[0].setColumns(10);
 		
 		tfEquity1 = new JTextField();
 		tfEquity1.setBounds(313, 46, 39, 20);
@@ -69,11 +67,7 @@ public class GUIPlayers {
 		JButton btnPlayer2 = new JButton("jugador 2");
 		btnPlayer2.setBounds(10, 79, 94, 23);
 		frame.getContentPane().add(btnPlayer2);
-		
-		TfRango[1].setColumns(10);
-		TfRango[1].setBounds(121, 80, 182, 20);
-		frame.getContentPane().add(TfRango[1]);
-		
+			
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
 		textField_1.setBounds(313, 80, 39, 20);
@@ -83,9 +77,6 @@ public class GUIPlayers {
 		btnPlayer3.setBounds(10, 113, 94, 23);
 		frame.getContentPane().add(btnPlayer3);
 		
-		TfRango[2].setColumns(10);
-		TfRango[2].setBounds(121, 114, 182, 20);
-		frame.getContentPane().add(TfRango[2]);
 		
 		textField_3 = new JTextField();
 		textField_3.setColumns(10);
@@ -96,9 +87,6 @@ public class GUIPlayers {
 		btnPlayer4.setBounds(10, 147, 94, 23);
 		frame.getContentPane().add(btnPlayer4);
 		
-		TfRango[3].setColumns(10);
-		TfRango[3].setBounds(121, 148, 182, 20);
-		frame.getContentPane().add(TfRango[3]);
 		
 		textField_5 = new JTextField();
 		textField_5.setColumns(10);
@@ -109,9 +97,6 @@ public class GUIPlayers {
 		btnPlayer5.setBounds(10, 181, 94, 23);
 		frame.getContentPane().add(btnPlayer5);
 		
-		TfRango[4].setColumns(10);
-		TfRango[4].setBounds(121, 182, 182, 20);
-		frame.getContentPane().add(TfRango[4]);
 		
 		textField_7 = new JTextField();
 		textField_7.setColumns(10);
@@ -122,9 +107,6 @@ public class GUIPlayers {
 		btnPlayer6.setBounds(10, 215, 94, 23);
 		frame.getContentPane().add(btnPlayer6);
 		
-		TfRango[5].setColumns(10);
-		TfRango[5].setBounds(121, 216, 182, 20);
-		frame.getContentPane().add(TfRango[5]);
 		
 		textField_9 = new JTextField();
 		textField_9.setColumns(10);
@@ -135,9 +117,6 @@ public class GUIPlayers {
 		btnPlayer7.setBounds(10, 249, 94, 23);
 		frame.getContentPane().add(btnPlayer7);
 		
-		TfRango[6].setColumns(10);
-		TfRango[6].setBounds(121, 250, 182, 20);
-		frame.getContentPane().add(TfRango[6]);
 		
 		textField_11 = new JTextField();
 		textField_11.setColumns(10);
@@ -148,9 +127,6 @@ public class GUIPlayers {
 		btnPlayer8.setBounds(10, 283, 94, 23);
 		frame.getContentPane().add(btnPlayer8);
 		
-		TfRango[7].setColumns(10);
-		TfRango[7].setBounds(121, 284, 182, 20);
-		frame.getContentPane().add(TfRango[7]);
 		
 		textField_13 = new JTextField();
 		textField_13.setColumns(10);
@@ -161,10 +137,6 @@ public class GUIPlayers {
 		btnPlayer9.setBounds(10, 317, 94, 23);
 		frame.getContentPane().add(btnPlayer9);
 		
-		TfRango[8].setColumns(10);
-		TfRango[8].setBounds(121, 318, 182, 20);
-		frame.getContentPane().add(TfRango[8]);
-		
 		textField_15 = new JTextField();
 		textField_15.setColumns(10);
 		textField_15.setBounds(313, 318, 39, 20);
@@ -173,10 +145,7 @@ public class GUIPlayers {
 		JButton btnPlayer10 = new JButton("jugador 10");
 		btnPlayer10.setBounds(10, 351, 94, 23);
 		frame.getContentPane().add(btnPlayer10);
-		
-		TfRango[9].setColumns(10);
-		TfRango[9].setBounds(121, 352, 182, 20);
-		frame.getContentPane().add(TfRango[9]);
+	
 		
 		textField_17 = new JTextField();
 		textField_17.setColumns(10);
@@ -192,9 +161,27 @@ public class GUIPlayers {
 		frame.getContentPane().add(lblEquity);
 		
 		//Actionlisteners
-		misAccciones accion= new misAccciones(this);
+		accion= new misAccciones(this);
 		btnPlayer1.addActionListener(accion);
 		btnPlayer1.setActionCommand("1");
+		btnPlayer2.addActionListener(accion);
+		btnPlayer2.setActionCommand("2");
+		btnPlayer3.addActionListener(accion);
+		btnPlayer3.setActionCommand("3");
+		btnPlayer4.addActionListener(accion);
+		btnPlayer4.setActionCommand("4");
+		btnPlayer5.addActionListener(accion);
+		btnPlayer5.setActionCommand("5");
+		btnPlayer6.addActionListener(accion);
+		btnPlayer6.setActionCommand("6");
+		btnPlayer7.addActionListener(accion);
+		btnPlayer7.setActionCommand("7");
+		btnPlayer8.addActionListener(accion);
+		btnPlayer8.setActionCommand("8");
+		btnPlayer9.addActionListener(accion);
+		btnPlayer9.setActionCommand("9");
+		btnPlayer10.addActionListener(accion);
+		btnPlayer10.setActionCommand("10");
 		
 	}
 	
@@ -202,11 +189,34 @@ public class GUIPlayers {
 	private void creaTfRango()
 	{
 		TfRango=new JTextField[10];
+		int y=13;
 		for(int i=0;i<TfRango.length;i++)
+		{
 			TfRango[i]=new JTextField();
+			TfRango[i].setColumns(10);
+			y+=34;
+			TfRango[i].setBounds(121, y, 182, 20);
+			frame.getContentPane().add(TfRango[i]);
+		}
 			
 	}
-	
+	//Inserta el nuevo rango extraido de la GUIRango
+	public void insertaRango(Object[] rng,int jugador)
+	{
+		StringBuilder rango=new StringBuilder();
+		for (int i=0;i<rng.length;i++)
+		{
+			rango.append(rng[i]);
+			if(i!=rng.length-1)
+				rango.append(",");
+		}
+		TfRango[jugador].setText(rango.toString());
+	}
+	//devuelve el texto de un textfile dado el numero de juagdor
+	public String miRango(int jugador)
+	{
+		return TfRango[jugador].getText();
+	}
 	//Getters y setters
 	public JFrame getFrame() {
 		return frame;
@@ -223,5 +233,8 @@ public class GUIPlayers {
 	public controlador getControl() {
 		return control;
 	}
-	
+
+	public misAccciones getAccion() {
+		return accion;
+	}	
 }

@@ -7,8 +7,13 @@ public class controlador
 {
 	public String[] transformarString(String rango)
 	{
+		if(!rango.isEmpty())
+		{
 		transformarString  trans = new transformarString(rango);
 		return trans.procesarString();
+		}
+		else
+			return null;
 	}
 	
 	public String transformarRango(String[] cartas){

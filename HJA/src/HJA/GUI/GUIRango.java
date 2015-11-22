@@ -34,9 +34,11 @@ public class GUIRango {
 	private int jugador;
 	private JLabel[][] TablaRangos;
 	private JTextField tfRango;
+	private JSlider SlRango;
 	private MouseListener miMouse;
 	private Color colorSelec;
 	private Color colorNoSelec;
+	private JButton btnCancelar;
 	//Constructor
 	public GUIRango(GUIPlayers miGUI, controlador miCont,String[] rng,int player)
 	{
@@ -58,100 +60,236 @@ public class GUIRango {
 	private void initialize() {
 		frmSeleccionDeRango = new JFrame();
 		frmSeleccionDeRango.setTitle("Seleccion de rango");
-		frmSeleccionDeRango.setBounds(100, 100, 424, 421);
-		frmSeleccionDeRango.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmSeleccionDeRango.setBounds(100, 100, 424, 487);
+		frmSeleccionDeRango.setResizable(false);
+		frmSeleccionDeRango.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frmSeleccionDeRango.getContentPane().setLayout(null);
 		
 		//inicializadores de los objetos
 				creaTablaRangos();			
 				
 				JLabel lblRangoSeleccionado = new JLabel("Rango selec:");
-				lblRangoSeleccionado.setBounds(10, 320, 127, 14);
+				lblRangoSeleccionado.setBounds(10, 393, 127, 14);
 				frmSeleccionDeRango.getContentPane().add(lblRangoSeleccionado);
 				
 				tfRango = new JTextField();
 				tfRango.setBackground(new Color(255, 255, 255));
 				tfRango.setEditable(false);
-				tfRango.setBounds(86, 317, 312, 20);
+				tfRango.setBounds(86, 390, 312, 20);
 				frmSeleccionDeRango.getContentPane().add(tfRango);
 				tfRango.setColumns(10);
 				
-				JSlider SlRango = new JSlider();
+				SlRango = new JSlider(0,100,0);
+				SlRango.setMajorTickSpacing(10);
+				SlRango.setMinorTickSpacing(1);
 				SlRango.setPaintTicks(true);
-				SlRango.setBounds(10, 286, 388, 26);
+				SlRango.setPaintLabels(true);
+				SlRango.setBounds(10, 283, 388, 56);
 				SlRango.addChangeListener(null);
 				frmSeleccionDeRango.getContentPane().add(SlRango);
 				
 				JButton btnAceptar = new JButton("Aceptar");
-				btnAceptar.setBounds(309, 348, 89, 26);
+				btnAceptar.setBounds(310, 421, 89, 26);
+				btnAceptar.addActionListener(vtnPlayers.getAccion());
+				btnAceptar.setActionCommand("11");
 				frmSeleccionDeRango.getContentPane().add(btnAceptar);
+				
+				btnCancelar = new JButton("Cancelar");
+				btnCancelar.setBounds(211, 421, 89, 26);
+				btnCancelar.addActionListener(vtnPlayers.getAccion());
+				btnCancelar.setActionCommand("12");
+				frmSeleccionDeRango.getContentPane().add(btnCancelar);
+				
+				JButton btnTodas = new JButton("Todas");
+				btnTodas.setBounds(10, 359, 61, 23);
+				btnTodas.addActionListener(vtnPlayers.getAccion());
+				btnTodas.setActionCommand("13");
+				frmSeleccionDeRango.getContentPane().add(btnTodas);
+				
+				JButton btnParejas = new JButton("Parejas");
+				btnParejas.setBounds(86, 359, 69, 23);
+				btnParejas.addActionListener(vtnPlayers.getAccion());
+				btnParejas.setActionCommand("14");
+				frmSeleccionDeRango.getContentPane().add(btnParejas);
+				
+				JButton btnLimpiar = new JButton("Limpiar");
+				btnLimpiar.setBounds(165, 359, 69, 23);
+				btnLimpiar.addActionListener(vtnPlayers.getAccion());
+				btnLimpiar.setActionCommand("15");
+				frmSeleccionDeRango.getContentPane().add(btnLimpiar);
+				
+				JLabel lblSeleccionRapida = new JLabel("Seleccion rapida:");
+				lblSeleccionRapida.setBounds(10, 338, 110, 14);
+				frmSeleccionDeRango.getContentPane().add(lblSeleccionRapida);
 				
 	}
 
 	//Crea la tabala de rangos.
-		private void creaTablaRangos()
+	private void creaTablaRangos()
+	{
+		miMouse= new detectaClick(this);
+		TablaRangos=new JLabel[13][13];
+		int x=10;
+		int y=11;
+		int heigth=20;
+		int width=30;
+		int s;
+		int r;
+		Border border = LineBorder.createBlackLineBorder();
+		Iterator<String> it = constante.getInstance().getManos().keySet().iterator();
+		for(int z=0;z<13;z++)
 		{
-			miMouse= new detectaClick(this);
-			TablaRangos=new JLabel[13][13];
-			int x=10;
-			int y=11;
-			int heigth=20;
-			int width=30;
-			Border border = LineBorder.createBlackLineBorder();
-			Iterator<String> it = constante.getInstance().getManos().keySet().iterator();
-			for(int z=0;z<13;z++)
+			for(int i=0;i<13;i++)
 			{
-				for(int i=0;i<13;i++)
+				if(it.hasNext())
 				{
-					if(it.hasNext())
-					{
-						String e=it.next();
-						TablaRangos[z][i]=new JLabel(e);
-						TablaRangos[z][i].setBounds(y, x, width, heigth);
-						y+=width;
-						TablaRangos[z][i].setHorizontalAlignment(SwingConstants.CENTER);
-						TablaRangos[z][i].setOpaque(true);
-						TablaRangos[z][i].setBackground(colorNoSelec);
-						TablaRangos[z][i].setBorder(border);
-						TablaRangos[z][i].addMouseListener(miMouse);
-						frmSeleccionDeRango.getContentPane().add(TablaRangos[z][i]);
-					}
-					
+					String e=it.next();
+					TablaRangos[z][i]=new JLabel(e);
+					TablaRangos[z][i].setBounds(y, x, width, heigth);
+					y+=width;
+					TablaRangos[z][i].setHorizontalAlignment(SwingConstants.CENTER);
+					TablaRangos[z][i].setOpaque(true);
+					TablaRangos[z][i].setBackground(colorNoSelec);
+					TablaRangos[z][i].setBorder(border);
+					TablaRangos[z][i].addMouseListener(miMouse);
+					frmSeleccionDeRango.getContentPane().add(TablaRangos[z][i]);
 				}
-				x+=heigth;
-				y=11;
+				
 			}
-					
+			x+=heigth;
+			y=11;
 		}
-		//Cambia el color de una celda ademas de las acciones asociadas
-		public void cambiarColor(JLabel pareja)
+		if(!rangoSelec.isEmpty())
 		{
-			if(pareja.getBackground().equals(colorNoSelec))
+			
+			for(String pareja:rangoSelec)
 			{
-				pareja.setBackground(colorSelec);
-				rangoSelec.add(pareja.getText());
+				s=constante.getInstance().getManos().get(pareja).getX();
+				r=constante.getInstance().getManos().get(pareja).getY();
+				TablaRangos[s][r].setBackground(colorSelec);
 			}
-			else
-			{
-				pareja.setBackground(colorNoSelec);
-				rangoSelec.remove(rangoSelec.indexOf(pareja.getText()));
-			}
-			actualizaSeleccionadas();
 		}
-		//Actualiza el texto de las cartas seleccionadas
-		private void actualizaSeleccionadas()
+	}
+	//Cambia el color de una celda ademas de las acciones asociadas
+	public void cambiarColor(JLabel pareja)
+	{
+		if(pareja.getBackground().equals(colorNoSelec))
 		{
-			StringBuilder mostrar = new StringBuilder();
-			for(String pareja: rangoSelec)
-			{
-				mostrar.append(pareja);
-				mostrar.append(",");
-			}
-			tfRango.setText(mostrar.toString());
+			pareja.setBackground(colorSelec);
+			rangoSelec.add(pareja.getText());
 		}
+		else
+		{
+			pareja.setBackground(colorNoSelec);
+			rangoSelec.remove(rangoSelec.indexOf(pareja.getText()));
+		}
+		actualizaSeleccionadas();
+		cambiarPorcentaje();
+	}
+	//Limpia la tabla
+	private void limpiartabla()
+	{
+		int x;
+		int y;
+		for(String pareja:rangoSelec)
+		{
+			x=constante.getInstance().getManos().get(pareja).getX();
+			y=constante.getInstance().getManos().get(pareja).getY();
+			TablaRangos[x][y].setBackground(colorNoSelec);
+		}
+		rangoSelec.clear();
+		actualizaSeleccionadas();
+		cambiarPorcentaje();	
+	}
+	//Actualiza el texto de las cartas seleccionadas
+	private void actualizaSeleccionadas()
+	{
+		StringBuilder mostrar = new StringBuilder();
+		for(String pareja: rangoSelec)
+		{
+			mostrar.append(pareja);
+			mostrar.append(",");
+		}
+		tfRango.setText(mostrar.toString());
+	}
+	//Carga un rango seleccionado desde el slide
+	public void modificarDesdeSlide(String[] nuevoRango)
+	{
+		rangoSelec=new ArrayList<String>(Arrays.asList(nuevoRango));
+		int x;
+		int y;
+		limpiartabla();
+		for(String pareja:rangoSelec)
+		{
+			x=constante.getInstance().getManos().get(pareja).getX();
+			y=constante.getInstance().getManos().get(pareja).getY();
+			TablaRangos[x][y].setBackground(colorSelec);
+			rangoSelec.add(pareja);
+		}
+		actualizaSeleccionadas();
+		cambiarPorcentaje();
+	}
+	
+	//Funciones de seleccion automatica
+	//Seleccion de pares
+	public void seleccionaPares()
+	{
+		limpiartabla();
+		String[] pares={"AA","KK","QQ","JJ","TT","99","88","77","66","55","44","33","22"};
+		int x;
+		int y;
+		for(int i=0;i<pares.length;i++)
+		{
+			x=constante.getInstance().getManos().get(pares[i]).getX();
+			y=constante.getInstance().getManos().get(pares[i]).getY();
+			TablaRangos[x][y].setBackground(colorSelec);
+			rangoSelec.add(pares[i]);
+		}
+		actualizaSeleccionadas();
+		cambiarPorcentaje();
+	}
+	//Seleccion de todas
+	public void seleccionaTodas()
+	{
+		limpiartabla();
+		for(int i=0;i<13;i++)
+		{
+			for(int x=0;x<13;x++)
+			{
+				TablaRangos[x][i].setBackground(colorSelec);
+				rangoSelec.add(TablaRangos[x][i].getText());
+			}
+		}
+		actualizaSeleccionadas();
+		cambiarPorcentaje();
+	}
+	//Limpiar todas
+	public void limpiarSeleccion()
+	{
+		limpiartabla();
+	}
+	
+	//dado un rango cambia el porcentaje
+	private void cambiarPorcentaje()
+	{
+		//cambiar a llamada del controlador
+		SlRango.setValue(0);
+	}
 	//Getters y setters
 	public JFrame getFrame() 
 	{
 		return frmSeleccionDeRango;
+	}
+
+	public JTextField getTfRango() {
+		return tfRango;
+	}
+
+	public int getJugador() {
+		return jugador;
+	}
+
+	public ArrayList<String> getRangoSelec() {
+		return rangoSelec;
 	}
 }

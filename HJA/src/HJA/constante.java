@@ -228,7 +228,7 @@ public class constante
 	   manos.put("62o",new datosMano(12, 8, 1, 500));
 	   manos.put("52o",new datosMano(12, 9, 1, 500));
 	   manos.put("42o",new datosMano(12, 10, 0.9, 500));
-	   manos.put("33o",new datosMano(12, 11, 0.9, 500));
+	   manos.put("32o",new datosMano(12, 11, 0.9, 500));
 	   manos.put("22",new datosMano(12, 12, 24, 500));
 	   
 	   
