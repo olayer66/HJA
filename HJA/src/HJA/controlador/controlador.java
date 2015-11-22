@@ -1,6 +1,7 @@
 package HJA.controlador;
 
 import HJA.modelo.transformarString;
+import HJA.modelo.procesarRankings;
 import HJA.modelo.transformarRango;
 
 public class controlador 
@@ -15,5 +16,12 @@ public class controlador
 
 		transformarRango trans = new transformarRango(cartas);
 		return trans.crearRango();
+	}
+	
+	//Rango: 0 -> Chubukov
+	public String[] porcentajeToRango(int porcentaje, int rango){
+		
+		procesarRankings proc = new procesarRankings();
+		return proc.porcentajeToRango(porcentaje, rango);
 	}
 }
