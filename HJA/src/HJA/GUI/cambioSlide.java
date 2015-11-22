@@ -8,20 +8,20 @@ import HJA.controlador.controlador;
 
 public class cambioSlide implements ChangeListener {
 
-	private controlador miCont;
-	private int prueba;
-	public cambioSlide(controlador miC) 
+	private GUIRango vtnRango;
+	private String[] prueba;
+	public cambioSlide(GUIRango vtn) 
 	{
-		miCont=miC;
+		vtnRango=vtn;
 	}
 	@Override
 	public void stateChanged(ChangeEvent e) 
 	{
 		JSlider slide=(JSlider)e.getSource();
-		if (slide.getValueIsAdjusting())
-		{
-			prueba=slide.getValue();
-			miCont.porcentajeToRango(slide.getValue(), 0);
+		if (!slide.getValueIsAdjusting())
+		{		
+			prueba=vtnRango.getControl().porcentajeToRango(slide.getValue(), 0);
+			vtnRango.modificarDesdeSlide(prueba);
 		}
 	}
 }
