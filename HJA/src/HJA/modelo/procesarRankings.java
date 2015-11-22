@@ -50,6 +50,24 @@ public class procesarRankings {
 		return resultado.toArray(new String[resultado.size()]);
 	}
 	
+	public int rangoToPorcentaje(String[] cartas){
+		char[] aux;
+		float comb=0;
+		int resultado;
+		for(int i=0; i<cartas.length; i++){
+			aux=cartas[i].toCharArray();
+			if(aux.length==2){
+				comb=comb+6;
+			}else if(aux[2]=='s'){
+				comb=comb+4;
+			}else{
+				comb=comb+12;
+			}
+		}
+		resultado=Math.round((comb/1326)*100);
+		return resultado;
+	}
+	
 	public String[] rangoChubukov(){
 		String[] ordenPares = {"AA","KK","AKs","QQ","AKo","JJ","AQs","TT","AQo","99","AJs"
 				  ,"88","ATs","AJo","77","66","ATo","A9s","55","A8s","KQs","44"
