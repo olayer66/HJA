@@ -124,13 +124,13 @@ public class ParseCartas {
 		else if(posicion==67) return "A3";
 		else if(posicion==68) return "A4";
 		else if(posicion==69) return "A5";
-		else if(posicion==71) return "A6";
-		else if(posicion==72) return "A7";
-		else if(posicion==73) return "A8";
-		else if(posicion==74) return "A9";
-		else if(posicion==75) return "AT";
-		else if(posicion==76) return "AJ";
-		else if(posicion==77) return "AQ";
+		else if(posicion==70) return "A6";
+		else if(posicion==71) return "A7";
+		else if(posicion==72) return "A8";
+		else if(posicion==73) return "A9";
+		else if(posicion==74) return "AT";
+		else if(posicion==75) return "AJ";
+		else if(posicion==76) return "AQ";
 		else return "AK";
 	}
 	
