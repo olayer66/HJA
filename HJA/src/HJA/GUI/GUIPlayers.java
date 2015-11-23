@@ -1,42 +1,49 @@
 package HJA.GUI;
 
-import java.awt.EventQueue;
-import java.awt.TextField;
-import java.util.Map.Entry;
-
+import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import HJA.constante;
-import HJA.constante.datosMano;
 import HJA.controlador.controlador;
 
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.html.HTMLDocument.Iterator;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.Toolkit;
 import javax.swing.JComboBox;
-import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.awt.Font;
 
 public class GUIPlayers {
 
+	
 	private JFrame frmPokermaster;
 	private controlador control;
+	
+	//Apartado 1
+	private JPanel jpApar1;
 	private JTextField[] TfRango;
 	private JButton[] btnJugadores;
 	private misAccciones accion;
+	
+	//Apartado 2
 	private JPanel jpAp2;
 	private JRadioButton rdbtnOr;
 	private JRadioButton rdbtnFold;
 	private ButtonGroup botones;
+	private JCheckBox chckbxMa;
+	private JCheckBox chckbxJanda;
+	private JComboBox<String> cbPosicion;
+	private JButton btnSelecionar;
+	private JButton btnCalcular;
+	private JTextField tfMano;
 	
 	private JTextField tfEquity1;
 	private JTextField textField_1;	
@@ -48,8 +55,22 @@ public class GUIPlayers {
 	private JTextField textField_13;
 	private JTextField textField_15;
 	private JTextField textField_17;
-	private JTextField tfMano;
-	private JPanel jpApar1;
+	
+	private JPanel jpMA;
+	private JPanel jpJanda;
+	private JLabel lblRangoMa;
+	private JLabel lblRangoJanda;
+	private JLabel lblMAResultado ;
+	private JLabel lblJandaResultado ;
+	private JLabel lblPosicion_1;
+	private JTextField tfMAPos;
+	private JTextField tfMAMano;
+	private JTextField tfMAAccion;
+	private JTextField tfJandaAccion;
+	private JTextField tfJandaMano;
+	private JTextField tfJandaPosicion;
+	
+	
 	
 	
 	public GUIPlayers(controlador miCont)
@@ -69,37 +90,13 @@ public class GUIPlayers {
 		frmPokermaster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPokermaster.getContentPane().setLayout(null);
 		
-		jpApar1 = new JPanel();
-		jpApar1.setBounds(0, 32, 375, 375);
-		frmPokermaster.getContentPane().add(jpApar1);
-		jpApar1.setLayout(null);
-		
 		jpAp2 = new JPanel();
 		jpAp2.setBounds(0, 32, 375, 310);
 		frmPokermaster.getContentPane().add(jpAp2);
 		jpAp2.setLayout(null);
 		jpAp2.setVisible(false);
-		//Actionlisteners
-		accion= new misAccciones(this);
 		
-		//incializadores
-		creaTfRango();
-		creaBtnJugadores();
-			
-		JLabel lblApartado = new JLabel("Apartado:");
-		lblApartado.setBounds(10, 11, 54, 14);
-		frmPokermaster.getContentPane().add(lblApartado);
 		
-		JComboBox<Integer> cbApartado = new JComboBox<Integer>();
-		cbApartado.setBounds(64, 8, 40, 20);
-		cbApartado.addItem(1);
-		cbApartado.addItem(2);
-		cbApartado.setSelectedIndex(0);
-		cbApartado.addActionListener(accion);
-		cbApartado.setActionCommand("17");
-		frmPokermaster.getContentPane().add(cbApartado);
-		
-		botones= new ButtonGroup();
 		
 		
 		
@@ -118,15 +115,15 @@ public class GUIPlayers {
 		lblPosicion.setBounds(6, 88, 46, 14);
 		jpAp2.add(lblPosicion);
 		
-		JComboBox<String> cbPosicion = new JComboBox<String>();
+		cbPosicion = new JComboBox<String>();
 		cbPosicion.setBounds(52, 85, 76, 20);
 		jpAp2.add(cbPosicion);
 		
-		JButton btnSelecionar = new JButton("Seleccionar");
+		btnSelecionar = new JButton("Seleccionar");
 		btnSelecionar.setBounds(138, 59, 103, 23);
 		jpAp2.add(btnSelecionar);
 		
-		JButton btnCalcular = new JButton("Calcular");
+		btnCalcular = new JButton("Calcular");
 		btnCalcular.setBounds(259, 59, 89, 43);
 		jpAp2.add(btnCalcular);
 		btnCalcular.addActionListener(new ActionListener() {
@@ -150,18 +147,143 @@ public class GUIPlayers {
 		rdbtnFold = new JRadioButton("Fold");
 		rdbtnFold.setBounds(182, 84, 59, 23);
 		jpAp2.add(rdbtnFold);
-		botones.add(rdbtnFold);
-		botones.add(rdbtnOr);
 		
-		JCheckBox chckbxMa = new JCheckBox("MA");
+		
+		chckbxMa = new JCheckBox("MA");
 		chckbxMa.setBounds(6, 7, 97, 23);
 		jpAp2.add(chckbxMa);
 		
-		JCheckBox chckbxJanda = new JCheckBox("Janda");
+		chckbxJanda = new JCheckBox("Janda");
 		chckbxJanda.setBounds(6, 33, 97, 23);
 		jpAp2.add(chckbxJanda);
 		
 		
+		
+		jpMA = new JPanel();
+		jpMA.setBounds(6, 113, 170, 138);
+		jpAp2.add(jpMA);
+		jpMA.setLayout(null);
+		jpMA.setVisible(false);
+		
+		lblRangoMa = new JLabel("Rango MA");
+		lblRangoMa.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRangoMa.setBounds(10, 0, 150, 14);
+		jpMA.add(lblRangoMa);
+		
+		lblPosicion_1 = new JLabel("Posicion:");
+		lblPosicion_1.setBounds(10, 21, 46, 14);
+		jpMA.add(lblPosicion_1);
+		
+		tfMAPos = new JTextField();
+		tfMAPos.setBackground(Color.WHITE);
+		tfMAPos.setEditable(false);
+		tfMAPos.setBounds(66, 18, 86, 20);
+		jpMA.add(tfMAPos);
+		tfMAPos.setColumns(10);
+		
+		JLabel lblMano_1 = new JLabel("Mano:");
+		lblMano_1.setBounds(10, 46, 46, 14);
+		jpMA.add(lblMano_1);
+		
+		tfMAMano = new JTextField();
+		tfMAMano.setEditable(false);
+		tfMAMano.setColumns(10);
+		tfMAMano.setBackground(Color.WHITE);
+		tfMAMano.setBounds(66, 43, 86, 20);
+		jpMA.add(tfMAMano);
+		
+		JLabel lblNewLabel = new JLabel("Accion:");
+		lblNewLabel.setBounds(10, 71, 46, 14);
+		jpMA.add(lblNewLabel);
+		
+		tfMAAccion = new JTextField();
+		tfMAAccion.setEditable(false);
+		tfMAAccion.setColumns(10);
+		tfMAAccion.setBackground(Color.WHITE);
+		tfMAAccion.setBounds(66, 68, 86, 20);
+		jpMA.add(tfMAAccion);
+		
+		lblMAResultado = new JLabel("Error");
+		lblMAResultado.setFont(new Font("Tahoma", Font.PLAIN, 27));
+		lblMAResultado.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMAResultado.setBounds(10, 96, 150, 37);
+		jpMA.add(lblMAResultado);
+		
+		jpJanda = new JPanel();
+		jpJanda.setBounds(182, 113, 183, 138);
+		jpAp2.add(jpJanda);
+		jpJanda.setLayout(null);
+		jpJanda.setVisible(false);
+		
+		lblRangoJanda = new JLabel("Rango Janda");
+		lblRangoJanda.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRangoJanda.setBounds(10, 0, 163, 14);
+		jpJanda.add(lblRangoJanda);
+		
+		lblJandaResultado = new JLabel("Error");
+		lblJandaResultado.setHorizontalAlignment(SwingConstants.CENTER);
+		lblJandaResultado.setFont(new Font("Tahoma", Font.PLAIN, 27));
+		lblJandaResultado.setBounds(10, 96, 150, 37);
+		jpJanda.add(lblJandaResultado);
+		
+		tfJandaAccion = new JTextField();
+		tfJandaAccion.setEditable(false);
+		tfJandaAccion.setColumns(10);
+		tfJandaAccion.setBackground(Color.WHITE);
+		tfJandaAccion.setBounds(66, 68, 86, 20);
+		jpJanda.add(tfJandaAccion);
+		
+		tfJandaMano = new JTextField();
+		tfJandaMano.setEditable(false);
+		tfJandaMano.setColumns(10);
+		tfJandaMano.setBackground(Color.WHITE);
+		tfJandaMano.setBounds(66, 43, 86, 20);
+		jpJanda.add(tfJandaMano);
+		
+		tfJandaPosicion = new JTextField();
+		tfJandaPosicion.setEditable(false);
+		tfJandaPosicion.setColumns(10);
+		tfJandaPosicion.setBackground(Color.WHITE);
+		tfJandaPosicion.setBounds(66, 18, 86, 20);
+		jpJanda.add(tfJandaPosicion);
+		
+		JLabel label_1 = new JLabel("Posicion:");
+		label_1.setBounds(10, 21, 46, 14);
+		jpJanda.add(label_1);
+		
+		JLabel label_2 = new JLabel("Mano:");
+		label_2.setBounds(10, 46, 46, 14);
+		jpJanda.add(label_2);
+		
+		JLabel label_3 = new JLabel("Accion:");
+		label_3.setBounds(10, 71, 46, 14);
+		jpJanda.add(label_3);
+		
+		
+		jpApar1 = new JPanel();
+		jpApar1.setBounds(0, 32, 375, 375);
+		frmPokermaster.getContentPane().add(jpApar1);
+		jpApar1.setLayout(null);
+		//Actionlisteners
+		accion= new misAccciones(this);
+		
+		//incializadores
+		creaTfRango();
+		creaBtnJugadores();
+			
+		JLabel lblApartado = new JLabel("Apartado:");
+		lblApartado.setBounds(10, 11, 54, 14);
+		frmPokermaster.getContentPane().add(lblApartado);
+		
+		JComboBox<Integer> cbApartado = new JComboBox<Integer>();
+		cbApartado.setBounds(64, 8, 40, 20);
+		cbApartado.addItem(1);
+		cbApartado.addItem(2);
+		cbApartado.setSelectedIndex(0);
+		cbApartado.addActionListener(accion);
+		cbApartado.setActionCommand("17");
+		frmPokermaster.getContentPane().add(cbApartado);
+			
 		
 		JLabel lblRangoDeJuego = new JLabel("Rango de Juego");
 		lblRangoDeJuego.setBounds(130, 0, 182, 14);
@@ -171,6 +293,11 @@ public class GUIPlayers {
 		lblEquity.setBounds(322, 0, 39, 14);
 		jpApar1.add(lblEquity);
 		
+		//Grupos de botones
+		botones= new ButtonGroup();
+		botones.add(rdbtnFold);
+		botones.add(rdbtnOr);
+		botones.setSelected(rdbtnOr.getModel(), true);
 		
 		tfEquity1 = new JTextField();
 		tfEquity1.setBounds(322, 25, 39, 20);
@@ -290,7 +417,105 @@ public class GUIPlayers {
 			jpApar1.setVisible(false);
 		}
 	}
-
+	//Comprueba el estado para el calculo
+	private boolean comprobarEstadoCalculo()
+	{
+		boolean correcto=true;
+		if(!rdbtnFold.isSelected() && !rdbtnOr.isSelected())
+			correcto=false;
+		else if(tfMano.getText().equals(""))
+			correcto=false;
+		else
+		{
+			Iterator<String> it = constante.getInstance().getManos().keySet().iterator();
+			correcto=false;
+			//llamar a funcion convertir
+			String miMano="";
+			while(it.hasNext())
+			{
+				String e=it.next();
+				if(e.equals(miMano))
+				{
+					correcto=true;
+					tfMano.setText(miMano);
+				}					
+			}
+		}
+			
+		return correcto;
+	}
+	//Recoje los datos para la ejecucion del calculo
+	public void EjecutarCalculo()
+	{
+		jpJanda.setVisible(false);
+		jpMA.setVisible(false);
+		String[] datos;
+		if(comprobarEstadoCalculo())
+		{
+			datos=new String[4];
+			datos[1]=tfMano.getText();
+			datos[2]=Integer.toString(cbPosicion.getSelectedIndex());
+			if(rdbtnOr.isSelected())
+				datos[3]="0";
+			else
+				datos[3]="1";
+			if(chckbxMa.isSelected())
+			{
+				datos[0]="0";
+				mostrarMA(control.evaluarJugada(datos));
+			}
+			if(chckbxJanda.isSelected())
+			{
+				datos[0]="1";
+				mostrarJanda(control.evaluarJugada(datos));
+			}
+		}
+		else
+			datos=null;
+	}
+	//resultado de janda
+	private void mostrarJanda(boolean resultado)
+	{
+		jpJanda.setVisible(true);
+		tfJandaMano.setText(tfMano.getText());
+		tfJandaPosicion.setText(cbPosicion.getItemAt(cbPosicion.getSelectedIndex()));
+		if(rdbtnOr.isSelected())
+			tfJandaAccion.setText("Open Range");
+		else
+			tfJandaAccion.setText("Fold");
+		if(resultado)
+		{
+			lblJandaResultado.setForeground(Color.GREEN);
+			lblJandaResultado.setText("Correcto");
+		}
+		else
+		{
+			lblJandaResultado.setForeground(Color.RED);
+			lblJandaResultado.setText("Erroneo");
+		}
+		
+	}
+	//resultado de MA
+	private void mostrarMA(boolean resultado)
+	{
+		jpMA.setVisible(true);
+		tfMAMano.setText(tfMano.getText());
+		tfMAPos.setText(cbPosicion.getItemAt(cbPosicion.getSelectedIndex()));
+		if(rdbtnOr.isSelected())
+			tfMAAccion.setText("Open Range");
+		else
+			tfMAAccion.setText("Fold");
+		if(resultado)
+		{
+			lblMAResultado.setForeground(Color.GREEN);
+			lblMAResultado.setText("Correcto");
+		}
+		else
+		{
+			lblMAResultado.setForeground(Color.RED);
+			lblMAResultado.setText("Erroneo");
+		}
+	}
 	//devuelve el texto de un textfile dado el numero de juagdor
 	public String miRango(int jugador)
 	{

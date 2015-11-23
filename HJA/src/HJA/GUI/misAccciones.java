@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 
-import org.w3c.dom.CDATASection;
-
 public class misAccciones implements ActionListener 
 {
 	private GUIPlayers  vtnPlayers;
@@ -90,6 +88,7 @@ public class misAccciones implements ActionListener
 				vtnRango.getFrame().setVisible(true);
 			}
 			break;
+		//Apartado 2
 		case "17":
 			 JComboBox<Integer> cb=(JComboBox<Integer>) e.getSource();
 			 switch (cb.getSelectedItem().toString()) {
@@ -105,7 +104,7 @@ public class misAccciones implements ActionListener
 			}
 			break;
 		case "18":
-			
+			vtnPlayers.EjecutarCalculo();
 			break;
 		
 		//A partir de aqui son acciones de GUIRango
