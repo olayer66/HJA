@@ -19,9 +19,10 @@ public class controlador
 	}
 	
 	public String transformarRango(String[] cartas){
-
+		if(cartas.length!=0){
 		transformarRango trans = new transformarRango(cartas);
 		return trans.crearRango();
+		}else return null;
 	}
 	
 	//Rango: 0 -> Chubukov
