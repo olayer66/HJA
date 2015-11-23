@@ -148,5 +148,30 @@ public class ParseCartas {
 			return "T";
 		}else return String.valueOf(posicion+2);
 	}
+	
+	/*Dado una mano del estilo KhQc lo convierte a KQo*/
+	public String manoToRango(String mano){
+		char[] aux=mano.toCharArray();
+		StringBuilder resultado = new StringBuilder();
+		char figura1=aux[0], figura2=aux[2];
+		//Pareja
+		if(figura1==figura2){
+			resultado.append(String.valueOf(figura1));
+			resultado.append(String.valueOf(figura1));
+		}else{
+			//Suited
+			if(aux[1]==aux[3]){
+				resultado.append(String.valueOf(figura1));
+				resultado.append(String.valueOf(figura2));
+				resultado.append("s");
+			//Offsuited
+			}else{
+				resultado.append(String.valueOf(figura1));
+				resultado.append(String.valueOf(figura2));
+				resultado.append("o");	
+			}
+		}
+		return resultado.toString();
+	}
 
 }

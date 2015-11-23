@@ -9,7 +9,8 @@ public class procesarJugada {
 
 	public procesarJugada(String[] datos){
 		rango = Integer.valueOf(datos[0]);
-		mano = datos[1];
+		ParseCartas parse = new ParseCartas();
+		mano = parse.manoToRango(datos[1]);
 		posicion = Integer.valueOf(datos[2]);
 		accion = Integer.valueOf(datos[3]);
 	}
