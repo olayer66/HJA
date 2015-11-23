@@ -49,11 +49,17 @@ public class GUISeleccionCartas {
 	{
 		int x=10;
 		int y=11;
-		int width;
-		int height;
-		for(int i=0;i<13;i++)
+		int width=83;
+		int height=120;
+		cuadroImagenes=new ImagePanel[4][13];
+		//palo
+		for(int i=0;i<4;i++)
 		{
-			
+			//carta
+			for(int z=0;z<14;z++)
+			{
+				
+			}
 		}
 	}
 }
