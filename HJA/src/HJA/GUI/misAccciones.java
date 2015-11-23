@@ -3,6 +3,10 @@ package HJA.GUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JComboBox;
+
+import org.w3c.dom.CDATASection;
+
 public class misAccciones implements ActionListener 
 {
 	private GUIPlayers  vtnPlayers;
@@ -87,6 +91,23 @@ public class misAccciones implements ActionListener
 				vtnRango.getFrame().setVisible(true);
 			}
 			break;
+		case "17":
+			 JComboBox<Integer> cb=(JComboBox<Integer>) e.getSource();
+			 switch (cb.getSelectedItem().toString()) {
+			case "1":
+				vtnPlayers.cambiaVentana(1);
+				break;
+			case "2":
+				vtnPlayers.cambiaVentana(2);
+				break;
+
+			default:
+				break;
+			}
+			break;
+		case "18":
+			
+			break;
 		
 		//A partir de aqui son acciones de GUIRango
 		case "11":
@@ -110,6 +131,10 @@ public class misAccciones implements ActionListener
 			break;
 		case "15":
 			vtnRango.limpiarSeleccion();
+			break;
+		case "16":
+			JComboBox<String> cbRango= (JComboBox<String>) e.getSource();
+			vtnRango.setRango(cbRango.getSelectedIndex());
 			break;
 		default:
 			break;

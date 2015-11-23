@@ -9,10 +9,12 @@ import HJA.controlador.controlador;
 public class cambioSlide implements ChangeListener {
 
 	private GUIRango vtnRango;
-	private String[] prueba;
-	public cambioSlide(GUIRango vtn) 
+	private String[] rango;
+	private int rangoUsado;
+	public cambioSlide(GUIRango vtn, int rng) 
 	{
 		vtnRango=vtn;
+		rangoUsado=rng;
 	}
 	@Override
 	public void stateChanged(ChangeEvent e) 
@@ -20,8 +22,8 @@ public class cambioSlide implements ChangeListener {
 		JSlider slide=(JSlider)e.getSource();
 		if (!slide.getValueIsAdjusting())
 		{		
-			prueba=vtnRango.getControl().porcentajeToRango(slide.getValue(), 0);
-			vtnRango.modificarDesdeSlide(prueba);
+			rango=vtnRango.getControl().porcentajeToRango(slide.getValue(), rangoUsado);
+			vtnRango.modificarDesdeSlide(rango);
 		}
 	}
 }

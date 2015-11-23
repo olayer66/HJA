@@ -23,6 +23,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JSlider;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import java.awt.Toolkit;
 
 public class GUIRango {
 
@@ -33,6 +35,7 @@ public class GUIRango {
 	private ArrayList<String> rangoSelec;
 	private GUIPlayers vtnPlayers;
 	private int jugador;
+	private int rango;
 	private JLabel[][] TablaRangos;
 	private JTextField tfRango;
 	private JSlider SlRango;
@@ -40,6 +43,7 @@ public class GUIRango {
 	private Color colorSelec;
 	private Color colorNoSelec;
 	private JButton btnCancelar;
+	private JTextField tfPorcentaje;
 	//Constructor
 	public GUIRango(GUIPlayers miGUI, controlador miCont,String[] rng,int player)
 	{
@@ -60,6 +64,7 @@ public class GUIRango {
 	 */
 	private void initialize() {
 		frmSeleccionDeRango = new JFrame();
+		frmSeleccionDeRango.setIconImage(Toolkit.getDefaultToolkit().getImage(GUIRango.class.getResource("/HJA/GUI/icon.png")));
 		frmSeleccionDeRango.setTitle("Seleccion de rango");
 		frmSeleccionDeRango.setBounds(100, 100, 424, 487);
 		frmSeleccionDeRango.setResizable(false);
@@ -85,8 +90,8 @@ public class GUIRango {
 				SlRango.setMinorTickSpacing(1);
 				SlRango.setPaintTicks(true);
 				SlRango.setPaintLabels(true);
-				SlRango.setBounds(10, 283, 388, 56);
-				SlRango.addChangeListener(new cambioSlide(this));
+				SlRango.setBounds(10, 283, 352, 56);
+				SlRango.addChangeListener(new cambioSlide(this,rango));
 				frmSeleccionDeRango.getContentPane().add(SlRango);
 				
 				JButton btnAceptar = new JButton("Aceptar");
@@ -122,6 +127,25 @@ public class GUIRango {
 				JLabel lblSeleccionRapida = new JLabel("Seleccion rapida:");
 				lblSeleccionRapida.setBounds(10, 338, 110, 14);
 				frmSeleccionDeRango.getContentPane().add(lblSeleccionRapida);
+				
+				JComboBox<String> cbRango = new JComboBox<String>();
+				cbRango.setBounds(277, 360, 121, 20);
+				cbRango.addItem("Sklansky-Chubukov");
+				cbRango.addItem("Sklansky-Malmuth");
+				cbRango.setSelectedIndex(0);
+				cbRango.addActionListener(vtnPlayers.getAccion());
+				cbRango.setActionCommand("16");
+				frmSeleccionDeRango.getContentPane().add(cbRango);
+				
+				JLabel lblRangoUsado = new JLabel("Rango usado:");
+				lblRangoUsado.setBounds(277, 338, 121, 14);
+				frmSeleccionDeRango.getContentPane().add(lblRangoUsado);
+				
+				tfPorcentaje = new JTextField();
+				tfPorcentaje.setText("0%");
+				tfPorcentaje.setBounds(363, 283, 35, 20);
+				frmSeleccionDeRango.getContentPane().add(tfPorcentaje);
+				tfPorcentaje.setColumns(10);
 				
 	}
 
@@ -202,14 +226,18 @@ public class GUIRango {
 	}
 	//Actualiza el texto de las cartas seleccionadas
 	private void actualizaSeleccionadas()
-	{
+	{	
 		StringBuilder mostrar = new StringBuilder();
-		for(String pareja: rangoSelec)
+		if(!rangoSelec.isEmpty())
 		{
-			mostrar.append(pareja);
-			mostrar.append(",");
+			for(String pareja: rangoSelec)
+			{
+				mostrar.append(pareja);
+				mostrar.append(",");
+			}
 		}
 		tfRango.setText(mostrar.toString());
+		//cambiarPorcentaje();
 	}
 	//Carga un rango seleccionado desde el slide
 	public void modificarDesdeSlide(String[] nuevoRango)
@@ -225,6 +253,7 @@ public class GUIRango {
 			TablaRangos[x][y].setBackground(colorSelec);
 			rangoSelec.add(nuevoRango[s]);
 		}
+		tfPorcentaje.setText(Integer.toString(SlRango.getValue())+"%");
 		actualizaSeleccionadas();
 	}
 	
@@ -263,13 +292,15 @@ public class GUIRango {
 	public void limpiarSeleccion()
 	{
 		limpiartabla();
+		actualizaSeleccionadas();
 	}
 	
 	//dado un rango cambia el porcentaje
 	private void cambiarPorcentaje()
 	{
-		//cambiar a llamada del controlador
-		SlRango.setValue(0);
+		int nuevoValor=0;
+		SlRango.setValue(nuevoValor);
+		tfPorcentaje.setText(Integer.toString(nuevoValor)+"%");
 	}
 	//Getters y setters
 	public JFrame getFrame() 
@@ -292,4 +323,13 @@ public class GUIRango {
 	public ArrayList<String> getRangoSelec() {
 		return rangoSelec;
 	}
+
+	public int getRango() {
+		return rango;
+	}
+
+	public void setRango(int rango) {
+		this.rango = rango;
+	}
+	
 }
