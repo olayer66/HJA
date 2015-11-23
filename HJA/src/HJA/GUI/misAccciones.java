@@ -11,7 +11,6 @@ public class misAccciones implements ActionListener
 {
 	private GUIPlayers  vtnPlayers;
 	private GUIRango vtnRango;
-	private String prueba;
 	
 	//Constructores
 	public misAccciones(GUIPlayers  vtn)
@@ -112,7 +111,7 @@ public class misAccciones implements ActionListener
 		//A partir de aqui son acciones de GUIRango
 		case "11":
 			//Esto para el controlador
-			vtnPlayers.insertaRango(vtnRango.getRangoSelec().toArray(),vtnRango.getJugador());
+			vtnPlayers.insertaRango(vtnPlayers.getControl().transformarRango(vtnRango.getRangoSelec().toArray(new String[vtnRango.getRangoSelec().size()])),vtnRango.getJugador());
 			vtnRango.getFrame().setVisible(false);
 			vtnRango.getFrame().dispose();
 			vtnRango=null;

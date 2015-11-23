@@ -20,7 +20,7 @@ public class cambioSlide implements ChangeListener {
 	public void stateChanged(ChangeEvent e) 
 	{
 		JSlider slide=(JSlider)e.getSource();
-		if (!slide.getValueIsAdjusting())
+		if (!slide.getValueIsAdjusting() && vtnRango.isSlide())
 		{		
 			rango=vtnRango.getControl().porcentajeToRango(slide.getValue(), rangoUsado);
 			vtnRango.modificarDesdeSlide(rango);

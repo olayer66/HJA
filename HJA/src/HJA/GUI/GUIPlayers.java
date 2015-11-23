@@ -271,16 +271,9 @@ public class GUIPlayers {
 			
 	}
 	//Inserta el nuevo rango extraido de la GUIRango
-	public void insertaRango(Object[] rng,int jugador)
+	public void insertaRango(String rango,int jugador)
 	{
-		StringBuilder rango=new StringBuilder();
-		for (int i=0;i<rng.length;i++)
-		{
-			rango.append(rng[i]);
-			if(i!=rng.length-1)
-				rango.append(",");
-		}
-		TfRango[jugador].setText(rango.toString());
+		TfRango[jugador].setText(rango);
 	}
 	
 	//cambia la ventana segun el apartado selecionado

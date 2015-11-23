@@ -36,6 +36,7 @@ public class GUIRango {
 	private GUIPlayers vtnPlayers;
 	private int jugador;
 	private int rango;
+	private boolean slide=true;
 	private JLabel[][] TablaRangos;
 	private JTextField tfRango;
 	private JSlider SlRango;
@@ -144,6 +145,7 @@ public class GUIRango {
 				tfPorcentaje = new JTextField();
 				tfPorcentaje.setText("0%");
 				tfPorcentaje.setBounds(363, 283, 35, 20);
+				//tfPorcentaje.set
 				frmSeleccionDeRango.getContentPane().add(tfPorcentaje);
 				tfPorcentaje.setColumns(10);
 				
@@ -237,7 +239,7 @@ public class GUIRango {
 			}
 		}
 		tfRango.setText(mostrar.toString());
-		//cambiarPorcentaje();
+		cambiarPorcentaje();
 	}
 	//Carga un rango seleccionado desde el slide
 	public void modificarDesdeSlide(String[] nuevoRango)
@@ -298,8 +300,10 @@ public class GUIRango {
 	//dado un rango cambia el porcentaje
 	private void cambiarPorcentaje()
 	{
-		int nuevoValor=0;
+		int nuevoValor=control.rangoToPorcentaje(rangoSelec.toArray(new String[rangoSelec.size()]));
+		slide=false;
 		SlRango.setValue(nuevoValor);
+		slide=true;
 		tfPorcentaje.setText(Integer.toString(nuevoValor)+"%");
 	}
 	//Getters y setters
@@ -330,6 +334,10 @@ public class GUIRango {
 
 	public void setRango(int rango) {
 		this.rango = rango;
+	}
+
+	public boolean isSlide() {
+		return slide;
 	}
 	
 }
