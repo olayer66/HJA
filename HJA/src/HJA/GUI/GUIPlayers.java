@@ -126,10 +126,8 @@ public class GUIPlayers {
 		btnCalcular = new JButton("Calcular");
 		btnCalcular.setBounds(259, 59, 89, 43);
 		jpAp2.add(btnCalcular);
-		btnCalcular.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnCalcular.addActionListener(accion);
+		btnCalcular.setActionCommand("18");
 		cbPosicion.addItem("SB");
 		cbPosicion.addItem("BB");
 		cbPosicion.addItem("UTG");

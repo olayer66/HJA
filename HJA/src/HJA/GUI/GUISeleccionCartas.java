@@ -3,11 +3,12 @@ package HJA.GUI;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class GUISeleccionCartas {
 
 	private JFrame frame;
-
+	private ImagePanel[][] cuadroImagenes;
 	/**
 	 * Launch the application.
 	 */
@@ -38,6 +39,21 @@ public class GUISeleccionCartas {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 599, 401);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(10, 11, 46, 14);
+		frame.getContentPane().add(lblNewLabel);
 	}
-
+	private void crearCartas()
+	{
+		int x=10;
+		int y=11;
+		int width;
+		int height;
+		for(int i=0;i<13;i++)
+		{
+			
+		}
+	}
 }
