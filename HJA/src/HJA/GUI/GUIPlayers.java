@@ -97,10 +97,9 @@ public class GUIPlayers {
 		jpAp2.setVisible(false);
 		
 		
-		
-		
-		
-		
+		//Actionlisteners
+		accion= new misAccciones(this);
+			
 		
 		JLabel lblMano = new JLabel("Mano:");
 		lblMano.setBounds(6, 63, 46, 14);
@@ -113,11 +112,7 @@ public class GUIPlayers {
 		
 		JLabel lblPosicion = new JLabel("Posicion:");
 		lblPosicion.setBounds(6, 88, 46, 14);
-		jpAp2.add(lblPosicion);
-		
-		cbPosicion = new JComboBox<String>();
-		cbPosicion.setBounds(52, 85, 76, 20);
-		jpAp2.add(cbPosicion);
+		jpAp2.add(lblPosicion);		
 		
 		btnSelecionar = new JButton("Seleccionar");
 		btnSelecionar.setBounds(138, 59, 103, 23);
@@ -125,9 +120,13 @@ public class GUIPlayers {
 		
 		btnCalcular = new JButton("Calcular");
 		btnCalcular.setBounds(259, 59, 89, 43);
-		jpAp2.add(btnCalcular);
 		btnCalcular.addActionListener(accion);
 		btnCalcular.setActionCommand("18");
+		jpAp2.add(btnCalcular);
+	
+		cbPosicion = new JComboBox<String>();
+		cbPosicion.setBounds(52, 85, 76, 20);
+		jpAp2.add(cbPosicion);
 		cbPosicion.addItem("SB");
 		cbPosicion.addItem("BB");
 		cbPosicion.addItem("UTG");
@@ -135,8 +134,7 @@ public class GUIPlayers {
 		cbPosicion.addItem("MP");
 		cbPosicion.addItem("CO");
 		cbPosicion.addItem("BTN");
-		cbPosicion.addActionListener(accion);
-		cbPosicion.setActionCommand("18");
+		
 		
 		rdbtnOr = new JRadioButton("OR");
 		rdbtnOr.setBounds(134, 84, 46, 23);
@@ -262,8 +260,7 @@ public class GUIPlayers {
 		jpApar1.setBounds(0, 32, 375, 375);
 		frmPokermaster.getContentPane().add(jpApar1);
 		jpApar1.setLayout(null);
-		//Actionlisteners
-		accion= new misAccciones(this);
+		
 		
 		//incializadores
 		creaTfRango();
@@ -296,6 +293,8 @@ public class GUIPlayers {
 		botones.add(rdbtnFold);
 		botones.add(rdbtnOr);
 		botones.setSelected(rdbtnOr.getModel(), true);
+		
+		//--------------------------------------------------------------------------------------------------------------
 		
 		tfEquity1 = new JTextField();
 		tfEquity1.setBounds(322, 25, 39, 20);
@@ -423,23 +422,6 @@ public class GUIPlayers {
 			correcto=false;
 		else if(tfMano.getText().equals(""))
 			correcto=false;
-		else
-		{
-			Iterator<String> it = constante.getInstance().getManos().keySet().iterator();
-			correcto=false;
-			//llamar a funcion convertir
-			String miMano="";
-			while(it.hasNext())
-			{
-				String e=it.next();
-				if(e.equals(miMano))
-				{
-					correcto=true;
-					tfMano.setText(miMano);
-				}					
-			}
-		}
-			
 		return correcto;
 	}
 	//Recoje los datos para la ejecucion del calculo

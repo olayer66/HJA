@@ -91,16 +91,17 @@ public class misAccciones implements ActionListener
 		//Apartado 2
 		case "17":
 			 JComboBox<Integer> cb=(JComboBox<Integer>) e.getSource();
-			 switch (cb.getSelectedItem().toString()) {
-			case "1":
-				vtnPlayers.cambiaVentana(1);
-				break;
-			case "2":
-				vtnPlayers.cambiaVentana(2);
-				break;
-
-			default:
-				break;
+			 switch (cb.getSelectedItem().toString()) 
+			 {
+				case "1":
+					vtnPlayers.cambiaVentana(1);
+					break;
+				case "2":
+					vtnPlayers.cambiaVentana(2);
+					break;
+		
+				default:
+					break;
 			}
 			break;
 		case "18":
