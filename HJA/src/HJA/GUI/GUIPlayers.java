@@ -116,6 +116,8 @@ public class GUIPlayers {
 		
 		btnSelecionar = new JButton("Seleccionar");
 		btnSelecionar.setBounds(138, 59, 103, 23);
+		btnSelecionar.addActionListener(accion);
+		btnSelecionar.setActionCommand("19");
 		jpAp2.add(btnSelecionar);
 		
 		btnCalcular = new JButton("Calcular");

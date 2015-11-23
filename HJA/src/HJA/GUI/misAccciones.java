@@ -9,7 +9,7 @@ public class misAccciones implements ActionListener
 {
 	private GUIPlayers  vtnPlayers;
 	private GUIRango vtnRango;
-	
+	private GUISeleccionCartas vtnSeleccionCartas;
 	//Constructores
 	public misAccciones(GUIPlayers  vtn)
 	{
@@ -106,6 +106,13 @@ public class misAccciones implements ActionListener
 			break;
 		case "18":
 			vtnPlayers.EjecutarCalculo();
+			break;
+		case "19":
+			if(vtnSeleccionCartas==null)
+			{
+				vtnSeleccionCartas=new GUISeleccionCartas(vtnPlayers.getControl());
+				vtnSeleccionCartas.getFrmSeleccionarCartas().setVisible(true);
+			}
 			break;
 		
 		//A partir de aqui son acciones de GUIRango

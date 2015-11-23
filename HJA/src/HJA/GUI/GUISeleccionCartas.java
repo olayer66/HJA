@@ -2,33 +2,27 @@ package HJA.GUI;
 
 import java.awt.EventQueue;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.border.EmptyBorder;
+
+import HJA.controlador.controlador;
+
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 
 public class GUISeleccionCartas {
 
-	private JFrame frame;
+	private JFrame frmSeleccionarCartas;
+	private controlador control;
 	private ImagePanel[][] cuadroImagenes;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GUISeleccionCartas window = new GUISeleccionCartas();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public GUISeleccionCartas() {
+	private String[] cartas={"Ah","Kh","Qh","Jh","Th","9h","8h","7h","6h","5h","4h","3h","2h","Ad","Kd","Qd","Jd","Td","9d","8d","7d","6d","5d","4d","3d","2d","Ac","Kc","Qc","Jc","Tc","9c","8c","7c","6c","5c","4c","3c","2c","As","Ks","Qs","Js","Ts","9s","8s","7s","6s","5s","4s","3s","2s"};
+	private detectaClickCarta detector;
+	
+	public GUISeleccionCartas(controlador ctn) {
+		control=ctn;
 		initialize();
 	}
 
@@ -36,17 +30,26 @@ public class GUISeleccionCartas {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 599, 401);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmSeleccionarCartas = new JFrame();
+		frmSeleccionarCartas.setTitle("Seleccionar  cartas");
+		frmSeleccionarCartas.setIconImage(Toolkit.getDefaultToolkit().getImage(GUISeleccionCartas.class.getResource("/HJA/GUI/icon.png")));
+		frmSeleccionarCartas.setBounds(100, 100, 1097, 512);
+		frmSeleccionarCartas.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmSeleccionarCartas.getContentPane().setLayout(null);
+		frmSeleccionarCartas.pack();
+		frmSeleccionarCartas.setVisible(true);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(10, 11, 46, 14);
-		frame.getContentPane().add(lblNewLabel);
+		
+		detector=new detectaClickCarta(this);
+		ImagePanel panel= new ImagePanel();
+		frmSeleccionarCartas.getContentPane().add(panel);
+		frmSeleccionarCartas.repaint();
+		//inicialiazdores
+		//crearCartas();
 	}
 	private void crearCartas()
 	{
+		int c=0;
 		int x=10;
 		int y=11;
 		int width=83;
@@ -56,10 +59,22 @@ public class GUISeleccionCartas {
 		for(int i=0;i<4;i++)
 		{
 			//carta
-			for(int z=0;z<14;z++)
+			for(int z=0;z<13;z++)
 			{
-				
+				cuadroImagenes[i][z]= new ImagePanel();
+				y+=width;
+				cuadroImagenes[i][z].setBounds(x, y, width, height);
+				cuadroImagenes[i][z].addMouseListener(detector);
+				frmSeleccionarCartas.getContentPane().add(cuadroImagenes[i][z]);
+				c++;
 			}
+			x+=height;
+			y=11;
 		}
 	}
+
+	public JFrame getFrmSeleccionarCartas() {
+		return frmSeleccionarCartas;
+	}
+	
 }
