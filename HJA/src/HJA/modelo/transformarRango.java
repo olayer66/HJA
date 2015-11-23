@@ -70,11 +70,11 @@ public class transformarRango {
 						cadena.append(",");
 						mas=false;
 					}else if(rango){
-						cadena.append(auxPar);
-						cadena.append(auxPar);
+						cadena.append(parFinal);
+						cadena.append(parFinal);
 						cadena.append("-");
-						cadena.append(parFinal);
-						cadena.append(parFinal);
+						cadena.append(auxPar);
+						cadena.append(auxPar);
 						cadena.append(",");
 						rango=false;
 					}else{
@@ -120,10 +120,10 @@ public class transformarRango {
 						cadena.append(",");
 						mas=false;
 					}else if(rango){
-						cadena.append(auxPar);
+						cadena.append(parFinal);
 						cadena.append("s");
 						cadena.append("-");
-						cadena.append(parFinal);
+						cadena.append(auxPar);
 						cadena.append("s");
 						cadena.append(",");
 					    rango=false;
@@ -143,10 +143,10 @@ public class transformarRango {
 							cadena.append(",");
 						    mas=false;
 						}else if(rango){
-							cadena.append(auxPar);
+							cadena.append(parFinal);
 							cadena.append("s");
 							cadena.append("-");
-							cadena.append(parFinal);
+							cadena.append(auxPar);
 							cadena.append("s");
 							cadena.append(",");
 						    rango=false;
@@ -156,7 +156,7 @@ public class transformarRango {
 							cadena.append(",");
 						}
 					}else if(!mas && !rango){
-					resultado = Integer.parseInt(String.valueOf(aux1[0]))-Integer.parseInt(String.valueOf(aux1[1]));
+						resultado = parse.figuraToInt(aux1[0])- parse.figuraToInt(aux1[1]);
 					if(resultado==1)mas=true;
 					else{						
 						rango=true;
@@ -188,10 +188,10 @@ public class transformarRango {
 						cadena.append(",");
 						mas=false;
 					}else if(rango){
-						cadena.append(auxPar);
+						cadena.append(parFinal);
 						cadena.append("o");
 						cadena.append("-");
-						cadena.append(parFinal);
+						cadena.append(auxPar);
 						cadena.append("o");
 						cadena.append(",");
 					    rango=false;
@@ -211,10 +211,10 @@ public class transformarRango {
 							cadena.append(",");
 						    mas=false;
 						}else if(rango){
-							cadena.append(auxPar);
+
 							cadena.append("o");
 							cadena.append("-");
-							cadena.append(parFinal);
+							cadena.append(auxPar);
 							cadena.append("o");
 							cadena.append(",");
 						    rango=false;
