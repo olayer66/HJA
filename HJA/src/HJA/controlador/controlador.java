@@ -29,4 +29,10 @@ public class controlador
 		procesarRankings proc = new procesarRankings();
 		return proc.porcentajeToRango(porcentaje, rango);
 	}
+	
+	public int rangoToPorcentaje(String[] cartas){
+		
+		procesarRankings proc = new procesarRankings();
+		return proc.rangoToPorcentaje(cartas);
+	}
 }
