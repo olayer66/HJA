@@ -1,6 +1,7 @@
 package HJA.controlador;
 
 import HJA.modelo.transformarString;
+import HJA.modelo.procesarJugada;
 import HJA.modelo.procesarRankings;
 import HJA.modelo.transformarRango;
 
@@ -34,5 +35,10 @@ public class controlador
 		
 		procesarRankings proc = new procesarRankings();
 		return proc.rangoToPorcentaje(cartas);
+	}
+	
+	public boolean evaluarJugada(String[] datos){
+		procesarJugada proc = new procesarJugada(datos); 
+		return proc.evaluarJugada();
 	}
 }
