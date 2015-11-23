@@ -16,6 +16,12 @@ import javax.swing.border.LineBorder;
 
 import java.awt.Color;
 import java.awt.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JTextField;
@@ -92,7 +98,7 @@ public class GUIRango {
 				SlRango.setPaintTicks(true);
 				SlRango.setPaintLabels(true);
 				SlRango.setBounds(10, 283, 352, 56);
-				SlRango.addChangeListener(new cambioSlide(this,rango));
+				SlRango.addChangeListener(new cambioSlide(this));
 				frmSeleccionDeRango.getContentPane().add(SlRango);
 				
 				JButton btnAceptar = new JButton("Aceptar");
@@ -143,11 +149,38 @@ public class GUIRango {
 				frmSeleccionDeRango.getContentPane().add(lblRangoUsado);
 				
 				tfPorcentaje = new JTextField();
-				tfPorcentaje.setText("0%");
-				tfPorcentaje.setBounds(363, 283, 35, 20);
-				//tfPorcentaje.set
+				tfPorcentaje.setText("0");
+				tfPorcentaje.setBounds(363, 283, 23, 20);
 				frmSeleccionDeRango.getContentPane().add(tfPorcentaje);
 				tfPorcentaje.setColumns(10);
+				tfPorcentaje.addKeyListener(new KeyAdapter() {
+				    public void keyTyped(KeyEvent e) {
+				        char c = e.getKeyChar();
+				        if (!((c >= '0') && (c <= '9') ||
+				           (c == KeyEvent.VK_BACK_SPACE) ||
+				           (c == KeyEvent.VK_DELETE))) {
+				          e.consume();
+				        }
+				      }
+				    });
+				tfPorcentaje.addFocusListener(new FocusListener() {
+				      public void focusGained(FocusEvent e) {
+				      };
+				      public void focusLost(FocusEvent e) 
+				      {
+				        cambiarRango();
+				      }
+				    });
+				tfPorcentaje.addActionListener(new ActionListener() {
+
+				    @Override
+				    public void actionPerformed(ActionEvent e) {
+				       cambiarRango();
+				    }
+				});
+				JLabel label = new JLabel("%");
+				label.setBounds(387, 283, 21, 20);
+				frmSeleccionDeRango.getContentPane().add(label);
 				
 	}
 
@@ -255,7 +288,7 @@ public class GUIRango {
 			TablaRangos[x][y].setBackground(colorSelec);
 			rangoSelec.add(nuevoRango[s]);
 		}
-		tfPorcentaje.setText(Integer.toString(SlRango.getValue())+"%");
+		tfPorcentaje.setText(Integer.toString(SlRango.getValue()));
 		actualizaSeleccionadas();
 	}
 	
@@ -304,7 +337,13 @@ public class GUIRango {
 		slide=false;
 		SlRango.setValue(nuevoValor);
 		slide=true;
-		tfPorcentaje.setText(Integer.toString(nuevoValor)+"%");
+		tfPorcentaje.setText(Integer.toString(nuevoValor));
+	}
+	//Dado un porcentaje cambia el rango
+	public void cambiarRango()
+	{	
+		String[] miRango=control.porcentajeToRango(Integer.parseInt(tfPorcentaje.getText()), rango);
+		modificarDesdeSlide(miRango);
 	}
 	//Getters y setters
 	public JFrame getFrame() 
@@ -339,5 +378,4 @@ public class GUIRango {
 	public boolean isSlide() {
 		return slide;
 	}
-	
 }
