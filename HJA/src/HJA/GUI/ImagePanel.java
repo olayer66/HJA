@@ -16,7 +16,7 @@ public class ImagePanel extends JPanel{
 
     public ImagePanel(String Imagen) {
        try {
-          image = ImageIO.read(new File(Imagen));
+          image = ImageIO.read(getClass().getResourceAsStream(Imagen));
        } catch (IOException ex) {
             // handle exception...
        }

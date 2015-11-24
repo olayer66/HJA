@@ -90,7 +90,7 @@ public class GUISeleccionCartas {
 			//carta
 			for(int z=0;z<13;z++)
 			{
-				cuadroImagenes[i][z]= new ImagePanel("C:\\hlocal\\git\\HJA\\HJA\\src\\HJA\\GUI\\"+cartas[c]+".png");	
+				cuadroImagenes[i][z]= new ImagePanel(cartas[c]+".png");	
 				cuadroImagenes[i][z].setName(cartas[c]);
 				cuadroImagenes[i][z].setBounds(y, x, width, height);
 				y+=width;
