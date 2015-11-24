@@ -14,7 +14,8 @@ public class detectaClickCarta implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) 
 	{
-		//aqui		
+		ImagePanel imagen= (ImagePanel) e.getSource();
+		vtnCartas.seleccionarCarta(imagen);
 	}
 
 	@Override

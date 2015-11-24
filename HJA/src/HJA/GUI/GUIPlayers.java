@@ -522,5 +522,9 @@ public class GUIPlayers {
 
 	public misAccciones getAccion() {
 		return accion;
+	}
+
+	public JTextField getTfMano() {
+		return tfMano;
 	}	
 }

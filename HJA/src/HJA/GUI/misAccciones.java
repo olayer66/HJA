@@ -110,7 +110,8 @@ public class misAccciones implements ActionListener
 		case "19":
 			if(vtnSeleccionCartas==null)
 			{
-				vtnSeleccionCartas=new GUISeleccionCartas(vtnPlayers.getControl());
+				vtnPlayers.getTfMano().setText("");
+				vtnSeleccionCartas=new GUISeleccionCartas(vtnPlayers.getControl(),this);
 				vtnSeleccionCartas.getFrmSeleccionarCartas().setVisible(true);
 			}
 			break;
@@ -141,6 +142,19 @@ public class misAccciones implements ActionListener
 		case "16":
 			JComboBox<String> cbRango= (JComboBox<String>) e.getSource();
 			vtnRango.setRango(cbRango.getSelectedIndex());
+			break;
+		
+		//Apartir de aqui son de GUISelecionCartas
+		case "20":
+			vtnPlayers.getTfMano().setText(vtnSeleccionCartas.leerMano());
+			vtnSeleccionCartas.getFrmSeleccionarCartas().setVisible(false);
+			vtnSeleccionCartas.getFrmSeleccionarCartas().dispose();
+			vtnSeleccionCartas=null;
+			break;
+		case "21":
+			vtnSeleccionCartas.getFrmSeleccionarCartas().setVisible(false);
+			vtnSeleccionCartas.getFrmSeleccionarCartas().dispose();
+			vtnSeleccionCartas=null;
 			break;
 		default:
 			break;
