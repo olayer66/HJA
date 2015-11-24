@@ -2,16 +2,12 @@ package HJA.GUI;
 
 import java.awt.EventQueue;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.border.EmptyBorder;
 
 import HJA.controlador.controlador;
 
 import java.awt.Toolkit;
-import java.io.File;
-import java.io.IOException;
 
 public class GUISeleccionCartas {
 
@@ -36,14 +32,12 @@ public class GUISeleccionCartas {
 		frmSeleccionarCartas.setBounds(100, 100, 1097, 512);
 		frmSeleccionarCartas.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmSeleccionarCartas.getContentPane().setLayout(null);
-		frmSeleccionarCartas.pack();
-		frmSeleccionarCartas.setVisible(true);
-		
 		
 		detector=new detectaClickCarta(this);
-		ImagePanel panel= new ImagePanel();
+		ImagePanel panel= new ImagePanel("Ah");
+		panel.setBounds(10, 11, 83, 120);
+		panel.addMouseListener(detector);
 		frmSeleccionarCartas.getContentPane().add(panel);
-		frmSeleccionarCartas.repaint();
 		//inicialiazdores
 		//crearCartas();
 	}
@@ -61,7 +55,7 @@ public class GUISeleccionCartas {
 			//carta
 			for(int z=0;z<13;z++)
 			{
-				cuadroImagenes[i][z]= new ImagePanel();
+				cuadroImagenes[i][z]= new ImagePanel(cartas[c]);
 				y+=width;
 				cuadroImagenes[i][z].setBounds(x, y, width, height);
 				cuadroImagenes[i][z].addMouseListener(detector);

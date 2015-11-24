@@ -1,33 +1,34 @@
 package HJA.GUI;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
-import javax.swing.*;  
-import java.awt.*;
+public class ImagePanel extends JPanel{
 
-class ImagePanel extends JPanel
-{  
-	/**
+    /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private BufferedImage image;
 
-	public ImagePanel() {
-		this.setSize(83, 120); //se selecciona el tamaño del panel
-		}
-		 
-		//Se crea un método cuyo parámetro debe ser un objeto Graphics
-		 
-		public void paint(Graphics grafico) {
-		Dimension height = getSize();
-		 
-		//Se selecciona la imagen que tenemos en el paquete de la //ruta del programa
-		 
-		ImageIcon Img = new ImageIcon(getClass().getResource("\\66.png")); 
-		 
-		//se dibuja la imagen que tenemos en el paquete Images //dentro de un panel
-		 
-		grafico.drawImage(Img.getImage(), 0, 0, height.width, height.height, null);
-		 
-		setOpaque(false);
-		super.paintComponent(grafico);
-		}
+    public ImagePanel(String Imagen) {
+       try {
+    	   StringBuilder miImg= new StringBuilder();
+    	   miImg.append(Imagen);
+    	   miImg.append(".png");
+          image = ImageIO.read(new File(miImg.toString()));
+       } catch (IOException ex) {
+            // handle exception...
+       }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(image, 0, 0, null); // see javadoc for more info on the parameters            
+    }
+
 }
