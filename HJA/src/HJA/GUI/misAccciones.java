@@ -119,6 +119,7 @@ public class misAccciones implements ActionListener
 		case "31":
 			vtnPlayers.insertaRamdom(9);		
 			break;
+		
 		//A partir de aqui son acciones de GUIRango
 		case "11":
 			//Esto para el controlador

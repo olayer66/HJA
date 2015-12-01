@@ -28,6 +28,9 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
+import javax.swing.JTextPane;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
 
 public class GUIPlayers {
 
@@ -43,7 +46,10 @@ public class GUIPlayers {
 	private misAccciones accion;
 	private JTextField tfMesa;
 	private JTextField tfDescartes;
-	
+	private JTextPane tpSalida;
+	private Color mejorEquity= Color.GREEN;
+	private Color Equity= Color.YELLOW;
+	private Color peorEquity= Color.RED;
 	
 	
 	
@@ -70,12 +76,14 @@ public class GUIPlayers {
 		
 		
 		jpApar1 = new JPanel();
-		jpApar1.setBounds(0, 0, 375, 360);
+		jpApar1.setBorder(null);
+		jpApar1.setBounds(10, 11, 365, 362);
 		frmPokermaster.getContentPane().add(jpApar1);
 		jpApar1.setLayout(null);
 		
 		JPanel jpControles = new JPanel();
-		jpControles.setBounds(385, 0, 214, 360);
+		jpControles.setBorder(null);
+		jpControles.setBounds(385, 11, 214, 362);
 		frmPokermaster.getContentPane().add(jpControles);
 		jpControles.setLayout(null);
 		
@@ -95,44 +103,71 @@ public class GUIPlayers {
 		jpApar1.add(lblEquity);
 		
 		JLabel lblMesa = new JLabel("Mesa:");
-		lblMesa.setBounds(10, 11, 68, 14);
+		lblMesa.setBounds(10, 25, 68, 14);
 		jpControles.add(lblMesa);
 		
 		tfMesa = new JTextField();
-		tfMesa.setBounds(10, 24, 68, 20);
+		tfMesa.setBounds(10, 38, 68, 20);
 		jpControles.add(tfMesa);
 		tfMesa.setColumns(10);
 		
 		JLabel lblDescartes = new JLabel("Descartes:");
-		lblDescartes.setBounds(10, 55, 68, 14);
+		lblDescartes.setBounds(10, 69, 68, 14);
 		jpControles.add(lblDescartes);
 		
 		tfDescartes = new JTextField();
-		tfDescartes.setBounds(10, 72, 68, 20);
+		tfDescartes.setBounds(10, 86, 68, 20);
 		jpControles.add(tfDescartes);
 		tfDescartes.setColumns(10);
 		
 		JButton btnSeleccionarMesa = new JButton("Seleccionar");
-		btnSeleccionarMesa.setBounds(88, 23, 116, 23);
+		btnSeleccionarMesa.setBounds(88, 37, 116, 23);
+		btnSeleccionarMesa.addActionListener(accion);
+		btnSeleccionarMesa.setActionCommand("32");
 		jpControles.add(btnSeleccionarMesa);
 		
 		JButton btnSeleccionarDescartes = new JButton("Seleccionar");
-		btnSeleccionarDescartes.setBounds(88, 71, 116, 23);
+		btnSeleccionarDescartes.setBounds(88, 85, 116, 23);
+		btnSeleccionarDescartes.addActionListener(accion);
+		btnSeleccionarDescartes.setActionCommand("33");
 		jpControles.add(btnSeleccionarDescartes);
 		
 		JButton btnCalcular = new JButton("Calcular");
-		btnCalcular.setBounds(54, 120, 89, 69);
+		btnCalcular.setBounds(54, 134, 89, 69);
+		btnCalcular.addActionListener(accion);
+		btnCalcular.setActionCommand("34");
 		jpControles.add(btnCalcular);
 		
 		JButton btnLimpiar = new JButton("Limpiar");
-		btnLimpiar.setBounds(54, 200, 89, 23);
+		btnLimpiar.setBounds(54, 214, 89, 23);
+		btnLimpiar.addActionListener(accion);
+		btnLimpiar.setActionCommand("35");
 		jpControles.add(btnLimpiar);
 		
 		JButton btnAyuda = new JButton("Ayuda");
-		btnAyuda.setBounds(54, 234, 89, 23);
+		btnAyuda.setBounds(54, 248, 89, 23);
+		btnAyuda.addActionListener(accion);
+		btnAyuda.setActionCommand("36");
 		jpControles.add(btnAyuda);
 		
+		JPanel jpSalida = new JPanel();
+		jpSalida.setBounds(10, 384, 589, 275);
+		frmPokermaster.getContentPane().add(jpSalida);
+		jpSalida.setLayout(null);
+		
+		tpSalida = new JTextPane();
+		tpSalida.setBorder(new LineBorder(Color.LIGHT_GRAY));
+		tpSalida.setBounds(10, 28, 569, 247);
+		jpSalida.add(tpSalida);
+		
+		JLabel lblDatosDeSalida = new JLabel("Datos de salida:");
+		lblDatosDeSalida.setBounds(10, 11, 134, 14);
+		jpSalida.add(lblDatosDeSalida);
+		
 	}
+	
+	/*---------------------------------------------------------------------------------------------------------------------------*/
+	
 	//Crea los botones
 	private void creaBtnJugadores()
 	{
@@ -197,9 +232,13 @@ public class GUIPlayers {
 			jpApar1.add(tfEquity[i]);
 		}
 	}
+	
+	/*---------------------------------------------------------------------------------------------------------*/
+	
 	//Inserta el nuevo rango extraido de la GUIRango
 	public void insertaRango(String rango,int jugador)
 	{
+		TfRango[jugador].setEditable(true);
 		TfRango[jugador].setText(rango);
 	}
 	
@@ -213,8 +252,37 @@ public class GUIPlayers {
 	//devuelve el texto de un textfile dado el numero de juagdor
 	public String miRango(int jugador)
 	{
-		return TfRango[jugador].getText();
+		if(TfRango[jugador].isEditable())
+			return TfRango[jugador].getText();
+		else
+			return "";
 	}
+	//INserta el equity en los jugadores
+	public void insertaEquity(int[] equity)
+	{
+		int mayor=0;
+		int menor=50;
+		for(int i=0;i<equity.length;i++)
+		{
+			tfEquity[i].setText(Integer.toString(equity[i]));
+			if(equity[i]!=0)
+				tfEquity[i].setBackground(Equity);	
+			if(equity[i]>= mayor)
+				mayor=i;
+			else if(equity[i]<=menor)
+				menor=i;		
+		}
+		tfEquity[mayor].setBackground(mejorEquity);	
+		tfEquity[menor].setBackground(peorEquity);	
+	}
+	//Inserta el resultado de la salida
+	public void miSalida(String salida)
+	{
+		tpSalida.setText(salida);
+	}
+	
+	/*-----------------------------------------------------------------------------------------------------------------------------*/
+	
 	//Getters y setters
 	public JFrame getFrame() {
 		return frmPokermaster;
