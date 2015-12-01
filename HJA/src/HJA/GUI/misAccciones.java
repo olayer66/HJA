@@ -3,6 +3,7 @@ package HJA.GUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 
 public class misAccciones implements ActionListener 
@@ -88,34 +89,36 @@ public class misAccciones implements ActionListener
 				vtnRango.getFrame().setVisible(true);
 			}
 			break;
-		//Apartado 2
-		case "17":
-			 JComboBox<Integer> cb=(JComboBox<Integer>) e.getSource();
-			 switch (cb.getSelectedItem().toString()) 
-			 {
-				case "1":
-					vtnPlayers.cambiaVentana(1);
-					break;
-				case "2":
-					vtnPlayers.cambiaVentana(2);
-					break;
-		
-				default:
-					break;
-			}
+		case "22":
+			vtnPlayers.insertaRamdom(0);		
 			break;
-		case "18":
-			vtnPlayers.EjecutarCalculo();
+		case "23":
+			vtnPlayers.insertaRamdom(1);		
 			break;
-		case "19":
-			if(vtnSeleccionCartas==null)
-			{
-				vtnPlayers.getTfMano().setText("");
-				vtnSeleccionCartas=new GUISeleccionCartas(vtnPlayers.getControl(),this);
-				vtnSeleccionCartas.getFrmSeleccionarCartas().setVisible(true);
-			}
+		case "24":
+			vtnPlayers.insertaRamdom(2);		
 			break;
-		
+		case "25":
+			vtnPlayers.insertaRamdom(3);		
+			break;
+		case "26":
+			vtnPlayers.insertaRamdom(4);		
+			break;
+		case "27":
+			vtnPlayers.insertaRamdom(5);		
+			break;
+		case "28":
+			vtnPlayers.insertaRamdom(6);		
+			break;
+		case "29":
+			vtnPlayers.insertaRamdom(7);		
+			break;
+		case "30":
+			vtnPlayers.insertaRamdom(8);		
+			break;
+		case "31":
+			vtnPlayers.insertaRamdom(9);		
+			break;
 		//A partir de aqui son acciones de GUIRango
 		case "11":
 			//Esto para el controlador
@@ -146,7 +149,7 @@ public class misAccciones implements ActionListener
 		
 		//Apartir de aqui son de GUISelecionCartas
 		case "20":
-			vtnPlayers.getTfMano().setText(vtnSeleccionCartas.leerMano());
+			//vtnPlayers.getTfMano().setText(vtnSeleccionCartas.leerMano());
 			vtnSeleccionCartas.getFrmSeleccionarCartas().setVisible(false);
 			vtnSeleccionCartas.getFrmSeleccionarCartas().dispose();
 			vtnSeleccionCartas=null;
