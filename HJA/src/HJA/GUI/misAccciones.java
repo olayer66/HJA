@@ -3,7 +3,6 @@ package HJA.GUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 
 public class misAccciones implements ActionListener 
@@ -118,6 +117,21 @@ public class misAccciones implements ActionListener
 			break;
 		case "31":
 			vtnPlayers.insertaRamdom(9);		
+			break;
+		case "32"://seleccionar mano
+			
+			break;
+		case "33"://seleccionar descartes
+			
+			break;
+		case "34"://calcular
+			
+			break;
+		case "35"://Limpiar ventana
+			vtnPlayers.limpiarVentana();
+			break;
+		case "36"://ayuda
+	
 			break;
 		
 		//A partir de aqui son acciones de GUIRango

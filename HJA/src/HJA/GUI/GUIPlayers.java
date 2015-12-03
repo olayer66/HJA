@@ -1,43 +1,25 @@
 package HJA.GUI;
 
-import java.util.Iterator;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
-import HJA.constante;
-import HJA.controlador.controlador;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-
+import java.awt.Color;
+import java.awt.Insets;
 import java.awt.Toolkit;
 
-import javax.swing.JComboBox;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JCheckBox;
-import javax.swing.SwingConstants;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Insets;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
+import HJA.controlador.controlador;
+
+import javax.help.*;
 public class GUIPlayers {
 
 	
 	private JFrame frmPokermaster;
-	private controlador control;
-	
+	private controlador control;	
 	private JPanel jpApar1;
 	private JTextField[] TfRango;
 	private JTextField[] tfEquity;
@@ -56,6 +38,7 @@ public class GUIPlayers {
 	public GUIPlayers(controlador miCont)
 	{
 		control=miCont;
+		
 		initialize();
 	}
 
@@ -156,6 +139,7 @@ public class GUIPlayers {
 		jpSalida.setLayout(null);
 		
 		tpSalida = new JTextPane();
+		tpSalida.setEditable(false);
 		tpSalida.setBorder(new LineBorder(Color.LIGHT_GRAY));
 		tpSalida.setBounds(10, 28, 569, 247);
 		jpSalida.add(tpSalida);
@@ -280,6 +264,22 @@ public class GUIPlayers {
 	{
 		tpSalida.setText(salida);
 	}
+	//Limpia todos los campos de la ventana
+	public void limpiarVentana()
+	{
+		for(int i=0;i<10;i++)
+		{
+			TfRango[i].setText("");
+			if(!TfRango[i].isEditable())
+				TfRango[i].setEditable(true);
+			tfEquity[i].setText("");
+			tfEquity[i].setBackground(Color.WHITE);
+		}
+		tfMesa.setText("");
+		tfDescartes.setText("");
+		tpSalida.setText("");
+	}
+	
 	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
 	

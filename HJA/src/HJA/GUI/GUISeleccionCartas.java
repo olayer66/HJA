@@ -1,20 +1,10 @@
 package HJA.GUI;
 
-import java.awt.EventQueue;
-import java.awt.Graphics;
-
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import HJA.controlador.controlador;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.border.BevelBorder;
@@ -35,9 +25,10 @@ public class GUISeleccionCartas {
 	private detectaClickCarta detector;
 	private int cMax;
 	
-	public GUISeleccionCartas(controlador ctn,ActionListener acc) {
+	public GUISeleccionCartas(controlador ctn,ActionListener acc,int cartas) {
 		control=ctn;
 		accion=acc;
+		numCartas=cartas;
 		initialize();
 	}
 
