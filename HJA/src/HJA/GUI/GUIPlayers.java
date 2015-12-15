@@ -3,6 +3,8 @@ package HJA.GUI;
 import java.awt.Color;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.io.File;
+import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,7 +16,9 @@ import javax.swing.border.LineBorder;
 
 import HJA.controlador.controlador;
 
-import javax.help.*;
+import javax.help.CSH;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
 public class GUIPlayers {
 
 	
@@ -32,8 +36,8 @@ public class GUIPlayers {
 	private Color mejorEquity= Color.GREEN;
 	private Color Equity= Color.YELLOW;
 	private Color peorEquity= Color.RED;
-	
-	
+	private HelpBroker hb;
+	private HelpSet hs;
 	
 	public GUIPlayers(controlador miCont)
 	{
@@ -75,7 +79,22 @@ public class GUIPlayers {
 		creaTfEquity();
 		creaBtnJugadores();
 		creaBtnRandom();
-			
+
+		//ayuda
+		String helpHS = "help.hs";
+		try {
+			// falla aqui la url esta mal no apunta bien a help.hs
+			File fichero = new File(helpHS);
+			URL hsURL = fichero.toURI().toURL();
+		    hs = new HelpSet(null, hsURL);
+		} catch (Exception ee) {
+		    System.out.println( "HelpSet " + ee.getMessage());
+		    System.out.println("HelpSet "+ helpHS +" not found");
+		    return;
+		}
+		hb = hs.createHelpBroker();
+		hb.enableHelpKey(frmPokermaster.getContentPane(), "clave", hs);
+		
 		
 		JLabel lblRangoDeJuego = new JLabel("Rango de Juego");
 		lblRangoDeJuego.setBounds(130, 0, 182, 14);
@@ -129,9 +148,9 @@ public class GUIPlayers {
 		
 		JButton btnAyuda = new JButton("Ayuda");
 		btnAyuda.setBounds(54, 248, 89, 23);
-		btnAyuda.addActionListener(accion);
-		btnAyuda.setActionCommand("36");
+		btnAyuda.addActionListener(new CSH.DisplayHelpFromSource( hb ));
 		jpControles.add(btnAyuda);
+		hb.enableHelpOnButton(btnAyuda, "clave", hs);
 		
 		JPanel jpSalida = new JPanel();
 		jpSalida.setBounds(10, 384, 589, 275);
@@ -283,6 +302,12 @@ public class GUIPlayers {
 	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
 	
+	private void cargarAyuda()
+	{
+		
+	}
+	
+	/*-----------------------------------------------------------------------------------------------------------------------------*/
 	//Getters y setters
 	public JFrame getFrame() {
 		return frmPokermaster;
