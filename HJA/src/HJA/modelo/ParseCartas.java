@@ -149,6 +149,103 @@ public class ParseCartas {
 		}else return String.valueOf(posicion+2);
 	}
 	
+	/*Relaciona un palo con un entero*/
+	public int paloToInt(char palo){
+		if(palo == 'h'){
+			return 1;
+		}else if(palo == 'd'){
+			return 2;
+		}else if(palo == 'c'){
+			return 3;
+		}else return 4;
+	}
+	
+	/*Relaciona un entero con un palo*/
+	public String intToPalo(int numero){
+		if(numero==1){
+			return "h";
+		}else if(numero==2){
+			return "d";
+		}else if(numero ==3){
+			return "c";
+		}else return "s";
+	}
+	
+	//Dado un array de cartas de la forma "JJ, AKs, 75o" nos da todas las combinaciones de cartas posibles
+	public String[] allCombinaciones (String[] cartas){
+		char[] aux;
+		String actual, auxChar1, auxChar2;
+		StringBuilder sb = new StringBuilder();
+		for(int i=0; i<cartas.length; i++){
+			actual = cartas[i];
+			aux= actual.toCharArray();
+			//Parejas
+			if(actual.length() == 2){
+				auxChar1 = String.valueOf(aux[0]);
+				sb.append(auxChar1); sb.append("h"); sb.append(auxChar1); sb.append("c,");
+				sb.append(auxChar1); sb.append("h"); sb.append(auxChar1); sb.append("s,");
+				sb.append(auxChar1); sb.append("h"); sb.append(auxChar1); sb.append("d,");
+				sb.append(auxChar1); sb.append("c"); sb.append(auxChar1); sb.append("s,");
+				sb.append(auxChar1); sb.append("c"); sb.append(auxChar1); sb.append("d,");
+				sb.append(auxChar1); sb.append("d"); sb.append(auxChar1); sb.append("s,");
+			//Suited
+			}else if(aux[2]=='s'){
+				auxChar1 = String.valueOf(aux[0]);
+				auxChar2 = String.valueOf(aux[1]);
+				sb.append(auxChar1); sb.append("h"); sb.append(auxChar2); sb.append("h,");
+				sb.append(auxChar1); sb.append("s"); sb.append(auxChar2); sb.append("s,");
+				sb.append(auxChar1); sb.append("d"); sb.append(auxChar2); sb.append("d,");
+				sb.append(auxChar1); sb.append("c"); sb.append(auxChar2); sb.append("c,");
+			//Offsuited
+			}else{
+				auxChar1 = String.valueOf(aux[0]);
+				auxChar2 = String.valueOf(aux[1]);
+				sb.append(auxChar1); sb.append("h"); sb.append(auxChar2); sb.append("c,");
+				sb.append(auxChar2); sb.append("h"); sb.append(auxChar1); sb.append("c,");
+				sb.append(auxChar1); sb.append("h"); sb.append(auxChar2); sb.append("s,");
+				sb.append(auxChar2); sb.append("h"); sb.append(auxChar1); sb.append("s,");
+				sb.append(auxChar1); sb.append("h"); sb.append(auxChar2); sb.append("d,");
+				sb.append(auxChar2); sb.append("h"); sb.append(auxChar1); sb.append("d,");
+				sb.append(auxChar1); sb.append("c"); sb.append(auxChar2); sb.append("s,");
+				sb.append(auxChar2); sb.append("c"); sb.append(auxChar1); sb.append("s,");
+				sb.append(auxChar1); sb.append("c"); sb.append(auxChar2); sb.append("d,");
+				sb.append(auxChar2); sb.append("c"); sb.append(auxChar1); sb.append("d,");
+				sb.append(auxChar1); sb.append("d"); sb.append(auxChar2); sb.append("s,");
+				sb.append(auxChar2); sb.append("d"); sb.append(auxChar1); sb.append("s,");
+			}
+		}
+		return sb.toString().split(",");
+	}
+	
+	/*Dado una posición y el contenido de la posición(palos) nos devuelve el String con las figuras y palos correspondientes*/
+	public String convertToCard(int posicion,int palos){ 
+		int palo1, palo2, palo3, palo4;
+		String figura = intToFigura(posicion);
+		if(palos>1000){
+			palo1=palos/10;
+			palo3=palo1%10;
+			palo1=palo1/10;
+			palo2=palo1%10;
+			palo1=palo1/10;
+			palo4=palos%10;
+			return figura+intToPalo(palo1)+figura+intToPalo(palo2)+figura+intToPalo(palo3)+figura
+					+intToPalo(palo4);
+		}else if(palos>100){
+			palo1=palos/10;
+			palo2=palo1%10;
+			palo1=palo1/10;
+			palo3=palos%10;
+			return figura+intToPalo(palo1)+figura+intToPalo(palo2)+figura+intToPalo(palo3);
+		}else if(palos>10){
+			palo1=palos/10;
+			palo2=palos%10;
+			return figura+intToPalo(palo1)+figura+intToPalo(palo2);
+		}else{
+			palo1=palos;
+			return figura+intToPalo(palo1);
+		}
+	}
+	
 	/*Dado una mano del estilo KhQc lo convierte a KQo*/
 	public String manoToRango(String mano){
 		char[] aux=mano.toCharArray();

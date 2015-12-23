@@ -2,13 +2,17 @@ package HJA;
 
 import HJA.GUI.GUIPlayers;
 import HJA.controlador.controlador;
+import HJA.modelo.evaluarJugadores;
 
 public class startClass 
 {
+	
 	private controlador miControlador;
 	static public GUIPlayers vtnPlayers;
+	
 	public static void main(String[] args)
 	{
+	/*
 		startClass st;
 		st=new startClass();
 		st.inicia();
@@ -20,7 +24,13 @@ public class startClass
 		{			
 			st.ejecutame();
 		}
+		*/
+		String[] rangos= {"KK+", "32s"};
+		evaluarJugadores ev= new evaluarJugadores(null, null, rangos);
+		ev.calcularEquitys();
 	}
+	
+	
 	/**
 	 * Metodo que inicia todas las clases necesarias para ejecutar la aplicacion
 	 */
