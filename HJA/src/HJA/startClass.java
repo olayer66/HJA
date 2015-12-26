@@ -12,7 +12,7 @@ public class startClass
 	
 	public static void main(String[] args)
 	{
-	/*
+	
 		startClass st;
 		st=new startClass();
 		st.inicia();
@@ -24,10 +24,12 @@ public class startClass
 		{			
 			st.ejecutame();
 		}
-		*/
+		
+		/*
 		String[] rangos= {"KK+", "32s"};
 		evaluarJugadores ev= new evaluarJugadores(null, null, rangos);
 		ev.calcularEquitys();
+		*/
 	}
 	
 	

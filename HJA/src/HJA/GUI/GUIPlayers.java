@@ -75,27 +75,12 @@ public class GUIPlayers {
 		jpControles.setLayout(null);
 		
 		//incializadores
+		cargarAyuda();
 		creaTfRango();
 		creaTfEquity();
 		creaBtnJugadores();
 		creaBtnRandom();
-
-		//ayuda
-		String helpHS = "help.hs";
-		try {
-			// falla aqui la url esta mal no apunta bien a help.hs
-			File fichero = new File(helpHS);
-			URL hsURL = fichero.toURI().toURL();
-		    hs = new HelpSet(null, hsURL);
-		} catch (Exception ee) {
-		    System.out.println( "HelpSet " + ee.getMessage());
-		    System.out.println("HelpSet "+ helpHS +" not found");
-		    return;
-		}
-		hb = hs.createHelpBroker();
-		hb.enableHelpKey(frmPokermaster.getContentPane(), "clave", hs);
-		
-		
+			
 		JLabel lblRangoDeJuego = new JLabel("Rango de Juego");
 		lblRangoDeJuego.setBounds(130, 0, 182, 14);
 		jpApar1.add(lblRangoDeJuego);
@@ -150,7 +135,7 @@ public class GUIPlayers {
 		btnAyuda.setBounds(54, 248, 89, 23);
 		btnAyuda.addActionListener(new CSH.DisplayHelpFromSource( hb ));
 		jpControles.add(btnAyuda);
-		hb.enableHelpOnButton(btnAyuda, "clave", hs);
+		hb.enableHelpOnButton(btnAyuda, "manual", hs);
 		
 		JPanel jpSalida = new JPanel();
 		jpSalida.setBounds(10, 384, 589, 275);
@@ -304,7 +289,19 @@ public class GUIPlayers {
 	
 	private void cargarAyuda()
 	{
-		
+		String helpHS =System.getProperty("user.dir")+ "/src/HJA/help/help.hs";
+		try {
+			// falla aqui la url esta mal no apunta bien a help.hs
+			File fichero = new File(helpHS);
+			URL hsURL = fichero.toURI().toURL();
+		    hs = new HelpSet(null, hsURL);
+		} catch (Exception ee) {
+		    System.out.println( "HelpSet " + ee.getMessage());
+		    System.out.println("HelpSet "+ helpHS +" not found");
+		    return;
+		}
+		hb = hs.createHelpBroker();
+		hb.enableHelpKey(frmPokermaster.getContentPane(), "manual", hs);
 	}
 	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
