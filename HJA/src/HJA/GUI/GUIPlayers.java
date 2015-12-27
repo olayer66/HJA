@@ -135,7 +135,7 @@ public class GUIPlayers {
 		btnAyuda.setBounds(54, 248, 89, 23);
 		btnAyuda.addActionListener(new CSH.DisplayHelpFromSource( hb ));
 		jpControles.add(btnAyuda);
-		hb.enableHelpOnButton(btnAyuda, "manual", hs);
+		hb.enableHelpOnButton(btnAyuda, "Inicio", hs);
 		
 		JPanel jpSalida = new JPanel();
 		jpSalida.setBounds(10, 384, 589, 275);
@@ -301,7 +301,7 @@ public class GUIPlayers {
 		    return;
 		}
 		hb = hs.createHelpBroker();
-		hb.enableHelpKey(frmPokermaster.getContentPane(), "manual", hs);
+		hb.enableHelpKey(frmPokermaster.getContentPane(), "Inicio", hs);
 	}
 	
 	/*-----------------------------------------------------------------------------------------------------------------------------*/

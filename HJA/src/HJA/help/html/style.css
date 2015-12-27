@@ -1,0 +1,18 @@
+@charset "utf-8";
+body {
+}
+body {
+	background-repeat: no-repeat;
+	background-image: url(back.png);
+}
+body h1 {
+	font-family: bitter;
+	font-style: normal;
+	font-weight: 400;
+	text-decoration: none;
+}
+body h2 {
+	font-family: bitter;
+	font-style: normal;
+	font-weight: 400;
+}
