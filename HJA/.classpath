@@ -7,5 +7,7 @@
 	<classpathentry kind="lib" path="src/HJA/help/jh2.0/javahelp/lib/jhall.jar"/>
 	<classpathentry kind="lib" path="src/HJA/help/jh2.0/javahelp/lib/jhbasic.jar"/>
 	<classpathentry kind="lib" path="src/HJA/help/jh2.0/javahelp/lib/jsearch.jar"/>
+	<classpathentry kind="lib" path="langCommnos3.4/commons-lang3-3.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="langCommnos3.4/commons-lang3-3.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

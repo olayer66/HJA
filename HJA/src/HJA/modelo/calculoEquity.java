@@ -2,8 +2,10 @@ package HJA.modelo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
@@ -11,8 +13,8 @@ import org.paukov.combinatorics.ICombinatoricsVector;
 
 public class calculoEquity 
 {
-	private String[] board;
-	private String[] descartes;
+	private ArrayList<String> board;
+	private ArrayList<String> descartes;
 	private ArrayList <String[]> jugadores;
 	private float[] equity;
 	private int[] puntos;
@@ -39,11 +41,11 @@ public class calculoEquity
 		//tenemos un board
 		if(board!=null)
 		{
-			calculoBoard(board);
+			//calculoBoard(board);
 		}
 		else//No hay board
 		{
-			if(!descartes.equals(null))
+			if(descartes!=null)
 				
 			calculoBoardVacio();
 		}
@@ -54,16 +56,35 @@ public class calculoEquity
 		eliminaDescartes();
 		ICombinatoricsVector<String> initialVector = Factory.createVector(board);
 		Generator<String> gen = Factory.createSimpleCombinationGenerator(initialVector, 5);
+		for (ICombinatoricsVector<String> combination : gen) 
+		{
+			
+		}
 	}
+	
+	/*------Metodos para el calculo del board---------*/
 	//Calcula un board dado los jugadores y el board
-	private void calculoBoard (String[] board)
+	private void calculoBoard (ArrayList<String> board)
 	{
 		
+	}
+	
+	
+	//comprueba si se puede ejecutar el board pasado con las cartas pasadas
+	private boolean calculoManoValido(String[] cartas,List<String> mesa,int valor, boolean estado)
+	{
+			if(valor<cartas.length)
+			{
+				if(!mesa.contains(cartas[valor]))
+					return calculoManoValido(cartas, mesa, valor+1,true);
+				else
+					estado=false;
+			}
+			return estado;
 	}
 	//Tranforma los rangos de cartas, el board y los descartes en cartas separadas
 	private void transformar(String mesa, String desc, String[] rangos)
 	{	
-		int i=0;
 		String[] cartas;
 		ParseCartas parse = new ParseCartas();
 		StringTokenizer strTok;
@@ -71,22 +92,19 @@ public class calculoEquity
 		{
 			
 			strTok= new StringTokenizer(mesa, ",");
-			board= new String[strTok.countTokens()];
+			board= new ArrayList<String>();
 			while (strTok.hasMoreTokens()) 
 			{
-		         board[i]=strTok.nextToken();
-		         i++;
+		         board.add(strTok.nextToken());
 		    }
 		}
-		if(!desc.isEmpty())
+		if(desc!=null)
 		{
-			i=0;
 			strTok= new StringTokenizer(desc, ",");
-			descartes= new String[strTok.countTokens()];
+			descartes= new ArrayList<String>();
 			while (strTok.hasMoreTokens()) 
 			{
-		         descartes[i]=strTok.nextToken();
-		         i++;
+		         descartes.add(strTok.nextToken());
 		    }
 		}
 		for(int x=0 ; x<rangos.length; x++){
@@ -99,12 +117,11 @@ public class calculoEquity
 	private void eliminaDescartes ()
 	{
 		String[] aux={"Ah","Kh","Qh","Jh","Th","9h","8h","7h","6h","5h","4h","3h","2h","Ad","Kd","Qd","Jd","Td","9d","8d","7d","6d","5d","4d","3d","2d","Ac","Kc","Qc","Jc","Tc","9c","8c","7c","6c","5c","4c","3c","2c","As","Ks","Qs","Js","Ts","9s","8s","7s","6s","5s","4s","3s","2s"};
-		ArrayList<String> lista= new ArrayList<String>(Arrays.asList(aux));
-		for(int i=0; i<descartes.length;i++)
+		board= new ArrayList<String>(Arrays.asList(aux));
+		for(String carta: descartes)
 		{
-			lista.remove(descartes[i]);
+			board.remove(carta);
 		}
-		board= (String[]) lista.toArray(new String[lista.size()]);
 	}
 	/*-----------------------------------Comprobacion de salidas---------------------------------------------------------*/
 	// muestra las variables recibidas y su salida transformada
@@ -129,15 +146,21 @@ public class calculoEquity
 			System.out.print("\n");
 			n++;
 		}
-		System.out.print("Descartes: ");
-		for(int i=0;i<descartes.length;i++)
+		if(descartes!=null)
 		{
-			System.out.print(descartes[i] +" ");
+			System.out.print("Descartes: ");
+			for(String carta: descartes)
+			{
+				System.out.print(carta +" ");
+			}
 		}
-		System.out.print("\nMesa: ");
-		for(int i=0;i<board.length;i++)
+		if(board!=null)
 		{
-			System.out.print(board[i] +" ");
+			System.out.print("\nMesa: ");
+			for(String carta: board)
+			{
+				System.out.print(carta +" ");
+			}
 		}
 	}
 }
