@@ -2,6 +2,7 @@ package HJA;
 
 import HJA.GUI.GUIPlayers;
 import HJA.controlador.controlador;
+import HJA.modelo.calculoEquity;
 import HJA.modelo.evaluarJugadores;
 
 public class startClass 
@@ -13,7 +14,7 @@ public class startClass
 	public static void main(String[] args)
 	{
 	
-		startClass st;
+		/*startClass st;
 		st=new startClass();
 		st.inicia();
 		if (st.comprobarArgumentos(args)==true)
@@ -24,12 +25,12 @@ public class startClass
 		{			
 			st.ejecutame();
 		}
-		
-		/*
-		String[] rangos= {"KK+", "32s"};
-		evaluarJugadores ev= new evaluarJugadores(null, null, rangos);
-		ev.calcularEquitys();
 		*/
+		
+		String[] rangos= {"KK+", "32s"};
+		calculoEquity ev= new calculoEquity();
+		ev.calcular(null, "Ah,6h,Ts,8d", rangos);
+		
 	}
 	
 	
