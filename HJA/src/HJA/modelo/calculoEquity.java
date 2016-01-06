@@ -1,13 +1,10 @@
 package HJA.modelo;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Random;
-import org.apache.commons.lang3.StringUtils;
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.ICombinatoricsVector;
@@ -38,7 +35,7 @@ public class calculoEquity
 		//iniciamos el calculo de las manos
 		calculoManos();
 		
-		mostrarVariables(mesa, desc, rangos);
+		//mostrarVariables(mesa, desc, rangos);
 		return equity;
 	}
 	//funcion que calcula el ganador de una mano
@@ -47,7 +44,7 @@ public class calculoEquity
 		//tenemos un board
 		if(board!=null)
 		{
-			//calculoBoard(board);
+			calculoBoardNoVacio();
 		}
 		else//No hay board
 		{
@@ -64,17 +61,19 @@ public class calculoEquity
 		//Generamos la combinatoria del mazo cojiendo cartas de 5 en 5 hasta cubrir todas las posibles variantes
 		ICombinatoricsVector<String> initialVector = Factory.createVector(board);
 		Generator<String> gen = Factory.createSimpleCombinationGenerator(initialVector, 5);
-		String[] primeraMano;
 		for (ICombinatoricsVector<String> combination : gen) 
 		{
 			
-			//extraemos la primra mano a jugar
+			//Creamos la matriz de parejas jugables con el board actual
 			sacaManos(combination.getVector(),0,0);
-			//Comprobamos que tengamos una mano a jugar con el board
-			break;
+			
 		}
 	}
-	
+	//Realiza los calculos en casod e que el board no este vacio
+	private void calculoBoardNoVacio()
+	{
+		
+	}
 	/*------Metodos para el calculo del board---------*/
 	//Calcula un board dado los jugadores y el board
 	private void calculoBoard (List<String> board,String[] mano)
@@ -93,11 +92,10 @@ public class calculoEquity
 		{
 			manosUsadas.get(jug)[mano]=1;
 		}
-		if(jug!=jugadores.size()-1 && mano!=jugadores.get(jugadores.size()-1).length-1)
+		if(jug!=jugadores.size()-1)
 		{
 			if(mano==jugadores.get(jug).length-1)
 			{
-				manosUsadas.add(new int[jugadores.get(jug+1).length]);
 				sacaManos(board, jug+1, 0);
 			}
 			else
@@ -151,7 +149,8 @@ public class calculoEquity
 			//Si el juagdor es random
 			if(rangos[x]=="random")
 			{
-				transformarString trans = new transformarString(pares.get(generaManosRandom()));
+				int num=generaManosRandom();
+				transformarString trans = new transformarString(pares.get(num));
 				cartas = parse.allCombinaciones(trans.procesarString());
 				jugadores.add(cartas);
 				manosUsadas.add(new int[jugadores.get(x).length]);
@@ -175,12 +174,13 @@ public class calculoEquity
 			board.remove(carta);
 		}
 	}
-	
 	//Genera una mano aleatoria para los jugadores random
 	private int generaManosRandom()
 	{
 		Random rnd= new Random();
-		return (int)rnd.nextDouble() * 168 + 0;
+		double num=rnd.nextDouble() * 168 + 0;
+		int num2=(int)num;
+		return num2;
 	}
 	
 	/*-----------------------------------Comprobacion de salidas---------------------------------------------------------*/
