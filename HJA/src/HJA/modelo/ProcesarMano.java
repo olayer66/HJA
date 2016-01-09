@@ -5,7 +5,6 @@ import java.util.Collections;
 
 public class ProcesarMano {
 	
-private int[] arrayMano;
 
 	public ProcesarMano(){}
 	
@@ -48,22 +47,7 @@ private int[] arrayMano;
 		boolean poker=false, full=false,trio=false,pareja=false,color=false,cAlta=true, escalera=false, escaleraColor=false, impar=false;
 		ParseCartas parseCartas = new ParseCartas();
 		char[] aux = mano.toCharArray();
-		arrayMano = new int[13];
-		
-		//Inicializa el array de enteros correspondiente a la mano.
-		for(int i=0; i<aux.length; i++){
-			if(!impar){
-				posicion=parseCartas.figuraToInt(aux[i]);
-			impar=true;
-			}else{
-				paloIni = parseCartas.paloToInt(aux[i]);
-				if(arrayMano[posicion] != 0){ //Ya hay una carta de la misma figura
-					paloIni=(arrayMano[posicion]*10)+paloIni;
-				}
-				arrayMano[posicion]=paloIni;
-				impar=false;
-			}
-		}
+		int[] arrayMano = transformarMano(mano);
 		
 		for(int i=0; i<arrayMano.length ;i++){
 			palo=arrayMano[i];
@@ -411,8 +395,9 @@ public String procesarEscaleraColor(String escalera, ParseCartas parseCartas){
 		ej: Dos jugadores empatan con una pareja de ases, se calcula el valor de la mano total de cada uno y se compara
 			el que tenga el valor más alto tiene mejores cartas por lo que este gana la partida.
  */
-	public int valorMano(){	
+	public int valorMano(String mano){	
 		int valor=0;
+		int[] arrayMano = transformarMano(mano);
 		for(int j=arrayMano.length-1 ; j>=0; j--){
 			if(arrayMano[j]!=0){
 				//4 figuras iguales
@@ -430,5 +415,30 @@ public String procesarEscaleraColor(String escalera, ParseCartas parseCartas){
 			}
 		}
 		return valor;
+	}
+	
+	public int[] transformarMano(String mano){
+		int[] arrayMano = new int[13];
+		int posicion = 0, paloIni=0;
+		boolean  impar=false;
+		ParseCartas parseCartas = new ParseCartas();
+		char[] aux = mano.toCharArray();
+		arrayMano = new int[13];
+		
+		//Inicializa el array de enteros correspondiente a la mano.
+		for(int i=0; i<aux.length; i++){
+			if(!impar){
+				posicion=parseCartas.figuraToInt(aux[i]);
+			impar=true;
+			}else{
+				paloIni = parseCartas.paloToInt(aux[i]);
+				if(arrayMano[posicion] != 0){ //Ya hay una carta de la misma figura
+					paloIni=(arrayMano[posicion]*10)+paloIni;
+				}
+				arrayMano[posicion]=paloIni;
+				impar=false;
+			}
+		}
+		return arrayMano;
 	}
 }

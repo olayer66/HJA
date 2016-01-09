@@ -75,14 +75,14 @@ public class evaluarJugadores {
 					      sbAux1.append(sboard.toString());  
 					      proc = new ProcesarMano();
 					      valorJugada1=proc.procesarBestHand(sbAux1.toString());
-					      valorMano1=proc.valorMano();
+					      valorMano1=proc.valorMano(sbAux1.toString());
 						  				  
 						  sbAux2= new StringBuilder();
 						  sbAux2.append(sb2);
 					      sbAux2.append(sboard); 
 						  proc = new ProcesarMano();
 					      valorJugada2=proc.procesarBestHand(sbAux2.toString());
-					      valorMano2=proc.valorMano();
+					      valorMano2=proc.valorMano(sbAux2.toString());
 						  combinaciones++;	
 
 							 if(valorJugada1 > valorJugada2)
