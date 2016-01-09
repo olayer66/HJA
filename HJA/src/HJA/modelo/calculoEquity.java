@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.Random;
+
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.ICombinatoricsVector;
@@ -18,12 +24,15 @@ public class calculoEquity
 	private ArrayList <String[]> jugadores;
 	private ArrayList <int[]> manosUsadas;
 	private float[] equity;
-	private int[] puntos;
+	private Integer[] puntos;
+	private ExecutorService threadPool;
+	private Future<Integer[]> task;
 	//Constructor de la clase
 	public calculoEquity()
 	{
 		jugadores= new ArrayList<String[]>();
 		manosUsadas=new ArrayList<int[]>();
+		threadPool = Executors.newFixedThreadPool(40);
 		
 	}
 	//funcion principal
@@ -35,12 +44,13 @@ public class calculoEquity
 		//iniciamos el calculo de las manos
 		calculoManos();
 		
-		//mostrarVariables(mesa, desc, rangos);
+		mostrarVariables(mesa, desc, rangos);
 		return equity;
 	}
 	//funcion que calcula el ganador de una mano
 	private void calculoManos()
-	{
+	{		
+		
 		//tenemos un board
 		if(board!=null)
 		{
@@ -48,38 +58,75 @@ public class calculoEquity
 		}
 		else//No hay board
 		{
-			if(descartes!=null)
-				
 			calculoBoardVacio();
 		}
 	}
 	//Realiza los calculos en caso de que el board este vacio
 	private void calculoBoardVacio()
 	{
-		//Eliminamos los descartes del mazo
-		eliminaDescartes();
+		if (descartes!=null)
+			eliminaDescartes();
 		//Generamos la combinatoria del mazo cojiendo cartas de 5 en 5 hasta cubrir todas las posibles variantes
 		ICombinatoricsVector<String> initialVector = Factory.createVector(board);
 		Generator<String> gen = Factory.createSimpleCombinationGenerator(initialVector, 5);
 		for (ICombinatoricsVector<String> combination : gen) 
-		{
-			
+		{		
 			//Creamos la matriz de parejas jugables con el board actual
 			sacaManos(combination.getVector(),0,0);
-			
+			/*
+			 *---------------------------------------------------------------------------------
+			 * System.out.println(String.join("", combination.getVector()));
+			 *-----------------------------------------------------------------------------------
+			*/
+			//Calculamos el ganador para el board
+			task= threadPool.submit(new calculoBoard(jugadores, manosUsadas,String.join("", combination.getVector())));
+			try {
+				
+				SumarPuntos(task.get());
+			} catch (InterruptedException e) {
+				// TODO Bloque catch generado automáticamente
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Bloque catch generado automáticamente
+				e.printStackTrace();
+			}
+			/* Tenemos una "piscina" de hilos que limita la ejecucion en paralelo a n hilos para evitar la sobrecarga del procesador*/
+		}
+		 // once you've submitted your last job to the service it should be shut down
+		threadPool.shutdown();
+		 // wait for the threads to finish if necessary
+		 try {
+			threadPool.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
 		}
 	}
-	//Realiza los calculos en casod e que el board no este vacio
+	//Realiza los calculos en caso de que el board no este vacio
 	private void calculoBoardNoVacio()
 	{
-		
+		if (descartes!=null)
+			eliminaDescartes();
+		task= threadPool.submit(new calculoBoard(jugadores, manosUsadas,String.join("", board)));
+		try {
+			puntos=task.get();
+		} catch (InterruptedException | ExecutionException e1) {
+			// TODO Bloque catch generado automáticamente
+			e1.printStackTrace();
+		}
+		// once you've submitted your last job to the service it should be shut down
+		threadPool.shutdown();
+		// wait for the threads to finish if necessary
+		try 
+		{
+			threadPool.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		}
 	}
-	/*------Metodos para el calculo del board---------*/
-	//Calcula un board dado los jugadores y el board
-	private void calculoBoard (List<String> board,String[] mano)
-	{
-		
-	}
+	
+	/*------Metodos previos para el calculo del board---------*/
 	//Extrae las manos jugables entre todos los jugadores eliminando manos no posibles(cartas en el board o en descartes)
 	private void sacaManos(List<String> board,int jug, int mano)
 	{
@@ -162,6 +209,7 @@ public class calculoEquity
 			jugadores.add(cartas);
 			manosUsadas.add(new int[jugadores.get(x).length]);
 			}
+			puntos= new Integer[jugadores.size()];
 		}
 	}
 	//Elimina del board los descartes
@@ -172,6 +220,16 @@ public class calculoEquity
 		for(String carta: descartes)
 		{
 			board.remove(carta);
+		}
+	}
+	//Suma los puntos al total
+	public void SumarPuntos(Integer[] pnts)
+	{
+		for(int i=0; i<puntos.length;i++)
+		{
+			if(puntos[i]==null)
+				puntos[i]=0;
+			puntos[i]+=pnts[i];
 		}
 	}
 	//Genera una mano aleatoria para los jugadores random
@@ -195,7 +253,7 @@ public class calculoEquity
 			System.out.println("jugador "+(i+1)+": "+rangos[i]);
 		}
 		System.out.println("\nVariables transformadas:");
-		int n=1;
+		int n=0;
 		for(String [] jug :jugadores)
 		{
 			System.out.print("jugador "+n+": ");
@@ -233,6 +291,12 @@ public class calculoEquity
 			}
 			System.out.print("\n");
 			n++;
+		}
+		System.out.println("\nPuntos:");
+		for(int i=0;i<puntos.length;i++)
+		{
+			System.out.println("jugador "+i+": "+ puntos[i]);
+			
 		}
 	}
 }

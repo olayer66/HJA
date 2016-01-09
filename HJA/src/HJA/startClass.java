@@ -27,7 +27,7 @@ public class startClass
 		}
 		*/
 		
-		String[] rangos= {"KK+","32s,KK+","34s,56o,KK","random"};
+		String[] rangos= {"KQs","32s"};
 		calculoEquity ev= new calculoEquity();
 		ev.calcular(null,"As,Ad,Ah,Ac", rangos);
 		
