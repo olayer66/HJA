@@ -73,15 +73,15 @@ public class evaluarJugadores {
 					      sbAux1= new StringBuilder();
 					      sbAux1.append(sb1);
 					      sbAux1.append(sboard.toString());  
-					      proc = new ProcesarMano(sbAux1.toString());
-					      valorJugada1=proc.procesarBestHand();
+					      proc = new ProcesarMano();
+					      valorJugada1=proc.procesarBestHand(sbAux1.toString());
 					      valorMano1=proc.valorMano();
 						  				  
 						  sbAux2= new StringBuilder();
 						  sbAux2.append(sb2);
 					      sbAux2.append(sboard); 
-						  proc = new ProcesarMano(sbAux2.toString());
-					      valorJugada2=proc.procesarBestHand();
+						  proc = new ProcesarMano();
+					      valorJugada2=proc.procesarBestHand(sbAux2.toString());
 					      valorMano2=proc.valorMano();
 						  combinaciones++;	
 

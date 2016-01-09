@@ -5,39 +5,11 @@ import java.util.Collections;
 
 public class ProcesarMano {
 	
-	private int[] arrayMano;
-	private String mano;
-	private ParseJugadas parseJugadas;
-	private ParseCartas parseCartas;
+private int[] arrayMano;
+
+	public ProcesarMano(){}
 	
 
-	
-	public ProcesarMano(String mano){
-		this.mano=mano;
-		parseCartas = new ParseCartas();
-		parseJugadas = new ParseJugadas();
-		char[] aux = mano.toCharArray();
-		arrayMano = new int[13];
-		boolean impar=false;
-		int posicion = 0, palo=0;
-		
-		//Inicializa el array de enteros correspondiente a la mano.
-		for(int i=0; i<aux.length; i++){
-			if(!impar){
-				posicion=parseCartas.figuraToInt(aux[i]);
-			impar=true;
-			}else{
-				palo = parseCartas.paloToInt(aux[i]);
-				if(arrayMano[posicion] != 0){ //Ya hay una carta de la misma figura
-					palo=(arrayMano[posicion]*10)+palo;
-				}
-				arrayMano[posicion]=palo;
-				impar=false;
-			}
-		}
-	}
-	
-	
 /*Explicación de función procesarBestHand:
    -Recorre el array de la mano, 
 	   1. Si en la posición del array hay un valor > 1000, significa que
@@ -66,13 +38,33 @@ public class ProcesarMano {
 	   -paloAux: En caso de color será esta variable la que contenga el palo que forma dicha jugada.
 	   -Variables booleanas: Irán cambiando en función de si existe la jugada o hay otra jugada más alta que las supere.
  */
-	public int procesarBestHand(){
+	public int procesarBestHand(String mano){
+		
 		int[] arrayColor=new int[4]; 
 		int[] arrayEscalera= new int[14];
 		String cartaAlta ="",esc="",escColor="";
 		String[] arrayEsc;
-		int palo, paloAux=0, valorJugada = 0, valorEsc = 0, valorColor = 0;
-		boolean poker=false, full=false,trio=false,pareja=false,color=false,cAlta=true, escalera=false, escaleraColor=false;
+		int palo, paloAux=0, valorJugada = 0, valorEsc = 0, valorColor = 0, posicion = 0, paloIni=0;
+		boolean poker=false, full=false,trio=false,pareja=false,color=false,cAlta=true, escalera=false, escaleraColor=false, impar=false;
+		ParseCartas parseCartas = new ParseCartas();
+		char[] aux = mano.toCharArray();
+		arrayMano = new int[13];
+		
+		//Inicializa el array de enteros correspondiente a la mano.
+		for(int i=0; i<aux.length; i++){
+			if(!impar){
+				posicion=parseCartas.figuraToInt(aux[i]);
+			impar=true;
+			}else{
+				paloIni = parseCartas.paloToInt(aux[i]);
+				if(arrayMano[posicion] != 0){ //Ya hay una carta de la misma figura
+					paloIni=(arrayMano[posicion]*10)+paloIni;
+				}
+				arrayMano[posicion]=paloIni;
+				impar=false;
+			}
+		}
+		
 		for(int i=0; i<arrayMano.length ;i++){
 			palo=arrayMano[i];
 			//Poker
@@ -152,12 +144,12 @@ public class ProcesarMano {
 			}
 		}
 		
-		esc=procesarEscalera(arrayEscalera,paloAux);
+		esc=procesarEscalera(arrayEscalera,paloAux, parseCartas);
 
 		if(esc.length()!=0){
 			escalera=true;
 		    if(color){
-		    	escColor=procesarEscaleraColor(esc);
+		    	escColor=procesarEscaleraColor(esc, parseCartas);
 		    	if(escColor.length() != 0)escaleraColor=true;
 		    }
 			if(!escaleraColor){
@@ -180,7 +172,7 @@ public class ProcesarMano {
 		la jugada más alta será color.(Mostraremos todas las cartas que forman color).*/
 		else if(color&&!poker&&!full){
 			char[] colorArray;
-			colorArray=this.mano.toCharArray();
+			colorArray=mano.toCharArray();
 			ArrayList<Integer> colorFinal = new ArrayList<Integer>();
 			for(int s=0; s<colorArray.length-1;s++){
 				s=s+1;
@@ -237,7 +229,7 @@ public class ProcesarMano {
      Devolveremos un String con la escalera formada ,ej:As,2s,3s,4c,5s
      *Si es String devuelto es null es porque no existe la escalera.
  */
-	public String procesarEscalera(int[] arrayEscalera,int paloAux){
+	public String procesarEscalera(int[] arrayEscalera,int paloAux, ParseCartas parseCartas){
 		int palo, posEsc, contEsc=0;
 		StringBuilder auxEsc= new StringBuilder();
 		StringBuilder esc = new StringBuilder();
@@ -365,7 +357,7 @@ public class ProcesarMano {
      Devolveremos un String con la escalera de color formada ,ej:As,2s,3s,4s,5s,6s...
      *Si es String devuelto es null es porque no existe la escalera de color.
  */
-public String procesarEscaleraColor(String escalera){
+public String procesarEscaleraColor(String escalera, ParseCartas parseCartas){
 
 	String[] escColor;
 	char[] auxEscColor1, auxEscColor2;
