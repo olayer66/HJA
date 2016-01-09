@@ -22,10 +22,11 @@ public class calculoBoard implements Callable<Integer[]>
 	}
 	public Integer[] call()
 	{
-		Integer[] aux={1,0};
-		return aux;
+		int[] mano= new int[jugadores.size()];
+		calcular(mano);
+		return puntos;
 	}
-	private void calcular()
+	private void calcular(int[] mano)
 	{
 		
 	}
