@@ -60,6 +60,16 @@ public class calculoEquity
 		{
 			calculoBoardVacio();
 		}
+		 // Eliminaos el threadPool de memoria
+		threadPool.shutdown();
+		 // Esperamos que todos los hilos terminen
+		try 
+		{
+			threadPool.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	//Realiza los calculos en caso de que el board este vacio
 	private void calculoBoardVacio()
@@ -91,22 +101,14 @@ public class calculoEquity
 				e.printStackTrace();
 			}
 			/* Tenemos una "piscina" de hilos que limita la ejecucion en paralelo a n hilos para evitar la sobrecarga del procesador*/
-		}
-		 // once you've submitted your last job to the service it should be shut down
-		threadPool.shutdown();
-		 // wait for the threads to finish if necessary
-		 try {
-			threadPool.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
-		} catch (InterruptedException e) {
-			// TODO Bloque catch generado automáticamente
-			e.printStackTrace();
-		}
+		}	
 	}
 	//Realiza los calculos en caso de que el board no este vacio
 	private void calculoBoardNoVacio()
 	{
 		if (descartes!=null)
 			eliminaDescartes();
+		sacaManos(board, 0, 0);
 		task= threadPool.submit(new calculoBoard(jugadores, manosUsadas,String.join("", board)));
 		try {
 			puntos=task.get();
@@ -114,31 +116,26 @@ public class calculoEquity
 			// TODO Bloque catch generado automáticamente
 			e1.printStackTrace();
 		}
-		// once you've submitted your last job to the service it should be shut down
-		threadPool.shutdown();
-		// wait for the threads to finish if necessary
-		try 
-		{
-			threadPool.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
-		} catch (InterruptedException e) {
-			// TODO Bloque catch generado automáticamente
-			e.printStackTrace();
-		}
 	}
 	
 	/*------Metodos previos para el calculo del board---------*/
 	//Extrae las manos jugables entre todos los jugadores eliminando manos no posibles(cartas en el board o en descartes)
 	private void sacaManos(List<String> board,int jug, int mano)
 	{
-		String[] cartas={jugadores.get(jug)[mano].substring(0,2),jugadores.get(jug)[mano].substring(2,4)};
-		if(calculoManoValido(cartas, board, 0, true))
+		String[] cartas= new String[2];
+		if(jugadores.get(jug).length!=0)
 		{
-			manosUsadas.get(jug)[mano]=0;
-		}
-		else
-		{
-			manosUsadas.get(jug)[mano]=1;
-		}
+			cartas[0]=jugadores.get(jug)[mano].substring(0,2);
+			cartas[1]=jugadores.get(jug)[mano].substring(2,4);
+			if(calculoManoValido(cartas, board, 0, true))
+			{
+				manosUsadas.get(jug)[mano]=0;
+			}
+			else
+			{
+				manosUsadas.get(jug)[mano]=1;
+			}
+		}	
 		if(jug!=jugadores.size()-1)
 		{
 			if(mano==jugadores.get(jug).length-1)
@@ -229,6 +226,8 @@ public class calculoEquity
 		{
 			if(puntos[i]==null)
 				puntos[i]=0;
+			if(pnts[i]==null)
+				pnts[i]=0;
 			puntos[i]+=pnts[i];
 		}
 	}
