@@ -19,12 +19,20 @@ import HJA.constante;
 
 public class calculoEquity 
 {
+	/*
+	 * idea secundaria: 
+	 * Quitar del board resultante todas las cartas de la mano 
+	   asi no habria coincidencias eliminando el array de manos usadas y quitando un bucle de en medio 
+	 *Cambiar el board a hashmap para mejorar de O(n) al buscar a O(1)
+	*/
 	private ArrayList<String> board;
 	private ArrayList<String> descartes;
 	private ArrayList <String[]> jugadores;
 	private ArrayList <int[]> manosUsadas;
 	private float[] equity;
 	private Integer[] puntos;
+	private long numVueltas;
+	
 	private ExecutorService threadPool;
 	private Future<Integer[]> task;
 	//Constructor de la clase
@@ -74,8 +82,7 @@ public class calculoEquity
 	//Realiza los calculos en caso de que el board este vacio
 	private void calculoBoardVacio()
 	{
-		if (descartes!=null)
-			eliminaDescartes();
+		eliminaDescartes();
 		//Generamos la combinatoria del mazo cojiendo cartas de 5 en 5 hasta cubrir todas las posibles variantes
 		ICombinatoricsVector<String> initialVector = Factory.createVector(board);
 		Generator<String> gen = Factory.createSimpleCombinationGenerator(initialVector, 5);
@@ -83,11 +90,7 @@ public class calculoEquity
 		{		
 			//Creamos la matriz de parejas jugables con el board actual
 			sacaManos(combination.getVector(),0,0);
-			/*
-			 *---------------------------------------------------------------------------------
-			 * System.out.println(String.join("", combination.getVector()));
-			 *-----------------------------------------------------------------------------------
-			*/
+
 			//Calculamos el ganador para el board
 			task= threadPool.submit(new calculoBoard(jugadores, manosUsadas,String.join("", combination.getVector())));
 			try {
@@ -106,14 +109,12 @@ public class calculoEquity
 	//Realiza los calculos en caso de que el board no este vacio
 	private void calculoBoardNoVacio()
 	{
-		if (descartes!=null)
-			eliminaDescartes();
+		eliminaDescartes();
 		sacaManos(board, 0, 0);
 		task= threadPool.submit(new calculoBoard(jugadores, manosUsadas,String.join("", board)));
 		try {
 			puntos=task.get();
 		} catch (InterruptedException | ExecutionException e1) {
-			// TODO Bloque catch generado automáticamente
 			e1.printStackTrace();
 		}
 	}
@@ -213,11 +214,17 @@ public class calculoEquity
 	private void eliminaDescartes ()
 	{
 		String[] aux={"Ah","Kh","Qh","Jh","Th","9h","8h","7h","6h","5h","4h","3h","2h","Ad","Kd","Qd","Jd","Td","9d","8d","7d","6d","5d","4d","3d","2d","Ac","Kc","Qc","Jc","Tc","9c","8c","7c","6c","5c","4c","3c","2c","As","Ks","Qs","Js","Ts","9s","8s","7s","6s","5s","4s","3s","2s"};
-		board= new ArrayList<String>(Arrays.asList(aux));
-		for(String carta: descartes)
-		{
-			board.remove(carta);
+		
+		if(descartes!=null)
+		{	
+			board= new ArrayList<String>(Arrays.asList(aux));
+			for(String carta: descartes)
+			{
+				board.remove(carta);
+			}
 		}
+		else
+			board=new ArrayList<String>(Arrays.asList(aux));
 	}
 	//Suma los puntos al total
 	public void SumarPuntos(Integer[] pnts)
@@ -239,7 +246,11 @@ public class calculoEquity
 		int num2=(int)num;
 		return num2;
 	}
-	
+	//Calcula los equity
+	private void calculaEquity()
+	{
+		
+	}
 	/*-----------------------------------Comprobacion de salidas---------------------------------------------------------*/
 	// muestra las variables recibidas y su salida transformada
 	private void mostrarVariables(String mesa, String desc, String[] rangos)

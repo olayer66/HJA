@@ -9,7 +9,7 @@ import org.apache.commons.lang3.ArrayUtils;
 public class calculoBoard implements Callable<Integer[]> 
 {
 	private Integer [] puntos;
-	private ArrayList <String[]> jugadores;
+	private ArrayList <String[]> jugador;
 	private ArrayList <int[]> manosUsadas;
 	private String board;
 	private ArrayList<ArrayList<Integer>> valorJugada;
@@ -18,10 +18,10 @@ public class calculoBoard implements Callable<Integer[]>
 	//Constructor
 	public calculoBoard(ArrayList <String[]> jug,ArrayList <int[]> usadas,String brd) 
 	{
-		jugadores=jug;
+		jugador=jug;
 		manosUsadas=usadas;
 		board=brd;
-		puntos=new Integer[jugadores.size()];
+		puntos=new Integer[jugador.size()];
 		Arrays.fill(puntos, 0);
 		procesar = new ProcesarMano();
 		valorJugada= new ArrayList<ArrayList<Integer>>();
@@ -29,75 +29,86 @@ public class calculoBoard implements Callable<Integer[]>
 	}
 	public Integer[] call()
 	{
-		int[] mano= new int[jugadores.size()];
-		//eliminamos las manos no jugables
-		eliminaManos(0,0);
-		calculaResultados(0, 0);
+		//calculamos los valores de las manos
+		calculaManos(0,0);
+		//muestraValorManos();
 		//calcular(mano);
 		return puntos;
 	}
 	private void calcular(int[] mano)
 	{
-		// Calculamos los puntos
-		//Llamadas recursivas cambiando de pareja	
-		if(mano[0]!=jugadores.get(0).length)
-		{
-			
-		}
+		/*
+		 * aqui hay que evitar enfrentar manos que contegan las mismas cartas 
+		 * usaremos en indice de los resutados que estamos enfrentando llamando a una funcion que lo compruebe
+		*/
 	}
 	
 	
 	/*-------------------------Metodos varios-------------------------------*/
-	//Concatena dos String cad1(mano) y cad2(board)
-	private String concatena(String cad1,String cad2)
+	//Calcula los valores de las manos jugadas dejando a cero aquellas que no se pueden jugar
+	private void calculaManos(int jug, int mano)
 	{
-		return new StringBuilder().append(cad1).append(cad2).toString();
-	}
-	//Elimina las manos no jugables
-	private void eliminaManos(int jug, int mano)
-	{
-		if(manosUsadas.get(jug).length>mano)
+		
+		if(jug==jugador.size()-1 && mano==jugador.get(jugador.size()-1).length-1)
 		{
-			if(manosUsadas.get(jug)[mano]==1 )
-			{
-				jugadores.set(jug,ArrayUtils.remove(jugadores.get(jug), mano));
-				manosUsadas.set(jug,ArrayUtils.remove(manosUsadas.get(jug), mano));
-			}
 		}
-		if(jug!=jugadores.size()-1)
-		{
-			if(mano>=jugadores.get(jug).length-1)
-			{
-				eliminaManos(jug+1, 0);
-			}
-			else
-			{
-				eliminaManos(jug, mano+1);
-			}
-		}		
-	}
-	private void calculaResultados(int jug, int mano)
-	{
-		if(jugadores.get(jug).length!=0)
+		else
 		{
 			if(valorJugada.size()-1<jug)
 				valorJugada.add(new ArrayList<Integer>());
 			if(valorMano.size()-1<jug)
 				valorMano.add(new ArrayList<Integer>());
-			String jugada=concatena(jugadores.get(jug)[mano], board);
-			valorJugada.get(jug).add(procesar.procesarBestHand(jugada));
-			valorMano.get(jug).add(procesar.valorMano(jugada));
-		}
-		if(jug!=jugadores.size()-1)
-		{
-			if(mano>=jugadores.get(jug).length-1)
-			{
-				calculaResultados(jug+1, 0);
+			if(manosUsadas.get(jug)[mano]==0 )
+			{	
+				String jugada=concatena(jugador.get(jug)[mano], board);
+				valorJugada.get(jug).add(procesar.procesarBestHand(jugada));
+				valorMano.get(jug).add(procesar.valorMano(jugada));
 			}
 			else
 			{
-				calculaResultados(jug, mano+1);
+				valorJugada.get(jug).add(0);
+				valorMano.get(jug).add(0);
+			}
+			if(mano>=jugador.get(jug).length-1)
+			{
+				calculaManos(jug+1, 0);
+			}
+			else
+			{
+				calculaManos(jug, mano+1);
 			}
 		}		
+	}
+	//Concatena dos String cad1(mano) y cad2(board)
+	private String concatena(String cad1,String cad2)
+	{
+		return new StringBuilder().append(cad1).append(cad2).toString();
+	}
+	
+	/*-------------------------------Funciones de muestra de datos------------------------------*/
+	//Muestra los resultados de las manos
+	private void muestraValorManos()
+	{
+		System.out.println("Board: " +board);
+		System.out.println("Valor Jugada:");
+		for(int x=0; x<valorJugada.size();x++)
+		{
+			System.out.print("Jugador "+x+": ");
+			for(int i=0; i<valorJugada.get(x).size();i++)
+			{
+				System.out.print(valorJugada.get(x).get(i)+" ");
+			}
+			System.out.print("\n");
+		}
+		System.out.println("Valor Mano:");
+		for(int x=0; x<valorMano.size();x++)
+		{
+			System.out.print("Jugador "+x+": ");
+			for(int i=0; i<valorMano.get(x).size();i++)
+			{
+				System.out.print(valorMano.get(x).get(i)+" ");
+			}
+			System.out.print("\n");
+		}
 	}
 }
