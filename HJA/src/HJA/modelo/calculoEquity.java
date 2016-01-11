@@ -1,5 +1,6 @@
 package HJA.modelo;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,6 +69,8 @@ public class calculoEquity
 		{
 			calculoBoardVacio();
 		}
+		//calculamos los equitys
+		calculaEquity();
 		 // Eliminaos el threadPool de memoria
 		threadPool.shutdown();
 		 // Esperamos que todos los hilos terminen
@@ -249,7 +252,16 @@ public class calculoEquity
 	//Calcula los equity
 	private void calculaEquity()
 	{
-		
+		numVueltas=2*(long)Math.pow(10, 6);
+		for(String[] jug : jugadores)
+		{
+			numVueltas*=jug.length;
+		}
+		for(int i=0;i<puntos.length;i++)
+		{
+			equity[i]=(float)numVueltas/puntos[i];
+			
+		}
 	}
 	/*-----------------------------------Comprobacion de salidas---------------------------------------------------------*/
 	// muestra las variables recibidas y su salida transformada
@@ -302,10 +314,17 @@ public class calculoEquity
 			System.out.print("\n");
 			n++;
 		}
+		System.out.println("Vueltas totales:" + numVueltas);
 		System.out.println("\nPuntos:");
 		for(int i=0;i<puntos.length;i++)
 		{
 			System.out.println("jugador "+i+": "+ puntos[i]);
+			
+		}
+		System.out.println("\nEquitys:");
+		for(int i=0;i<equity.length;i++)
+		{
+			System.out.println("jugador "+i+": "+ equity[i]+"%");
 			
 		}
 	}
