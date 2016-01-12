@@ -15,6 +15,7 @@ import java.awt.Color;
 public class GUISeleccionCartas {
 
 	private JFrame frmSeleccionarCartas;
+	private String sCartas;
 	private controlador control;
 	private ActionListener accion;
 	private ArrayList<String> cartasSeleccionadas;
@@ -25,8 +26,9 @@ public class GUISeleccionCartas {
 	private detectaClickCarta detector;
 	private int cMax;
 	
-	public GUISeleccionCartas(controlador ctn,ActionListener acc,int cartas) {
+	public GUISeleccionCartas(controlador ctn,ActionListener acc,int cartas, String sCartas) {
 		control=ctn;
+		this.sCartas = sCartas;
 		accion=acc;
 		numCartas=cartas;
 		initialize();
@@ -74,23 +76,41 @@ public class GUISeleccionCartas {
 		int y=11;
 		int width=83;
 		int height=120;
+		String[] aux;
 		cuadroImagenes=new ImagePanel[4][13];
 		cartasSeleccionadas= new ArrayList<String>();
+		boolean encontrado = false;
+		int j=0;
 		//palo
 		for(int i=0;i<4;i++)
 		{
 			//carta
 			for(int z=0;z<13;z++)
 			{
+				if(sCartas.length()>1){
+					aux=sCartas.split(",");
+					while(j<aux.length && !encontrado){
+						if(cartas[c].equals(aux[j]))encontrado=true;
+						else j++;	
+					}
+				}
 				cuadroImagenes[i][z]= new ImagePanel(cartas[c]+".png");	
 				cuadroImagenes[i][z].setName(cartas[c]);
 				cuadroImagenes[i][z].setBounds(y, x, width, height);
 				y+=width;
+				if(!encontrado){	
 				cuadroImagenes[i][z].setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+				}else{
+					cartasSeleccionadas.add(cartas[c]);
+					numCartas++;
+					cuadroImagenes[i][z].setBorder(new BevelBorder(BevelBorder.LOWERED, colorSelec, colorSelec, colorSelec, colorSelec));
+				}
 				cuadroImagenes[i][z].addMouseListener(detector);
 				frmSeleccionarCartas.getContentPane().add(cuadroImagenes[i][z]);
 				cuadroImagenes[i][z].repaint();
 				c++;
+				encontrado=false;
+				j=0;
 			}
 			x+=height;
 			y=11;
@@ -99,6 +119,7 @@ public class GUISeleccionCartas {
 	//Seleccion de cartas
 	public void seleccionarCarta(ImagePanel carta)
 	{
+
 		if(!cartasSeleccionadas.contains(carta.getName()) && numCartas<cMax)
 		{
 			cartasSeleccionadas.add(carta.getName());
