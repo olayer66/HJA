@@ -2,5 +2,6 @@
 <!-- categoryclosedimage="FolderClosed" categoryopenimage="FolderOpened" topicimage="ItemIco"--> 
 <tocitem text="Inicio" target="Inicio"> 
 <tocitem text="Interfaz" target="Interfaz"/> 
+<tocitem text="Rango" target="Rango"/> 
 </tocitem> 
 </toc>
