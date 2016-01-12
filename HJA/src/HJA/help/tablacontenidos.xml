@@ -3,5 +3,6 @@
 <tocitem text="Inicio" target="Inicio"> 
 <tocitem text="Interfaz" target="Interfaz"/> 
 <tocitem text="Rango" target="Rango"/> 
+<tocitem text="Salida" target="Salida"/> 
 </tocitem> 
 </toc>
