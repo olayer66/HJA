@@ -28,8 +28,8 @@ public class calculoEquity
 	private ArrayList<String> board;
 	private ArrayList<String> descartes;
 	private ArrayList <String[]> jugadores;
-	private ArrayList<ArrayList<Integer>> valorJugada;
-	private ArrayList<ArrayList<Integer>> valorMano;
+	private ArrayList<int[]> valorJugada;
+	private ArrayList<int[]> valorMano;
 	private ProcesarMano procesar;
 	private float[] equity;
 	private Float[] puntos;
@@ -42,8 +42,8 @@ public class calculoEquity
 	{
 		jugadores= new ArrayList<String[]>();
 		procesar = new ProcesarMano();
-		valorJugada= new ArrayList<ArrayList<Integer>>();
-		valorMano= new ArrayList<ArrayList<Integer>>();
+		valorJugada= new ArrayList<int[]>();
+		valorMano= new ArrayList<int[]>();
 		threadPool = Executors.newFixedThreadPool(40);
 		
 	}
@@ -102,7 +102,11 @@ public class calculoEquity
 			task= threadPool.submit(new calculoBoard(jugadores, valorJugada,valorMano));
 			try 
 			{	
-				SumarPuntos(task.get());
+				if(task.isDone())
+					SumarPuntos(task.get());
+				else
+					Thread.sleep(10);
+				
 			} 
 			catch (InterruptedException | ExecutionException e1) 
 			{
@@ -137,25 +141,26 @@ public class calculoEquity
 			if(calculoManoValido(cartas, brd, 0, true))
 			{
 				String jugada=concatena(jugadores.get(jug)[mano], String.join("", brd));
-				if(valorJugada.get(jug).size()<=jugadores.get(jug).length)
-					valorJugada.get(jug).add(procesar.procesarBestHand(jugada));
+				if(valorJugada.get(jug).length<=jugadores.get(jug).length)
+					valorJugada.get(jug)[mano]=procesar.procesarBestHand(jugada);
 				else
-					valorJugada.get(jug).set(mano, procesar.procesarBestHand(jugada));
-				if(valorMano.get(jug).size()<=jugadores.get(jug).length)
-					valorMano.get(jug).add(procesar.valorMano(jugada));
+					valorJugada.get(jug)[mano]= procesar.procesarBestHand(jugada);
+				
+				if(valorMano.get(jug).length<=jugadores.get(jug).length)
+					valorMano.get(jug)[mano]=procesar.valorMano(jugada);
 				else
-					valorMano.get(jug).set(mano, procesar.valorMano(jugada));
+					valorMano.get(jug)[mano]=procesar.valorMano(jugada);
 			}
 			else
 			{
-				if(valorJugada.get(jug).size()<=jugadores.get(jug).length)
-					valorJugada.get(jug).add(0);
+				if(valorJugada.get(jug).length<=jugadores.get(jug).length)
+					valorJugada.get(jug)[mano]=0;
 				else
-					valorJugada.get(jug).set(mano, 0);
-				if(valorMano.get(jug).size()<=jugadores.get(jug).length)
-					valorMano.get(jug).add(0);
+					valorJugada.get(jug)[mano]=0;
+				if(valorMano.get(jug).length<=jugadores.get(jug).length)
+					valorMano.get(jug)[mano]=0;
 				else
-					valorMano.get(jug).set(mano, 0);
+					valorMano.get(jug)[mano]=0;
 			}
 			if(mano==jugadores.get(jug).length-1)
 			{
@@ -216,16 +221,16 @@ public class calculoEquity
 				transformarString trans = new transformarString(pares.get(num));
 				cartas = parse.allCombinaciones(trans.procesarString());
 				jugadores.add(cartas);
-				valorJugada.add(new ArrayList<Integer>());
-				valorMano.add(new ArrayList<Integer>());
+				valorJugada.add(new int[jugadores.get(x).length]);
+				valorMano.add(new int[jugadores.get(x).length]);
 			}
 			else
 			{
 				transformarString trans = new transformarString(rangos[x]);
 				cartas = parse.allCombinaciones(trans.procesarString());
 				jugadores.add(cartas);
-				valorJugada.add(new ArrayList<Integer>());
-				valorMano.add(new ArrayList<Integer>());
+				valorJugada.add(new int[jugadores.get(x).length]);
+				valorMano.add(new int[jugadores.get(x).length]);
 			}
 			puntos= new Float[jugadores.size()];
 		}
@@ -341,9 +346,9 @@ public class calculoEquity
 			for(int x=0; x<valorJugada.size();x++)
 			{
 				System.out.print("Jugador "+x+": ");
-				for(int i=0; i<valorJugada.get(x).size();i++)
+				for(int i=0; i<valorJugada.get(x).length;i++)
 				{
-					System.out.print(valorJugada.get(x).get(i)+" ");
+					System.out.print(valorJugada.get(x)[i]+" ");
 				}
 				System.out.print("\n");
 			}
@@ -351,9 +356,9 @@ public class calculoEquity
 			for(int x=0; x<valorMano.size();x++)
 			{
 				System.out.print("Jugador "+x+": ");
-				for(int i=0; i<valorMano.get(x).size();i++)
+				for(int i=0; i<valorMano.get(x).length;i++)
 				{
-					System.out.print(valorMano.get(x).get(i)+" ");
+					System.out.print(valorMano.get(x)[i]+" ");
 				}
 				System.out.print("\n");
 			}
