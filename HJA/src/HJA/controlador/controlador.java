@@ -8,6 +8,7 @@ import HJA.modelo.transformarRango;
 
 public class controlador 
 {
+	String salida;
 	public String[] transformarString(String rango)
 	{
 		if(!rango.isEmpty())
@@ -46,6 +47,13 @@ public class controlador
 	public float[] calcularEquity(String mesa, String desc, String[] rangos)
 	{
 		calculoEquity calculo= new calculoEquity();
-		return calculo.calcular(mesa, desc, rangos);
+		float[] eq=calculo.calcular(mesa, desc, rangos);
+		salida=calculo.getMiSalida();
+		return eq;
 	}
+
+	public String getSalida() {
+		return salida;
+	}
+	
 }

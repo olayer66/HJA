@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
@@ -34,7 +35,7 @@ public class GUIPlayers {
 	private misAccciones accion;
 	private JTextField tfMesa;
 	private JTextField tfDescartes;
-	private JTextPane tpSalida;
+	private JTextArea tpSalida;
 	private Color mejorEquity= Color.GREEN;
 	private Color Equity= Color.YELLOW;
 	private Color peorEquity= Color.RED;
@@ -144,7 +145,7 @@ public class GUIPlayers {
 		frmPokermaster.getContentPane().add(jpSalida);
 		jpSalida.setLayout(null);
 		
-		tpSalida = new JTextPane();
+		tpSalida = new JTextArea();
 		tpSalida.setEditable(false);
 		tpSalida.setBorder(new LineBorder(Color.LIGHT_GRAY));
 		tpSalida.setBounds(10, 28, 569, 247);
@@ -263,12 +264,12 @@ public class GUIPlayers {
 				menor=i;		
 		}
 		tfEquity[mayor].setBackground(mejorEquity);	
-		tfEquity[menor].setBackground(peorEquity);	
+		//tfEquity[menor].setBackground(peorEquity);	
 	}
 	//Inserta el resultado de la salida
-	public void miSalida(String salida)
+	public void miSalida()
 	{
-		tpSalida.setText(salida);
+		tpSalida.append(control.getSalida());
 	}
 	//Limpia todos los campos de la ventana
 	public void limpiarVentana()

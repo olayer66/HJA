@@ -1,11 +1,13 @@
 package HJA.GUI;
 
 import javax.swing.JFrame;
+
 import HJA.controlador.controlador;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import javax.swing.border.BevelBorder;
 import javax.swing.JButton;
@@ -26,9 +28,9 @@ public class GUISeleccionCartas {
 	private detectaClickCarta detector;
 	private int cMax;
 	
-	public GUISeleccionCartas(controlador ctn,ActionListener acc,int cartas, String sCartas) {
+	public GUISeleccionCartas(controlador ctn,ActionListener acc,int cartas, String sC) {
 		control=ctn;
-		this.sCartas = sCartas;
+		sCartas = sC;
 		accion=acc;
 		numCartas=cartas;
 		initialize();
@@ -87,34 +89,28 @@ public class GUISeleccionCartas {
 			//carta
 			for(int z=0;z<13;z++)
 			{
-				if(sCartas.length()>1){
-					aux=sCartas.split(",");
-					while(j<aux.length && !encontrado){
-						if(cartas[c].equals(aux[j]))encontrado=true;
-						else j++;	
-					}
-				}
 				cuadroImagenes[i][z]= new ImagePanel(cartas[c]+".png");	
 				cuadroImagenes[i][z].setName(cartas[c]);
 				cuadroImagenes[i][z].setBounds(y, x, width, height);
 				y+=width;
-				if(!encontrado){	
 				cuadroImagenes[i][z].setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-				}else{
-					cartasSeleccionadas.add(cartas[c]);
-					numCartas++;
-					cuadroImagenes[i][z].setBorder(new BevelBorder(BevelBorder.LOWERED, colorSelec, colorSelec, colorSelec, colorSelec));
-				}
 				cuadroImagenes[i][z].addMouseListener(detector);
 				frmSeleccionarCartas.getContentPane().add(cuadroImagenes[i][z]);
 				cuadroImagenes[i][z].repaint();
 				c++;
-				encontrado=false;
-				j=0;
 			}
 			x+=height;
 			y=11;
 		}
+	}
+	private void ponCartas()
+	{
+		StringTokenizer strTok= new StringTokenizer(sCartas,",");
+		while (strTok.hasMoreTokens())
+		{
+			
+		}
+
 	}
 	//Seleccion de cartas
 	public void seleccionarCarta(ImagePanel carta)

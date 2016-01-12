@@ -34,7 +34,7 @@ public class calculoEquity
 	private float[] equity;
 	private Float[] puntos;
 	private float numVueltas;
-	
+	private String miSalida;
 	private ExecutorService threadPool;
 	private Future<Float[]> task;
 	//Constructor de la clase
@@ -55,7 +55,7 @@ public class calculoEquity
 		transformar(mesa,desc,rangos);
 		//iniciamos el calculo de las manos
 		calculoManos();
-		
+		miSalida=new parserSalida().parserString(mesa, desc, rangos, jugadores, descartes, board, equity, numVueltas);
 		mostrarVariables(mesa, desc, rangos);
 		return equity;
 	}
@@ -102,11 +102,7 @@ public class calculoEquity
 			task= threadPool.submit(new calculoBoard(jugadores, valorJugada,valorMano));
 			try 
 			{	
-				if(task.isDone())
-					SumarPuntos(task.get());
-				else
-					Thread.sleep(10);
-				
+				SumarPuntos(task.get());			
 			} 
 			catch (InterruptedException | ExecutionException e1) 
 			{
@@ -369,4 +365,8 @@ public class calculoEquity
 				
 			}
 		}
+		public String getMiSalida() {
+			return miSalida;
+		}
+		
 }
