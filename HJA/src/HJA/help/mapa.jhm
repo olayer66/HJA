@@ -3,4 +3,5 @@
 <mapID target="Inicio" url="html/inicio.html" /> 
 <mapID target="Interfaz" url="html/interfaz.html" /> 
 <mapID target="Rango" url="html/rango.html" /> 
+<mapID target="Salida" url="html/salida.html" /> 
 </map>
