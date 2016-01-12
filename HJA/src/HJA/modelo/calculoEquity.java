@@ -11,6 +11,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.Random;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.ICombinatoricsVector;
@@ -271,10 +273,9 @@ public class calculoEquity
 	private void calculaEquity()
 	{	
 		float calculo;
-		numVueltas=2*(long)Math.pow(10, 6);
-		for(String[] jug : jugadores)
+		for(int i=0; i<puntos.length;i++)
 		{
-			numVueltas*=jug.length;
+			numVueltas+=puntos[i];
 		}
 		for(int i=0;i<puntos.length;i++)
 		{

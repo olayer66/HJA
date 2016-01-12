@@ -26,11 +26,6 @@ public class startClass
 			st.ejecutame();
 		}
 		
-		
-		/*String[] rangos= {"KKs","KQs","QTs"};
-		calculoEquity ev= new calculoEquity();
-		ev.calcular(null,null, rangos);*/
-		
 	}
 	
 	
