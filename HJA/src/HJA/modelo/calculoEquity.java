@@ -1,6 +1,5 @@
 package HJA.modelo;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,18 +28,22 @@ public class calculoEquity
 	private ArrayList<String> board;
 	private ArrayList<String> descartes;
 	private ArrayList <String[]> jugadores;
-	private ArrayList <int[]> manosUsadas;
+	private ArrayList<ArrayList<Integer>> valorJugada;
+	private ArrayList<ArrayList<Integer>> valorMano;
+	private ProcesarMano procesar;
 	private float[] equity;
-	private Integer[] puntos;
-	private long numVueltas;
+	private Float[] puntos;
+	private float numVueltas;
 	
 	private ExecutorService threadPool;
-	private Future<Integer[]> task;
+	private Future<Float[]> task;
 	//Constructor de la clase
 	public calculoEquity()
 	{
 		jugadores= new ArrayList<String[]>();
-		manosUsadas=new ArrayList<int[]>();
+		procesar = new ProcesarMano();
+		valorJugada= new ArrayList<ArrayList<Integer>>();
+		valorMano= new ArrayList<ArrayList<Integer>>();
 		threadPool = Executors.newFixedThreadPool(40);
 		
 	}
@@ -93,20 +96,20 @@ public class calculoEquity
 		{		
 			//Creamos la matriz de parejas jugables con el board actual
 			sacaManos(combination.getVector(),0,0);
-
-			//Calculamos el ganador para el board
-			task= threadPool.submit(new calculoBoard(jugadores, manosUsadas,String.join("", combination.getVector())));
-			try {
-				
-				SumarPuntos(task.get());
-			} catch (InterruptedException e) {
-				// TODO Bloque catch generado automáticamente
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				// TODO Bloque catch generado automáticamente
-				e.printStackTrace();
-			}
+			
 			/* Tenemos una "piscina" de hilos que limita la ejecucion en paralelo a n hilos para evitar la sobrecarga del procesador*/
+			//Calculamos el ganador para el board
+			task= threadPool.submit(new calculoBoard(jugadores, valorJugada,valorMano));
+			try 
+			{	
+				SumarPuntos(task.get());
+			} 
+			catch (InterruptedException | ExecutionException e1) 
+			{
+				e1.printStackTrace();
+			}
+			//Muestra los valores de las manos conseguidos
+			//muestraValorManos(String.join("", combination.getVector()));			
 		}	
 	}
 	//Realiza los calculos en caso de que el board no este vacio
@@ -114,7 +117,7 @@ public class calculoEquity
 	{
 		eliminaDescartes();
 		sacaManos(board, 0, 0);
-		task= threadPool.submit(new calculoBoard(jugadores, manosUsadas,String.join("", board)));
+		task= threadPool.submit(new calculoBoard(jugadores, valorJugada,valorMano));
 		try {
 			puntos=task.get();
 		} catch (InterruptedException | ExecutionException e1) {
@@ -124,31 +127,43 @@ public class calculoEquity
 	
 	/*------Metodos previos para el calculo del board---------*/
 	//Extrae las manos jugables entre todos los jugadores eliminando manos no posibles(cartas en el board o en descartes)
-	private void sacaManos(List<String> board,int jug, int mano)
+	private void sacaManos(List<String> brd,int jug, int mano)
 	{
 		String[] cartas= new String[2];
-		if(jugadores.get(jug).length!=0)
+		if(jug<jugadores.size() && mano<jugadores.get(jugadores.size()-1).length)
 		{
 			cartas[0]=jugadores.get(jug)[mano].substring(0,2);
 			cartas[1]=jugadores.get(jug)[mano].substring(2,4);
-			if(calculoManoValido(cartas, board, 0, true))
+			if(calculoManoValido(cartas, brd, 0, true))
 			{
-				manosUsadas.get(jug)[mano]=0;
+				String jugada=concatena(jugadores.get(jug)[mano], String.join("", brd));
+				if(valorJugada.get(jug).size()<=jugadores.get(jug).length)
+					valorJugada.get(jug).add(procesar.procesarBestHand(jugada));
+				else
+					valorJugada.get(jug).set(mano, procesar.procesarBestHand(jugada));
+				if(valorMano.get(jug).size()<=jugadores.get(jug).length)
+					valorMano.get(jug).add(procesar.valorMano(jugada));
+				else
+					valorMano.get(jug).set(mano, procesar.valorMano(jugada));
 			}
 			else
 			{
-				manosUsadas.get(jug)[mano]=1;
+				if(valorJugada.get(jug).size()<=jugadores.get(jug).length)
+					valorJugada.get(jug).add(0);
+				else
+					valorJugada.get(jug).set(mano, 0);
+				if(valorMano.get(jug).size()<=jugadores.get(jug).length)
+					valorMano.get(jug).add(0);
+				else
+					valorMano.get(jug).set(mano, 0);
 			}
-		}	
-		if(jug!=jugadores.size()-1)
-		{
 			if(mano==jugadores.get(jug).length-1)
 			{
-				sacaManos(board, jug+1, 0);
+				sacaManos(brd, jug+1, 0);
 			}
 			else
 			{
-				sacaManos(board, jug, mano+1);
+				sacaManos(brd, jug, mano+1);
 			}
 		}		
 	}
@@ -195,22 +210,24 @@ public class calculoEquity
 		for(int x=0 ; x<rangos.length; x++)
 		{
 			//Si el juagdor es random
-			if(rangos[x]=="random")
+			if(rangos[x].equals("random"))
 			{
 				int num=generaManosRandom();
 				transformarString trans = new transformarString(pares.get(num));
 				cartas = parse.allCombinaciones(trans.procesarString());
 				jugadores.add(cartas);
-				manosUsadas.add(new int[jugadores.get(x).length]);
+				valorJugada.add(new ArrayList<Integer>());
+				valorMano.add(new ArrayList<Integer>());
 			}
 			else
 			{
-			transformarString trans = new transformarString(rangos[x]);
-			cartas = parse.allCombinaciones(trans.procesarString());
-			jugadores.add(cartas);
-			manosUsadas.add(new int[jugadores.get(x).length]);
+				transformarString trans = new transformarString(rangos[x]);
+				cartas = parse.allCombinaciones(trans.procesarString());
+				jugadores.add(cartas);
+				valorJugada.add(new ArrayList<Integer>());
+				valorMano.add(new ArrayList<Integer>());
 			}
-			puntos= new Integer[jugadores.size()];
+			puntos= new Float[jugadores.size()];
 		}
 	}
 	//Elimina del board los descartes
@@ -230,14 +247,14 @@ public class calculoEquity
 			board=new ArrayList<String>(Arrays.asList(aux));
 	}
 	//Suma los puntos al total
-	public void SumarPuntos(Integer[] pnts)
+	public void SumarPuntos(Float[] pnts)
 	{
 		for(int i=0; i<puntos.length;i++)
 		{
 			if(puntos[i]==null)
-				puntos[i]=0;
+				puntos[i]=Float.valueOf("0");
 			if(pnts[i]==null)
-				pnts[i]=0;
+				pnts[i]=Float.valueOf("0");
 			puntos[i]+=pnts[i];
 		}
 	}
@@ -251,7 +268,8 @@ public class calculoEquity
 	}
 	//Calcula los equity
 	private void calculaEquity()
-	{
+	{	
+		float calculo;
 		numVueltas=2*(long)Math.pow(10, 6);
 		for(String[] jug : jugadores)
 		{
@@ -259,9 +277,14 @@ public class calculoEquity
 		}
 		for(int i=0;i<puntos.length;i++)
 		{
-			equity[i]=(float)numVueltas/puntos[i];
-			
+			calculo=puntos[i]*100;
+			equity[i]=calculo/numVueltas;		
 		}
+	}
+	//Concatena dos String cad1(mano) y cad2(board)
+	private String concatena(String cad1,String cad2)
+	{
+		return new StringBuilder().append(cad1).append(cad2).toString();
 	}
 	/*-----------------------------------Comprobacion de salidas---------------------------------------------------------*/
 	// muestra las variables recibidas y su salida transformada
@@ -302,30 +325,43 @@ public class calculoEquity
 				System.out.print(carta +" ");
 			}
 		}
-		n=0;
-		System.out.println("\nManos Usadas:");
-		for(int[] jug :manosUsadas)
-		{
-			System.out.print("jugador "+n+": ");
-			for(int i=0;i<jug.length;i++)
-			{
-				System.out.print(jug[i] +" ");
-			}
-			System.out.print("\n");
-			n++;
-		}
-		System.out.println("Vueltas totales:" + numVueltas);
-		System.out.println("\nPuntos:");
-		for(int i=0;i<puntos.length;i++)
-		{
-			System.out.println("jugador "+i+": "+ puntos[i]);
-			
-		}
 		System.out.println("\nEquitys:");
 		for(int i=0;i<equity.length;i++)
 		{
 			System.out.println("jugador "+i+": "+ equity[i]+"%");
 			
 		}
+		System.out.println("Vueltas totales:" + numVueltas);
 	}
+	//Muestra los resultados de las manos
+		private void muestraValorManos(String brd)
+		{
+			System.out.println("Board: " +brd);
+			System.out.println("Valor Jugada:");
+			for(int x=0; x<valorJugada.size();x++)
+			{
+				System.out.print("Jugador "+x+": ");
+				for(int i=0; i<valorJugada.get(x).size();i++)
+				{
+					System.out.print(valorJugada.get(x).get(i)+" ");
+				}
+				System.out.print("\n");
+			}
+			System.out.println("Valor Mano:");
+			for(int x=0; x<valorMano.size();x++)
+			{
+				System.out.print("Jugador "+x+": ");
+				for(int i=0; i<valorMano.get(x).size();i++)
+				{
+					System.out.print(valorMano.get(x).get(i)+" ");
+				}
+				System.out.print("\n");
+			}
+			System.out.println("\nPuntos:");
+			for(int i=0;i<puntos.length;i++)
+			{
+				System.out.println("jugador "+i+": "+ puntos[i]);
+				
+			}
+		}
 }

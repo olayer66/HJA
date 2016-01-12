@@ -125,7 +125,9 @@ public class misAccciones implements ActionListener
 			
 			break;
 		case "34"://calcular
-			
+			String[] rangos=vtnPlayers.getRangos();
+			if(rangos.length>1)
+				vtnPlayers.insertaEquity(vtnPlayers.getControl().calcularEquity(vtnPlayers.getBoard(), vtnPlayers.getDescartes(), rangos));
 			break;
 		case "35"://Limpiar ventana
 			vtnPlayers.limpiarVentana();

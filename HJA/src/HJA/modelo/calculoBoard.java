@@ -4,111 +4,184 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 
-import org.apache.commons.lang3.ArrayUtils;
-
-public class calculoBoard implements Callable<Integer[]> 
+public class calculoBoard implements Callable<Float[]> 
 {
-	private Integer [] puntos;
+	private Float [] puntos;
 	private ArrayList <String[]> jugador;
-	private ArrayList <int[]> manosUsadas;
-	private String board;
 	private ArrayList<ArrayList<Integer>> valorJugada;
 	private ArrayList<ArrayList<Integer>> valorMano;
-	private ProcesarMano procesar;
 	//Constructor
-	public calculoBoard(ArrayList <String[]> jug,ArrayList <int[]> usadas,String brd) 
+	public calculoBoard(ArrayList <String[]> jug,ArrayList<ArrayList<Integer>> vJugada,ArrayList<ArrayList<Integer>> vMano) 
 	{
 		jugador=jug;
-		manosUsadas=usadas;
-		board=brd;
-		puntos=new Integer[jugador.size()];
-		Arrays.fill(puntos, 0);
-		procesar = new ProcesarMano();
-		valorJugada= new ArrayList<ArrayList<Integer>>();
-		valorMano= new ArrayList<ArrayList<Integer>>();
+		puntos=new Float[jugador.size()];
+		Arrays.fill(puntos, Float.valueOf("0"));
+		valorJugada= vJugada;
+		valorMano= vMano;
 	}
-	public Integer[] call()
+	public Float[] call()
 	{
-		//calculamos los valores de las manos
-		calculaManos(0,0);
-		//muestraValorManos();
-		//calcular(mano);
+		switch (jugador.size()) {
+		case 2:
+			calcular(0,0);
+			break;
+		case 3:
+			calcular(0,0,0);
+			break;
+		case 4:
+			calcular(0,0,0,0);
+			break;
+		case 5:
+			calcular(0,0,0,0,0);
+			break;
+		case 6:
+			calcular(0,0,0,0,0,0);
+			break;
+		case 7:
+			calcular(0,0,0,0,0,0,0);
+			break;
+		case 8:
+			calcular(0,0,0,0,0,0,0,0);
+			break;
+		case 9:
+			
+			break;
+		case 10:
+			
+			break;
+		default:
+			break;
+		}
 		return puntos;
 	}
-	private void calcular(int[] mano)
+	private void calcular(int jug1,int jug2)
 	{
-		/*
-		 * aqui hay que evitar enfrentar manos que contegan las mismas cartas 
-		 * usaremos en indice de los resutados que estamos enfrentando llamando a una funcion que lo compruebe
-		*/
-	}
-	
-	
-	/*-------------------------Metodos varios-------------------------------*/
-	//Calcula los valores de las manos jugadas dejando a cero aquellas que no se pueden jugar
-	private void calculaManos(int jug, int mano)
-	{
-		
-		if(jug==jugador.size()-1 && mano==jugador.get(jugador.size()-1).length-1)
+		if(jug1<jugador.get(0).length && jug2<jugador.get(1).length)
 		{
+			//comprobacion
+			if(valorJugada.get(0).get(jug1)!=0 && valorJugada.get(1).get(jug2)!=0)
+			{
+				if(valorJugada.get(0).get(jug1) > valorJugada.get(1).get(jug2))
+					puntos[0]++;
+				else if(valorJugada.get(0).get(jug1) < valorJugada.get(1).get(jug2))
+					puntos[1]++;
+				else if (valorMano.get(0).get(jug1) > valorMano.get(1).get(jug2))
+					puntos[0]++;
+				else if (valorMano.get(0).get(jug1) < valorMano.get(1).get(jug2))
+					puntos[1]++;
+				else
+				{
+					puntos[0]++;
+					puntos[1]++;
+				}
+			}
+			//recursividad
+			if(jug2==jugador.get(1).length-1)
+			{
+				calcular(jug1+1, 0);
+			}
+			else
+			{
+				calcular(jug1, jug2+1);
+			}
 		}
+	}
+	private void calcular(int jug1,int jug2,int jug3)
+	{
+		int valor1,valor2,valor3;
+		int valorM1,valorM2,valorM3;
+		if(jug1<jugador.get(0).length && jug2<jugador.get(1).length && jug3<jugador.get(2).length)
+		{
+			valor1=valorJugada.get(0).get(jug1);
+			valor2=valorJugada.get(1).get(jug2);
+			valor3=valorJugada.get(2).get(jug3);
+			valorM1= valorMano.get(0).get(jug1);
+			valorM2= valorMano.get(1).get(jug2);
+			valorM3= valorMano.get(2).get(jug3);
+			//comprobacion
+			if(valor1!=0 && valor2!=0 && valor3!=0)
+			{
+				if(valor1 > valor2 && valor1 > valor3)
+					puntos[0]++;
+				else if(valor2 > valor1 && valor2 > valor3)
+					puntos[1]++;
+				else if (valor3 > valor1 && valor3 > valor2)
+					puntos[2]++;
+				else if (valor1 == valor2 && valor1 > valor3)
+					calculoDos(valorM1, valorM2, 0, 1);
+				else if (valor1 == valor3 && valor1 > valor2)
+					calculoDos(valorM1, valorM3, 0, 2);
+				else if (valor2 == valor3 && valor2 > valor1)
+					calculoDos(valorM2, valorM3, 1, 2);
+				else
+				{
+					calculoTres(valorM1, valorM2, valorM3, jug1, jug2, jug3);
+				}
+			}
+			//recursividad
+			if(jug3!=jugador.get(2).length-1)
+			{
+				calcular(jug1, jug2,jug3+1);
+			}
+			else if(jug2!=jugador.get(1).length-1 && jug3==jugador.get(2).length-1)
+			{
+				calcular(jug1, jug2+1,0);
+			}
+			else if(jug2==jugador.get(1).length-1 && jug3==jugador.get(2).length-1)
+			{
+				calcular(jug1+1,0,0);
+			}
+			
+		}
+	}
+	private void calcular(int jug1,int jug2, int jug3, int jug4)
+	{		
+	}
+	private void calcular(int jug1,int jug2, int jug3, int jug4, int jug5)
+	{		
+	}
+	private void calcular(int jug1,int jug2, int jug3, int jug4,int jug5,int jug6)
+	{		
+	}
+	private void calcular(int jug1,int jug2, int jug3, int jug4,int jug5,int jug6, int jug7)
+	{	
+	}
+	private void calcular(int jug1,int jug2, int jug3, int jug4,int jug5,int jug6, int jug7, int jug8)
+	{
+	}
+	//------------------------funciones de calculo -----------------//
+	//Metodos que calculan el ganador dados los valores y a quien pertenecen
+	private void calculoDos( int valor1, int valor2,int jug1, int jug2)
+	{
+		if(valor1>valor2)
+			puntos[jug1]++;
+		else if(valor1<valor2)
+			puntos[jug2]++;
 		else
 		{
-			if(valorJugada.size()-1<jug)
-				valorJugada.add(new ArrayList<Integer>());
-			if(valorMano.size()-1<jug)
-				valorMano.add(new ArrayList<Integer>());
-			if(manosUsadas.get(jug)[mano]==0 )
-			{	
-				String jugada=concatena(jugador.get(jug)[mano], board);
-				valorJugada.get(jug).add(procesar.procesarBestHand(jugada));
-				valorMano.get(jug).add(procesar.valorMano(jugada));
-			}
-			else
-			{
-				valorJugada.get(jug).add(0);
-				valorMano.get(jug).add(0);
-			}
-			if(mano>=jugador.get(jug).length-1)
-			{
-				calculaManos(jug+1, 0);
-			}
-			else
-			{
-				calculaManos(jug, mano+1);
-			}
-		}		
-	}
-	//Concatena dos String cad1(mano) y cad2(board)
-	private String concatena(String cad1,String cad2)
-	{
-		return new StringBuilder().append(cad1).append(cad2).toString();
-	}
-	
-	/*-------------------------------Funciones de muestra de datos------------------------------*/
-	//Muestra los resultados de las manos
-	private void muestraValorManos()
-	{
-		System.out.println("Board: " +board);
-		System.out.println("Valor Jugada:");
-		for(int x=0; x<valorJugada.size();x++)
-		{
-			System.out.print("Jugador "+x+": ");
-			for(int i=0; i<valorJugada.get(x).size();i++)
-			{
-				System.out.print(valorJugada.get(x).get(i)+" ");
-			}
-			System.out.print("\n");
+			puntos[jug1]++;
+			puntos[jug2]++;
 		}
-		System.out.println("Valor Mano:");
-		for(int x=0; x<valorMano.size();x++)
+	}
+	private void calculoTres(int valor1, int valor2,int valor3,int jug1, int jug2, int jug3)
+	{
+		if(valor1 > valor2 && valor1 > valor3)
+			puntos[0]++;
+		else if(valor2 > valor1 && valor2 > valor3)
+			puntos[1]++;
+		else if (valor3 > valor1 && valor3 > valor2)
+			puntos[2]++;
+		else if (valor1 == valor2 && valor1 > valor3)
+			calculoDos(valor1, valor2, jug1, jug2);
+		else if (valor1 == valor3 && valor1 > valor2)
+			calculoDos(valor1, valor3, jug1, jug3);
+		else if (valor2 == valor3 && valor2 > valor1)
+			calculoDos(valor2, valor3, jug2, jug3);
+		else
 		{
-			System.out.print("Jugador "+x+": ");
-			for(int i=0; i<valorMano.get(x).size();i++)
-			{
-				System.out.print(valorMano.get(x).get(i)+" ");
-			}
-			System.out.print("\n");
+			puntos[0]++;
+			puntos[1]++;
+			puntos[2]++;
 		}
 	}
 }

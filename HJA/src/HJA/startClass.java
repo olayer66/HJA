@@ -14,7 +14,7 @@ public class startClass
 	public static void main(String[] args)
 	{
 	
-		/*startClass st;
+		startClass st;
 		st=new startClass();
 		st.inicia();
 		if (st.comprobarArgumentos(args)==true)
@@ -25,11 +25,11 @@ public class startClass
 		{			
 			st.ejecutame();
 		}
-		*/
 		
-		String[] rangos= {"KK+","KQo,65s","random"};
+		
+		/*String[] rangos= {"KKs","KQs","QTs"};
 		calculoEquity ev= new calculoEquity();
-		ev.calcular(null,null, rangos);
+		ev.calcular(null,null, rangos);*/
 		
 	}
 	
@@ -42,12 +42,8 @@ public class startClass
 		//iniciamos los objetos
 		miControlador=new controlador();
 		vtnPlayers=new GUIPlayers(miControlador);
-		new constante();
-		
+		new constante();		
 		vtnPlayers.getFrame().setVisible(true);
-		
-		// ejemplo de llamada a la singleton
-		constante.getInstance().getManos();
 		
 	}
 	/**

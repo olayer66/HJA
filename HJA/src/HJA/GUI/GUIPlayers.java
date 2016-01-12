@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.io.File;
+import java.math.BigDecimal;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -233,11 +235,11 @@ public class GUIPlayers {
 	//Inserta un rango random en el jugador pasado
 	public void insertaRamdom(int jug)
 	{
-		TfRango[jug].setText("Aleatorio");
+		TfRango[jug].setText("random");
 		TfRango[jug].setEditable(false);
 	}
 	
-	//devuelve el texto de un textfile dado el numero de juagdor
+	//devuelve el texto de un textfile dado el numero de jugador
 	public String miRango(int jugador)
 	{
 		if(TfRango[jugador].isEditable())
@@ -245,14 +247,14 @@ public class GUIPlayers {
 		else
 			return "";
 	}
-	//INserta el equity en los jugadores
-	public void insertaEquity(int[] equity)
+	//Inserta el equity en los jugadores
+	public void insertaEquity(float[] equity)
 	{
 		int mayor=0;
 		int menor=50;
 		for(int i=0;i<equity.length;i++)
 		{
-			tfEquity[i].setText(Integer.toString(equity[i]));
+			tfEquity[i].setText(Float.toString(round(equity[i], 2)));
 			if(equity[i]!=0)
 				tfEquity[i].setBackground(Equity);	
 			if(equity[i]>= mayor)
@@ -303,9 +305,38 @@ public class GUIPlayers {
 		hb = hs.createHelpBroker();
 		hb.enableHelpKey(frmPokermaster.getContentPane(), "Inicio", hs);
 	}
-	
+	public float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
 	/*-----------------------------------------------------------------------------------------------------------------------------*/
 	//Getters y setters
+	public String[] getRangos()
+	{
+		ArrayList<String> rangos= new ArrayList<String>();
+		for(int i=0;i<TfRango.length;i++)
+		{
+			if(!TfRango[i].getText().isEmpty())
+				rangos.add(TfRango[i].getText());
+		}
+		String []aux = new String[rangos.size()];
+		return rangos.toArray(aux);
+	}
+	public String getDescartes()
+	{
+		if(!tfDescartes.getText().isEmpty())
+			return tfDescartes.getText();
+		else
+			return null;
+	}
+	public String getBoard()
+	{
+		if(!tfMesa.getText().isEmpty())
+			return tfMesa.getText();
+		else
+			return null;
+	}
 	public JFrame getFrame() {
 		return frmPokermaster;
 	}

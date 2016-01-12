@@ -1,6 +1,7 @@
 package HJA.controlador;
 
 import HJA.modelo.transformarString;
+import HJA.modelo.calculoEquity;
 import HJA.modelo.procesarJugada;
 import HJA.modelo.procesarRankings;
 import HJA.modelo.transformarRango;
@@ -41,5 +42,10 @@ public class controlador
 	public boolean evaluarJugada(String[] datos){
 		procesarJugada proc = new procesarJugada(datos); 
 		return proc.evaluarJugada();
+	}
+	public float[] calcularEquity(String mesa, String desc, String[] rangos)
+	{
+		calculoEquity calculo= new calculoEquity();
+		return calculo.calcular(mesa, desc, rangos);
 	}
 }
