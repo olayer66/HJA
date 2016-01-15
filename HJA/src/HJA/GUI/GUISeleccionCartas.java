@@ -20,15 +20,15 @@ public class GUISeleccionCartas {
 	private String sCartas;
 	private controlador control;
 	private ActionListener accion;
-	private ArrayList<String> cartasSeleccionadas;
+	private ArrayList<ImagePanel> cartasSeleccionadas;
 	private int numCartas;
 	private Color colorSelec= Color.GREEN;
-	private ImagePanel[][] cuadroImagenes;
+	private ImagePanel[] cuadroImagenes;
 	private String[] cartas={"Ah","Kh","Qh","Jh","Th","9h","8h","7h","6h","5h","4h","3h","2h","Ad","Kd","Qd","Jd","Td","9d","8d","7d","6d","5d","4d","3d","2d","Ac","Kc","Qc","Jc","Tc","9c","8c","7c","6c","5c","4c","3c","2c","As","Ks","Qs","Js","Ts","9s","8s","7s","6s","5s","4s","3s","2s"};
 	private detectaClickCarta detector;
 	private int cMax;
 	
-	public GUISeleccionCartas(controlador ctn,ActionListener acc,int cartas, String sC) {
+	public GUISeleccionCartas(controlador ctn,ActionListener acc,int cartas, String sC, ArrayList<ImagePanel> cartasSeleccionadas){
 		control=ctn;
 		sCartas = sC;
 		accion=acc;
@@ -70,6 +70,7 @@ public class GUISeleccionCartas {
 		*/
 		//inicialiazdores
 		crearCartas();
+		escogerCarta();
 	}
 	private void crearCartas()
 	{
@@ -79,30 +80,38 @@ public class GUISeleccionCartas {
 		int width=83;
 		int height=120;
 		String[] aux;
-		cuadroImagenes=new ImagePanel[4][13];
-		cartasSeleccionadas= new ArrayList<String>();
+		cuadroImagenes=new ImagePanel[52];
 		boolean encontrado = false;
-		int j=0;
 		//palo
-		for(int i=0;i<4;i++)
+		for(int i=1;i<=4;i++)
 		{
 			//carta
 			for(int z=0;z<13;z++)
 			{
-				cuadroImagenes[i][z]= new ImagePanel(cartas[c]+".png");	
-				cuadroImagenes[i][z].setName(cartas[c]);
-				cuadroImagenes[i][z].setBounds(y, x, width, height);
+				cuadroImagenes[c]= new ImagePanel(cartas[c]+".png");	
+				cuadroImagenes[c].setName(cartas[c]);
+				cuadroImagenes[c].setBounds(y, x, width, height);
 				y+=width;
-				cuadroImagenes[i][z].setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-				cuadroImagenes[i][z].addMouseListener(detector);
-				frmSeleccionarCartas.getContentPane().add(cuadroImagenes[i][z]);
-				cuadroImagenes[i][z].repaint();
+				cuadroImagenes[c].setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+				cuadroImagenes[c].addMouseListener(detector);
+				frmSeleccionarCartas.getContentPane().add(cuadroImagenes[c]);
+				cuadroImagenes[c].repaint();
 				c++;
 			}
 			x+=height;
 			y=11;
 		}
 	}
+	
+	private void escogerCarta(){
+	
+		
+		
+		for(int i = 0; i< cartasSeleccionadas.size(); i++){	
+			seleccionarCarta(cartasSeleccionadas.get(i));
+		}	
+	}
+	
 	private void ponCartas()
 	{
 		StringTokenizer strTok= new StringTokenizer(sCartas,",");
