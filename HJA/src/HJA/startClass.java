@@ -1,6 +1,7 @@
 package HJA;
 
 import HJA.GUI.GUIPlayers;
+import HJA.GUI.GUIProfesor;
 import HJA.controlador.controlador;
 import HJA.modelo.calculoEquity;
 import HJA.modelo.evaluarJugadores;
@@ -10,7 +11,7 @@ public class startClass
 	
 	private controlador miControlador;
 	static public GUIPlayers vtnPlayers;
-	
+	static public GUIProfesor vtnProfesor;
 	public static void main(String[] args)
 	{
 	
@@ -36,9 +37,11 @@ public class startClass
 	{
 		//iniciamos los objetos
 		miControlador=new controlador();
-		vtnPlayers=new GUIPlayers(miControlador);
-		new constante();		
-		vtnPlayers.getFrame().setVisible(true);
+		new constante();
+		/*vtnPlayers=new GUIPlayers(miControlador);	
+		vtnPlayers.getFrame().setVisible(true);*/
+		vtnProfesor= new GUIProfesor(miControlador);
+		vtnProfesor.getFrmPokermaster().setVisible(true);
 		
 	}
 	/**
