@@ -14,6 +14,8 @@ import java.awt.Font;
 import javax.swing.JPanel;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.awt.event.ActionEvent;
 
 import javax.swing.border.BevelBorder;
@@ -188,10 +190,59 @@ public class GUIProfesor {
 		btnCalcular.addActionListener(acciones);
 		btnCalcular.setActionCommand("7");
 	}
-	
+	//devuelve las cartas que han de ser bloqueadas
+	public ArrayList<String> getBloqueadas(int posicion)
+	{
+		ArrayList<String> bloqueadas= new ArrayList<String>();
+		switch (posicion) 
+		{
+			case 1:
+				for(int i=0;i<ipMesa.length;i++)
+				{
+					if(ipMesa[i]!=null)
+						bloqueadas.add(ipMesa[i].getName());
+				}
+				for(int i=2; i<ipCartas.length;i++)
+				{
+					if(ipCartas[i]!=null)
+						bloqueadas.add(ipCartas[i].getName());
+				}
+				break;
+			case 2:
+				for(int i=0;i<ipMesa.length;i++)
+				{
+					if(ipMesa[i]!=null)
+						bloqueadas.add(ipMesa[i].getName());
+				}
+				for(int i=0; i<1;i++)
+				{
+					if(ipCartas[i]!=null)
+						bloqueadas.add(ipCartas[i].getName());
+				}
+				break;
+			case 3:
+				for(int i=0; i<ipCartas.length;i++)
+				{
+					if(ipCartas[i]!=null)
+						bloqueadas.add(ipCartas[i].getName());
+				}
+				break;
+		}
+		return bloqueadas;
+	}
 	/*-------------------------------------- Getters y setters-------------------------------------------------*/
 	public JFrame getFrmPokermaster() {
 		return frmPokermaster;
 	}
-	
+	public ArrayList<ImagePanel> getCartas()
+	{
+		return new ArrayList<ImagePanel>(Arrays.asList(ipCartas));
+	}
+	public ArrayList<ImagePanel> getMesa()
+	{
+		return new ArrayList<ImagePanel>(Arrays.asList(ipMesa));
+	}
+	public accionesProfesor getAcciones() {
+		return acciones;
+	}
 }

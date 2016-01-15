@@ -119,11 +119,11 @@ public class misAccciones implements ActionListener
 			vtnPlayers.insertaRamdom(9);		
 			break;
 		case "32"://seleccionar mano
-			vtnSeleccionCartas= new GUISeleccionCartas(vtnPlayers.getControl(),vtnPlayers.getAccion(),0, vtnPlayers.getBoard());
+			vtnSeleccionCartas= new GUISeleccionCartas(vtnPlayers.getAccion(),0, vtnPlayers.getBoard(), null,null, null);
 			vtnSeleccionCartas.getFrmSeleccionarCartas().setVisible(true);
 			break;
 		case "33"://seleccionar descartes
-			vtnSeleccionCartas= new GUISeleccionCartas(vtnPlayers.getControl(),vtnPlayers.getAccion(),0, vtnPlayers.getDescartes());
+			vtnSeleccionCartas= new GUISeleccionCartas(vtnPlayers.getAccion(),0, vtnPlayers.getDescartes(),null, null, null);
 			vtnSeleccionCartas.getFrmSeleccionarCartas().setVisible(true);
 			break;
 		case "34"://calcular

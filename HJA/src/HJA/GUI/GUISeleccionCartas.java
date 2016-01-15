@@ -1,26 +1,20 @@
 package HJA.GUI;
 
 import javax.swing.JFrame;
-
-import HJA.controlador.controlador;
-
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
-
 import javax.swing.border.BevelBorder;
 import javax.swing.JButton;
-
 import java.awt.Color;
 
 public class GUISeleccionCartas {
 
 	private JFrame frmSeleccionarCartas;
-	private String sCartas;
-	private controlador control;
 	private ActionListener accion;
 	private ArrayList<ImagePanel> cartasSeleccionadas;
+	private ArrayList<String> cartasBloqueadas;
+	private ArrayList<String> cartasSeleccion;
 	private int numCartas;
 	private Color colorSelec= Color.GREEN;
 	private ImagePanel[] cuadroImagenes;
@@ -28,11 +22,15 @@ public class GUISeleccionCartas {
 	private detectaClickCarta detector;
 	private int cMax;
 	
-	public GUISeleccionCartas(controlador ctn,ActionListener acc,int cartas, String sC, ArrayList<ImagePanel> cartasSeleccionadas){
-		control=ctn;
-		sCartas = sC;
+	public GUISeleccionCartas(ActionListener acc,int cartas, String sC,ArrayList<String> bloq, ArrayList<ImagePanel> cartasS,ArrayList<String> cartasSel)
+	{
 		accion=acc;
 		numCartas=cartas;
+		//Mediante String
+		cartasSeleccion=cartasSel;
+		//Mediante imagePanel
+		cartasSeleccionadas=cartasS;	
+		cartasBloqueadas=bloq;
 		initialize();
 	}
 
@@ -58,19 +56,11 @@ public class GUISeleccionCartas {
 		btnAceptar.addActionListener(accion);
 		btnAceptar.setActionCommand("20");
 		frmSeleccionarCartas.getContentPane().add(btnAceptar);
-		
 		detector=new detectaClickCarta(this);
-		
-		/*ImagePanel panel= new ImagePanel("2c.png");
-		panel.setBorder(new BevelBorder(BevelBorder.LOWERED, Color.YELLOW, null, null, null));
-		panel.setBounds(10, 11, 83, 120);
-		panel.addMouseListener(detector);	
-		frmSeleccionarCartas.getContentPane().add(panel);
-		panel.repaint();
-		*/
 		//inicialiazdores
 		crearCartas();
-		escogerCarta();
+		if(!cartasSeleccionadas.isEmpty())
+			escogerCarta();
 	}
 	private void crearCartas()
 	{
@@ -79,9 +69,7 @@ public class GUISeleccionCartas {
 		int y=11;
 		int width=83;
 		int height=120;
-		String[] aux;
 		cuadroImagenes=new ImagePanel[52];
-		boolean encontrado = false;
 		//palo
 		for(int i=1;i<=4;i++)
 		{
@@ -102,32 +90,21 @@ public class GUISeleccionCartas {
 			y=11;
 		}
 	}
-	
-	private void escogerCarta(){
-	
-		
-		
-		for(int i = 0; i< cartasSeleccionadas.size(); i++){	
+	//Selecciona las cartas pasadas dese la GUIProfesor
+	private void escogerCarta()
+	{	
+		for(int i = 0; i< cartasSeleccionadas.size(); i++)
+		{	
 			seleccionarCarta(cartasSeleccionadas.get(i));
-		}	
-	}
-	
-	private void ponCartas()
-	{
-		StringTokenizer strTok= new StringTokenizer(sCartas,",");
-		while (strTok.hasMoreTokens())
-		{
-			
 		}
-
 	}
 	//Seleccion de cartas
 	public void seleccionarCarta(ImagePanel carta)
 	{
 
-		if(!cartasSeleccionadas.contains(carta.getName()) && numCartas<cMax)
+		if(!cartasSeleccionadas.contains(carta.getName()) && numCartas<cMax && !cartasBloqueadas.contains(carta.getName()))
 		{
-			cartasSeleccionadas.add(carta.getName());
+			cartasSeleccionadas.add(carta);
 			carta.setBorder(new BevelBorder(BevelBorder.LOWERED, colorSelec, colorSelec, colorSelec, colorSelec));
 			numCartas++;
 		}
@@ -142,13 +119,18 @@ public class GUISeleccionCartas {
 	public String leerMano ()
 	{
 		StringBuilder miString= new StringBuilder();
-		for(String carta:cartasSeleccionadas)
+		for(ImagePanel carta:cartasSeleccionadas)
 		{
-			miString.append(carta);
+			miString.append(carta.getName());
 		}
 		return miString.toString();
 	}
 	public JFrame getFrmSeleccionarCartas() {
 		return frmSeleccionarCartas;
 	}
+
+	public ArrayList<ImagePanel> getCartasSeleccionadas() {
+		return cartasSeleccionadas;
+	}
+	
 }
