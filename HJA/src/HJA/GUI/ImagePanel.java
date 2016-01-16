@@ -14,14 +14,20 @@ public class ImagePanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private BufferedImage image;
 
-    public ImagePanel(String Imagen) {
-       try {
-          image = ImageIO.read(getClass().getResourceAsStream(Imagen));
-       } catch (IOException ex) {
-            // handle exception...
-       }
+    public ImagePanel(String imagen)
+    {
+    	repintar(imagen);
     }
-
+    public void repintar(String imagen)
+    {
+    	if(imagen!=null)
+			try {
+				image = ImageIO.read(getClass().getResourceAsStream(imagen));
+			} catch (IOException e) {
+				// TODO Bloque catch generado automáticamente
+				e.printStackTrace();
+			}
+    }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

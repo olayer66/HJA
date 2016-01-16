@@ -2,11 +2,13 @@ package HJA.GUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class accionesProfesor implements ActionListener 
 {
 	private GUIProfesor vtnProfesor;
 	private GUISeleccionCartas vtnCartas;
+	private int jug;
 	public accionesProfesor(GUIProfesor vtnProf) 
 	{
 		vtnProfesor=vtnProf;
@@ -16,15 +18,33 @@ public class accionesProfesor implements ActionListener
 		switch (e.getActionCommand()) 
 		{
 			case "1"://seleccion cartas jug1
-				vtnCartas= new GUISeleccionCartas(vtnProfesor.getAcciones(),1, null,vtnProfesor.getBloqueadas(1), vtnProfesor.getCartas(), null);
+			try {
+				vtnCartas= new GUISeleccionCartas(vtnProfesor.getAcciones(),2, null,vtnProfesor.getBloqueadas(1),  null);
+			} catch (IOException e4) {
+				// TODO Bloque catch generado automáticamente
+				e4.printStackTrace();
+			}
+				jug=1;
 				vtnCartas.getFrmSeleccionarCartas().setVisible(true);
 				break;
 			case "2"://seleccion cartas jug2
-				vtnCartas= new GUISeleccionCartas(vtnProfesor.getAcciones(),2, null,vtnProfesor.getBloqueadas(2), vtnProfesor.getCartas(), null);
+			try {
+				vtnCartas= new GUISeleccionCartas(vtnProfesor.getAcciones(),2, null,vtnProfesor.getBloqueadas(2),  null);
+			} catch (IOException e3) {
+				// TODO Bloque catch generado automáticamente
+				e3.printStackTrace();
+			}
+				jug=2;
 				vtnCartas.getFrmSeleccionarCartas().setVisible(true);	
 				break;
 			case "3"://seleccion mesa
-				vtnCartas= new GUISeleccionCartas(vtnProfesor.getAcciones(),3, null,vtnProfesor.getBloqueadas(3), vtnProfesor.getMesa(), null);
+			try {
+				vtnCartas= new GUISeleccionCartas(vtnProfesor.getAcciones(),5, null,vtnProfesor.getBloqueadas(3),  null);
+			} catch (IOException e2) {
+				// TODO Bloque catch generado automáticamente
+				e2.printStackTrace();
+			}
+				jug=3;
 				vtnCartas.getFrmSeleccionarCartas().setVisible(true);
 				break;
 			case "4":// aleatorio jug1
@@ -40,7 +60,11 @@ public class accionesProfesor implements ActionListener
 				
 				break;
 			case "20":
-				//accion a profesor
+			try {
+					vtnProfesor.cargaCartas(vtnCartas.getCartasSeleccionadas(),jug);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 				vtnCartas.getFrmSeleccionarCartas().setVisible(false);
 				vtnCartas.getFrmSeleccionarCartas().dispose();
 				vtnCartas=null;

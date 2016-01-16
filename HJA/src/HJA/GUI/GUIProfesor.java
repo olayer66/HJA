@@ -2,6 +2,7 @@ package HJA.GUI;
 
 import java.awt.EventQueue;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
@@ -14,6 +15,7 @@ import java.awt.Font;
 import javax.swing.JPanel;
 
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.event.ActionEvent;
@@ -42,10 +44,11 @@ public class GUIProfesor {
 	private JRadioButton rbCall;
 	private JTextField tfEquity;
 	private JComboBox<String> cbAleatoriasMesa;
-	
+	private ButtonGroup botones;
 	public GUIProfesor(controlador miCont) {
 		control= miCont;
 		acciones= new accionesProfesor(this);
+		botones= new ButtonGroup();
 		initialize();
 	}
 
@@ -108,10 +111,17 @@ public class GUIProfesor {
 		panelProfesor.add(tfEquity);
 		tfEquity.setColumns(10);
 					
-		JComboBox cbAleatoriasMesa = new JComboBox();
+		cbAleatoriasMesa = new JComboBox<String>();
 		cbAleatoriasMesa.setBounds(238, 399, 41, 20);
 		frmPokermaster.getContentPane().add(cbAleatoriasMesa);
+		cbAleatoriasMesa.addItem("0");
+		cbAleatoriasMesa.addItem("3");
+		cbAleatoriasMesa.addItem("4");
+		cbAleatoriasMesa.addItem("5");
 		
+		//ButtonGroup
+		botones.add(rdbtnFold);
+		botones.add(rdbtnCall);
 		//Inicializadores
 		creaCartas();
 		creaBotones();
@@ -127,7 +137,8 @@ public class GUIProfesor {
 		int y=43;
 		for(int i=0; i< ipCartas.length;i++)
 		{
-			ipCartas[i] = new ImagePanel("3c.png");
+			ipCartas[i] = new ImagePanel(null);
+			ipCartas[i].setName("3c");
 			ipCartas[i].setBounds(x, y, witdh, heigth);
 			frmPokermaster.getContentPane().add(ipCartas[i]);
 			if(i==1)
@@ -140,6 +151,7 @@ public class GUIProfesor {
 		for(int i=0;i<ipMesa.length;i++)
 		{
 			ipMesa[i] = new ImagePanel("3c.png");
+			ipMesa[i].setName("3c");
 			ipMesa[i].setBounds(x, y, witdh, heigth);
 			frmPokermaster.getContentPane().add(ipMesa[i]);
 			x+=93;
@@ -230,17 +242,32 @@ public class GUIProfesor {
 		}
 		return bloqueadas;
 	}
+	//Carga las nuevas cartas recibidas
+	public void cargaCartas (ArrayList<String> cartas, int jug) throws IOException
+	{
+		switch (jug) {
+		case 1:
+			for(int i=0;i<2;i++)
+			{
+				if(cartas.get(i)==null)
+					ipCartas[i].repintar("back.png");
+				else
+					ipCartas[i].repintar(cartas.get(i)+".png");
+				ipCartas[i].setName(cartas.get(i));
+				ipCartas[i].repaint();
+			}
+			break;
+		case 2:
+			
+			break;
+		case 3:
+			
+			break;
+		}
+	}
 	/*-------------------------------------- Getters y setters-------------------------------------------------*/
 	public JFrame getFrmPokermaster() {
 		return frmPokermaster;
-	}
-	public ArrayList<ImagePanel> getCartas()
-	{
-		return new ArrayList<ImagePanel>(Arrays.asList(ipCartas));
-	}
-	public ArrayList<ImagePanel> getMesa()
-	{
-		return new ArrayList<ImagePanel>(Arrays.asList(ipMesa));
 	}
 	public accionesProfesor getAcciones() {
 		return acciones;

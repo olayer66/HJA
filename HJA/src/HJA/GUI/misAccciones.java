@@ -2,6 +2,7 @@ package HJA.GUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JComboBox;
 
@@ -119,11 +120,21 @@ public class misAccciones implements ActionListener
 			vtnPlayers.insertaRamdom(9);		
 			break;
 		case "32"://seleccionar mano
-			vtnSeleccionCartas= new GUISeleccionCartas(vtnPlayers.getAccion(),0, vtnPlayers.getBoard(), null,null, null);
+			try {
+				vtnSeleccionCartas= new GUISeleccionCartas(vtnPlayers.getAccion(),0, vtnPlayers.getBoard(), null, null);
+			} catch (IOException e1) {
+				// TODO Bloque catch generado automáticamente
+				e1.printStackTrace();
+			}
 			vtnSeleccionCartas.getFrmSeleccionarCartas().setVisible(true);
 			break;
 		case "33"://seleccionar descartes
-			vtnSeleccionCartas= new GUISeleccionCartas(vtnPlayers.getAccion(),0, vtnPlayers.getDescartes(),null, null, null);
+			try {
+				vtnSeleccionCartas= new GUISeleccionCartas(vtnPlayers.getAccion(),0, vtnPlayers.getDescartes(),null, null);
+			} catch (IOException e1) {
+				// TODO Bloque catch generado automáticamente
+				e1.printStackTrace();
+			}
 			vtnSeleccionCartas.getFrmSeleccionarCartas().setVisible(true);
 			break;
 		case "34"://calcular
