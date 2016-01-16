@@ -263,7 +263,20 @@ public class GUIProfesor {
 			}
 			break;
 		case 2:
-			
+				if(cartas.size()==1)
+				{
+					ipCartas[3].repintar("back.jpg");
+					ipCartas[3].setName("bc");
+				}
+				else
+				{
+					ipCartas[2].repintar(cartas.get(0)+".png");
+					ipCartas[2].setName(cartas.get(0));
+					ipCartas[3].repintar(cartas.get(1)+".png");
+					ipCartas[3].setName(cartas.get(1));
+				}
+				ipCartas[2].repaint();
+				ipCartas[3].repaint();
 			break;
 		case 3:
 			

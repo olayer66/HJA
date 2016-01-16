@@ -135,5 +135,26 @@ public class GUISeleccionCartas {
 	public ArrayList<String> getCartasSeleccionadas() {
 		return cartasSeleccionadas;
 	}
-	
+	//control de la mesa
+	public boolean esMesaValida(int jug)
+	{
+		if(jug==3)
+		{
+			if(cartasSeleccionadas.size()==1 ||cartasSeleccionadas.size()==2)
+			{
+				return false;
+			}
+			else
+				return true;
+		}
+		else
+		{
+			if(cartasSeleccionadas.size()!=2)
+			{
+				return false;
+			}
+			else
+				return true;
+		}
+	}
 }

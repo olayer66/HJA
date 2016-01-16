@@ -60,14 +60,19 @@ public class accionesProfesor implements ActionListener
 				
 				break;
 			case "20":
-			try {
-					vtnProfesor.cargaCartas(vtnCartas.getCartasSeleccionadas(),jug);
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				if(vtnCartas.esMesaValida(jug))
+				{
+					try 
+					{
+						vtnProfesor.cargaCartas(vtnCartas.getCartasSeleccionadas(),jug);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					vtnCartas.getFrmSeleccionarCartas().setVisible(false);
+					vtnCartas.getFrmSeleccionarCartas().dispose();
+					vtnCartas=null;
 				}
-				vtnCartas.getFrmSeleccionarCartas().setVisible(false);
-				vtnCartas.getFrmSeleccionarCartas().dispose();
-				vtnCartas=null;
+				
 				break;
 			case "21":
 				vtnCartas.getFrmSeleccionarCartas().setVisible(false);
