@@ -137,8 +137,8 @@ public class GUIProfesor {
 		int y=43;
 		for(int i=0; i< ipCartas.length;i++)
 		{
-			ipCartas[i] = new ImagePanel(null);
-			ipCartas[i].setName("3c");
+			ipCartas[i] = new ImagePanel("back.jpg");
+			ipCartas[i].setName("bc");
 			ipCartas[i].setBounds(x, y, witdh, heigth);
 			frmPokermaster.getContentPane().add(ipCartas[i]);
 			if(i==1)
@@ -150,8 +150,8 @@ public class GUIProfesor {
 		y=267;
 		for(int i=0;i<ipMesa.length;i++)
 		{
-			ipMesa[i] = new ImagePanel("3c.png");
-			ipMesa[i].setName("3c");
+			ipMesa[i] = new ImagePanel("back.jpg");
+			ipMesa[i].setName("bc");
 			ipMesa[i].setBounds(x, y, witdh, heigth);
 			frmPokermaster.getContentPane().add(ipMesa[i]);
 			x+=93;
@@ -249,11 +249,16 @@ public class GUIProfesor {
 		case 1:
 			for(int i=0;i<2;i++)
 			{
-				if(cartas.get(i)==null)
-					ipCartas[i].repintar("back.png");
+				if(i==1 && cartas.size()==1)
+				{
+					ipCartas[i].repintar("back.jpg");
+					ipCartas[i].setName("bc");
+				}
 				else
+				{
 					ipCartas[i].repintar(cartas.get(i)+".png");
-				ipCartas[i].setName(cartas.get(i));
+					ipCartas[i].setName(cartas.get(i));
+				}
 				ipCartas[i].repaint();
 			}
 			break;
