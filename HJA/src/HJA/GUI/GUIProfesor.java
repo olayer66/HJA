@@ -1,7 +1,5 @@
 package HJA.GUI;
 
-import java.awt.EventQueue;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,18 +12,17 @@ import java.awt.Font;
 
 import javax.swing.JPanel;
 
-import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.awt.event.ActionEvent;
-
-import javax.swing.border.BevelBorder;
+import java.util.Random;
 import javax.swing.JComboBox;
 
 import HJA.controlador.controlador;
 
 import java.awt.Toolkit;
+import java.awt.Color;
 
 public class GUIProfesor {
 
@@ -33,13 +30,13 @@ public class GUIProfesor {
 	private accionesProfesor acciones;
 	private JFrame frmPokermaster;
 	private JPanel panelProfesor;
-	private JTextField tfBoard;
-	private JButton btnEjecutar;
+	private JButton btnCalcular;
 	private JButton[] btnSeleccionar;
 	private ImagePanel[] ipCartas;
 	private ImagePanel[] ipMesa;
 	private JButton[] btnRandom;
-	private JTextField[] Equitys;
+	private JTextField[] equitys;
+	private JLabel lblDecision;
 	private JRadioButton rbFold;
 	private JRadioButton rbCall;
 	private JTextField tfEquity;
@@ -64,16 +61,16 @@ public class GUIProfesor {
 		frmPokermaster.getContentPane().setLayout(null);
 		
 		
-		JLabel lblJugador = new JLabel("Jugador");
+		JLabel lblJugador = new JLabel("Jugador:");
 		lblJugador.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblJugador.setHorizontalAlignment(SwingConstants.CENTER);
-		lblJugador.setBounds(54, 11, 125, 27);
+		lblJugador.setHorizontalAlignment(SwingConstants.LEFT);
+		lblJugador.setBounds(35, 11, 94, 27);
 		frmPokermaster.getContentPane().add(lblJugador);
 		
-		JLabel lblJugador_1 = new JLabel("Rival");
-		lblJugador_1.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel lblJugador_1 = new JLabel("Rival:");
+		lblJugador_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblJugador_1.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblJugador_1.setBounds(291, 11, 125, 27);
+		lblJugador_1.setBounds(267, 11, 63, 27);
 		frmPokermaster.getContentPane().add(lblJugador_1);
 		
 		
@@ -83,34 +80,41 @@ public class GUIProfesor {
 		lblMesa.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		lblMesa.setBounds(176, 229, 125, 27);
 		frmPokermaster.getContentPane().add(lblMesa);
-		
-		JButton sm = new JButton("Seleccionar Mesa");
-		sm.setBounds(79, 398, 149, 23);
-		frmPokermaster.getContentPane().add(sm);
-		
+			
 		panelProfesor = new JPanel();
 		panelProfesor.setBorder(null);
 		panelProfesor.setBounds(10, 425, 454, 59);
 		frmPokermaster.getContentPane().add(panelProfesor);
 		panelProfesor.setLayout(null);
 		
-		JRadioButton rdbtnCall = new JRadioButton("Call");
-		rdbtnCall.setBounds(72, 7, 46, 23);
-		panelProfesor.add(rdbtnCall);
+		rbCall = new JRadioButton("Call");
+		rbCall.setSelected(true);
+		rbCall.setBounds(6, 6, 46, 23);
+		panelProfesor.add(rbCall);
 		
-		JRadioButton rdbtnFold = new JRadioButton("Fold");
-		rdbtnFold.setBounds(72, 33, 71, 23);
-		panelProfesor.add(rdbtnFold);
+		rbFold = new JRadioButton("Fold");
+		rbFold.setBounds(6, 32, 71, 23);
+		panelProfesor.add(rbFold);
 		
 		JLabel lblEquity = new JLabel("Equity: ");
-		lblEquity.setBounds(138, 10, 46, 15);
+		lblEquity.setBounds(79, 10, 46, 15);
 		panelProfesor.add(lblEquity);
 		
 		tfEquity = new JTextField();
-		tfEquity.setBounds(178, 7, 86, 20);
+		tfEquity.setForeground(Color.BLACK);
+		tfEquity.setBounds(118, 7, 63, 20);
 		panelProfesor.add(tfEquity);
 		tfEquity.setColumns(10);
-					
+		tfEquity.addKeyListener(new KeyAdapter() {
+		    public void keyTyped(KeyEvent e) {
+		        char c = e.getKeyChar();
+		        if (!((c >= '0') && (c <= '9') ||
+		           (c == KeyEvent.VK_BACK_SPACE) ||
+		           (c == KeyEvent.VK_DELETE))) {
+		          e.consume();
+		        }
+		      }
+		    });				
 		cbAleatoriasMesa = new JComboBox<String>();
 		cbAleatoriasMesa.setBounds(238, 399, 41, 20);
 		frmPokermaster.getContentPane().add(cbAleatoriasMesa);
@@ -120,11 +124,12 @@ public class GUIProfesor {
 		cbAleatoriasMesa.addItem("5");
 		
 		//ButtonGroup
-		botones.add(rdbtnFold);
-		botones.add(rdbtnCall);
+		botones.add(rbFold);
+		botones.add(rbCall);
 		//Inicializadores
 		creaCartas();
 		creaBotones();
+		creaEquitys();
 	}
 	//Crea Las cartas
 	private void creaCartas()
@@ -160,47 +165,72 @@ public class GUIProfesor {
 	//Crea los Botones
 	private void creaBotones()
 	{
-		JButton btnsc1 = new JButton("Seleccionar cartas");
-		btnsc1.setBounds(35, 174, 176, 23);
-		frmPokermaster.getContentPane().add(btnsc1);
-		btnsc1.addActionListener(acciones);
-		btnsc1.setActionCommand("1");
+		btnRandom= new JButton[3];
+		btnSeleccionar=new JButton[3];
+		int y=35;
+		for(int i=0; i<2;i++)
+		{
+			btnSeleccionar[i]= new JButton("Seleccionar cartas");
+			btnSeleccionar[i].setBounds(y, 174, 176, 23);
+			y=267;
+			frmPokermaster.getContentPane().add(btnSeleccionar[i]);
+			btnSeleccionar[i].addActionListener(acciones);
+			btnSeleccionar[i].setActionCommand(Integer.toString(i+1));
+		}
 		
-		JButton btnsc2 = new JButton("Seleccionar cartas");
-		btnsc2.setBounds(267, 174, 176, 23);
-		frmPokermaster.getContentPane().add(btnsc2);
-		btnsc2.addActionListener(acciones);
-		btnsc2.setActionCommand("2");
+		btnSeleccionar[2]= new JButton("Seleccionar Mesa");
+		btnSeleccionar[2].setBounds(79, 398, 149, 23);
+		frmPokermaster.getContentPane().add(btnSeleccionar[2]);
+		btnSeleccionar[2].addActionListener(acciones);
+		btnSeleccionar[2].setActionCommand("3");
 		
-		JButton btnsm = new JButton("Seleccionar Mesa");
-		btnsm.setBounds(79, 398, 149, 23);
-		frmPokermaster.getContentPane().add(btnsm);
-		btnsm.addActionListener(acciones);
-		btnsm.setActionCommand("3");
+		y=68;
+		for(int i=0;i<2;i++)
+		{
+			btnRandom[i] = new JButton("Aleatorias");
+			btnRandom[i].setBounds(y, 202, 100, 23);
+			y=303;
+			frmPokermaster.getContentPane().add(btnRandom[i]);
+			btnRandom[i].addActionListener(acciones);
+			btnRandom[i].setActionCommand(Integer.toString(i+4));
+		}	
+		btnRandom[2]= new JButton("Aleatorias");
+		btnRandom[2].setBounds(283, 398, 100, 23);
+		frmPokermaster.getContentPane().add(btnRandom[2]);
+		btnRandom[2].addActionListener(acciones);
+		btnRandom[2].setActionCommand("6");
 		
-		JButton btnal1 = new JButton("Aleatorias");
-		btnal1.setBounds(68, 202, 100, 23);
-		frmPokermaster.getContentPane().add(btnal1);
-		btnal1.addActionListener(acciones);
-		btnal1.setActionCommand("4");
-		
-		JButton btnal2 = new JButton("Aleatorias");
-		btnal2.setBounds(303, 202, 108, 23);
-		frmPokermaster.getContentPane().add(btnal2);
-		btnal2.addActionListener(acciones);
-		btnal2.setActionCommand("5");
-		
-		JButton btnAleatoriasMesa = new JButton("Aleatorias");
-		btnAleatoriasMesa.setBounds(279, 398, 100, 23);
-		frmPokermaster.getContentPane().add( btnAleatoriasMesa);
-		btnAleatoriasMesa.addActionListener(acciones);
-		btnAleatoriasMesa.setActionCommand("6");
-		
-		JButton btnCalcular = new JButton("Calcular");
-		btnCalcular.setBounds(284, 7, 92, 41);
+		btnCalcular = new JButton("Calcular");
+		btnCalcular.setBounds(191, 6, 92, 42);
 		panelProfesor.add(btnCalcular);
 		btnCalcular.addActionListener(acciones);
 		btnCalcular.setActionCommand("7");
+		
+		lblDecision = new JLabel("Correcto");
+		lblDecision.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblDecision.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDecision.setBounds(293, 10, 151, 38);
+		panelProfesor.add(lblDecision);
+	}
+	//Crea los campos de texto
+	private void creaEquitys()
+	{
+		equitys= new JTextField[2];
+		int y=125;
+		for(int i=0; i<equitys.length;i++)
+		{
+			equitys[i] = new JTextField();
+			equitys[i].setFont(new Font("Tahoma", Font.PLAIN, 22));
+			equitys[i].setHorizontalAlignment(SwingConstants.RIGHT);
+			equitys[i].setEnabled(true);
+			equitys[i].setEditable(false);
+			equitys[i].setForeground(Color.BLACK);
+			equitys[i].setBounds(y, 11, 60, 27);
+			y=329;
+			frmPokermaster.getContentPane().add(equitys[i]);
+			equitys[i].setColumns(10);
+			equitys[i].setText("0%");
+		}
 	}
 	//devuelve las cartas que han de ser bloqueadas
 	public ArrayList<String> getBloqueadas(int posicion)
@@ -211,31 +241,31 @@ public class GUIProfesor {
 			case 1:
 				for(int i=0;i<ipMesa.length;i++)
 				{
-					if(ipMesa[i]!=null)
+					if(ipMesa[i].getName()!="bc")
 						bloqueadas.add(ipMesa[i].getName());
 				}
 				for(int i=2; i<ipCartas.length;i++)
 				{
-					if(ipCartas[i]!=null)
+					if(ipCartas[i].getName()!="bc")
 						bloqueadas.add(ipCartas[i].getName());
 				}
 				break;
 			case 2:
 				for(int i=0;i<ipMesa.length;i++)
 				{
-					if(ipMesa[i]!=null)
+					if(ipMesa[i].getName()!="bc")
 						bloqueadas.add(ipMesa[i].getName());
 				}
-				for(int i=0; i<1;i++)
+				for(int i=0; i<2;i++)
 				{
-					if(ipCartas[i]!=null)
+					if(ipCartas[i].getName()!="bc")
 						bloqueadas.add(ipCartas[i].getName());
 				}
 				break;
 			case 3:
 				for(int i=0; i<ipCartas.length;i++)
 				{
-					if(ipCartas[i]!=null)
+					if(ipCartas[i].getName()!="bc")
 						bloqueadas.add(ipCartas[i].getName());
 				}
 				break;
@@ -279,9 +309,108 @@ public class GUIProfesor {
 				ipCartas[3].repaint();
 			break;
 		case 3:
-			
+			for(int i=0; i<cartas.size();i++)
+			{
+				ipMesa[i].repintar(cartas.get(i)+".png");
+				ipMesa[i].setName(cartas.get(i));
+				ipMesa[i].repaint();
+			}
+			if(cartas.size()<5)
+			{
+				for(int i=cartas.size(); i<5;i++)
+				{
+					ipMesa[i].repintar("back.jpg");
+					ipMesa[i].setName("bc");
+					ipMesa[i].repaint();
+				}
+			}
 			break;
 		}
+	}
+	//Genera cartas aleatorias
+	public void cartasAleatorias(int jug)
+	{
+		ArrayList<String> bloqueadas= getBloqueadas(jug);
+		ArrayList<String> cartas=new ArrayList<String>();
+		String[] aux={"Ah","Kh","Qh","Jh","Th","9h","8h","7h","6h","5h","4h","3h","2h","Ad","Kd","Qd","Jd","Td","9d","8d","7d","6d","5d","4d","3d","2d","Ac","Kc","Qc","Jc","Tc","9c","8c","7c","6c","5c","4c","3c","2c","As","Ks","Qs","Js","Ts","9s","8s","7s","6s","5s","4s","3s","2s"};
+		Random rnd = new Random();
+		double num=0;
+		int carta=0;
+		switch (jug) {
+		case 1:
+			for(int i=0 ;i<2;i++)
+			{
+				do
+				{
+					num=rnd.nextDouble() * 51 + 0;
+					carta=(int)num;
+				}
+				while(bloqueadas.contains(aux[carta]));
+				bloqueadas.add(aux[carta]);
+				cartas.add(aux[carta]);			
+			}
+			break;
+		case 2:
+			for(int i=0 ;i<2;i++)
+			{
+				do
+				{
+					num=rnd.nextDouble() * 51 + 0;
+					carta=(int)num;
+				}
+				while(bloqueadas.contains(aux[carta]));
+				bloqueadas.add(aux[carta]);
+				cartas.add(aux[carta]);			
+			}
+			break;	
+		case 3:
+			if(cbAleatoriasMesa.getSelectedItem().toString()!="0")
+			{
+				for(int i=0 ;i<Integer.parseInt(cbAleatoriasMesa.getSelectedItem().toString());i++)
+				{
+					do
+					{
+						num=rnd.nextDouble() * 51 + 0;
+						carta=(int)num;
+					}
+					while(bloqueadas.contains(aux[carta]));
+					bloqueadas.add(aux[carta]);
+					cartas.add(aux[carta]);			
+				}
+			}
+			break;
+		}
+		try {
+			cargaCartas(cartas, jug);
+		} catch (IOException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		}
+	}
+	//Devuelve si todos los parametros estan correctos para calcular
+	public boolean calcularActivo()
+	{
+		boolean correcto=true;
+		if(tfEquity.getText().toString()=="")
+		{
+			correcto=false;
+		}
+		else
+		{
+			for(int i=0; i< ipCartas.length;i++)
+			{
+				if(ipCartas[i].getName()=="bc")
+				{
+					correcto=false;
+				}
+			}
+		}
+		return correcto;
+	}
+	//Introduce los valores obtenidos del calculo
+	public void introduceResultado(ArrayList<String> equitys)
+	{
+		
 	}
 	/*-------------------------------------- Getters y setters-------------------------------------------------*/
 	public JFrame getFrmPokermaster() {
@@ -289,5 +418,27 @@ public class GUIProfesor {
 	}
 	public accionesProfesor getAcciones() {
 		return acciones;
+	}
+
+	public controlador getControl() {
+		return control;
+	}
+	public ArrayList <String> getJugadores()
+	{
+		ArrayList<String> cartas= new ArrayList<String>();
+		for(int i=0; i< ipCartas.length;i++)
+		{
+			cartas.add(ipCartas[i].getName());
+		}
+		return cartas;
+	}
+	public ArrayList <String> getMesa()
+	{
+		ArrayList<String> cartas= new ArrayList<String>();
+		for(int i=0; i< ipMesa.length;i++)
+		{
+			cartas.add(ipMesa[i].getName());
+		}
+		return cartas;
 	}
 }

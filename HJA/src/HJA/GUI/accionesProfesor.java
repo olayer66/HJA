@@ -48,16 +48,19 @@ public class accionesProfesor implements ActionListener
 				vtnCartas.getFrmSeleccionarCartas().setVisible(true);
 				break;
 			case "4":// aleatorio jug1
-				
+				vtnProfesor.cartasAleatorias(1);
 				break;
 			case "5":// aleatorio jug2
-				
+				vtnProfesor.cartasAleatorias(2);
 				break;
 			case "6":// aleatorio mesa
-				
+				vtnProfesor.cartasAleatorias(3);
 				break;
 			case "7":// boton calcular
-				
+				if(vtnProfesor.calcularActivo())
+				{
+					vtnProfesor.introduceResultado(vtnProfesor.getControl().caculoProfesor(vtnProfesor.getJugadores(), vtnProfesor.getMesa()));
+				}				
 				break;
 			case "20":
 				if(vtnCartas.esMesaValida(jug))
