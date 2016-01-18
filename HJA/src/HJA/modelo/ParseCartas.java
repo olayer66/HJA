@@ -2,8 +2,6 @@ package HJA.modelo;
 
 public class ParseCartas {
 	
-	public ParseCartas(){
-	}
 	
 	/*Relaciona una figura con un entero*/
 	public int figuraToInt(char figura){

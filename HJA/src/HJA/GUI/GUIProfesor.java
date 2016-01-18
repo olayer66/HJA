@@ -39,10 +39,8 @@ public class GUIProfesor {
 	private JButton[] btnRandom;
 	private JTextField[] equitys;
 	private JLabel lblDecision;
-	private JLabel lblResultadoEquity;
 	private JRadioButton rbFold;
 	private JRadioButton rbCall;
-	private JTextField tfEquity;
 	private JComboBox<String> cbAleatoriasMesa;
 	private ButtonGroup botones;
 	private Color colorGanador= Color.GREEN;
@@ -95,31 +93,12 @@ public class GUIProfesor {
 		
 		rbCall = new JRadioButton("Call");
 		rbCall.setSelected(true);
-		rbCall.setBounds(6, 6, 46, 23);
+		rbCall.setBounds(87, 6, 46, 23);
 		panelProfesor.add(rbCall);
 		
 		rbFold = new JRadioButton("Fold");
-		rbFold.setBounds(6, 32, 71, 23);
+		rbFold.setBounds(87, 32, 71, 23);
 		panelProfesor.add(rbFold);
-		
-		JLabel lblEquity = new JLabel("Equity: ");
-		lblEquity.setBounds(79, 10, 46, 15);
-		panelProfesor.add(lblEquity);
-		
-		tfEquity = new JTextField();
-		tfEquity.setForeground(Color.BLACK);
-		tfEquity.setBounds(118, 7, 63, 20);
-		panelProfesor.add(tfEquity);
-		tfEquity.setColumns(10);
-		tfEquity.addKeyListener(new KeyAdapter() {
-		    public void keyTyped(KeyEvent e) {
-		        char c = e.getKeyChar();
-		        if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) ||(c == KeyEvent.VK_DELETE) || (c==','))) 
-		        {
-		          e.consume();
-		        }
-		      }
-		    });				
 		cbAleatoriasMesa = new JComboBox<String>();
 		cbAleatoriasMesa.setBounds(238, 399, 41, 20);
 		frmPokermaster.getContentPane().add(cbAleatoriasMesa);
@@ -134,7 +113,7 @@ public class GUIProfesor {
 		//Inicializadores
 		creaCartas();
 		creaBotones();
-		creaEquitys();
+		//creaEquitys();
 	}
 	//Crea Las cartas
 	private void creaCartas()
@@ -216,11 +195,6 @@ public class GUIProfesor {
 		lblDecision.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDecision.setBounds(293, 10, 151, 38);
 		panelProfesor.add(lblDecision);
-		
-		lblResultadoEquity = new JLabel("Acertaste");
-		lblResultadoEquity.setHorizontalAlignment(SwingConstants.CENTER);
-		lblResultadoEquity.setBounds(83, 32, 98, 16);
-		panelProfesor.add(lblResultadoEquity);
 	}
 	//Crea los campos de texto
 	private void creaEquitys()
@@ -401,34 +375,22 @@ public class GUIProfesor {
 	public boolean calcularActivo()
 	{
 		boolean correcto=true;
-		if(tfEquity.getText().toString()=="")
+		for(int i=0; i< ipCartas.length;i++)
 		{
-			correcto=false;
-		}
-		else
-		{
-			for(int i=0; i< ipCartas.length;i++)
+			if(ipCartas[i].getName()=="bc")
 			{
-				if(ipCartas[i].getName()=="bc")
-				{
-					correcto=false;
-				}
+				correcto=false;
 			}
 		}
 		return correcto;
 	}
 	//Introduce los valores obtenidos del calculo
-	public void introduceResultado(ArrayList<String> equity)
+	public void introduceResultado(int ganador)
 	{
-		float jug1= round(Float.parseFloat(equity.get(0)), 2);
-		float jug2= round(Float.parseFloat(equity.get(1)), 2);
-		float decision= Float.parseFloat( tfEquity.getText());
-		equitys[0].setText(Float.toString(jug1));
-		equitys[1].setText(Float.toString(jug2));
-		if(jug1>jug2)
+		if(ganador==1)
 		{
-			equitys[0].setBackground(colorGanador);
-			equitys[1].setBackground(colorPerdedor);
+			//equitys[0].setBackground(colorGanador);
+			//equitys[1].setBackground(colorPerdedor);
 			if(rbCall.isSelected())
 			{
 				lblDecision.setText("Correcto");
@@ -441,10 +403,10 @@ public class GUIProfesor {
 				lblDecision.setForeground(colorPerdedor);
 			}
 		}
-		else if(jug1<jug2)
+		else if(ganador==2)
 		{
-			equitys[1].setBackground(colorGanador);
-			equitys[0].setBackground(colorPerdedor);
+			//equitys[1].setBackground(colorGanador);
+			//equitys[0].setBackground(colorPerdedor);
 			if(rbFold.isSelected())
 			{
 				lblDecision.setText("Correcto");
@@ -459,12 +421,12 @@ public class GUIProfesor {
 		}
 		else
 		{
-			equitys[0].setBackground(colorEmpate);
-			equitys[1].setBackground(colorEmpate);
+			//equitys[0].setBackground(colorEmpate);
+			//equitys[1].setBackground(colorEmpate);
 			lblDecision.setText("Empate");
 			lblDecision.setForeground(colorEmpate);
 		}
-		if(jug1>decision)
+		/*if(jug1>decision)
 		{
 			lblResultadoEquity.setText("Te pasaste");
 			lblDecision.setForeground(colorPerdedor);
@@ -478,7 +440,7 @@ public class GUIProfesor {
 		{
 			lblResultadoEquity.setText("Acertaste");
 			lblDecision.setForeground(colorGanador);
-		}
+		}*/
 	}
 	//redondea los float
 	public float round(float d, int decimalPlace) {
@@ -511,7 +473,8 @@ public class GUIProfesor {
 		ArrayList<String> cartas= new ArrayList<String>();
 		for(int i=0; i< ipMesa.length;i++)
 		{
-			cartas.add(ipMesa[i].getName());
+			if(ipMesa[i].getName()!="bc")
+				cartas.add(ipMesa[i].getName());
 		}
 		return cartas;
 	}

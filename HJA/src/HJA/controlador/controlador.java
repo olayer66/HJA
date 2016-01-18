@@ -55,7 +55,7 @@ public class controlador
 		salida=calculo.getMiSalida();
 		return eq;
 	}
-	public ArrayList<String> caculoProfesor(ArrayList<String> jugadores, ArrayList<String> mesa)
+	public int caculoProfesor(ArrayList<String> jugadores, ArrayList<String> mesa)
 	{
 		profesor prof = new profesor();
 		return prof.calculaEquity(jugadores, mesa);

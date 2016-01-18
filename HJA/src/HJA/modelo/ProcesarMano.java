@@ -423,7 +423,6 @@ public String procesarEscaleraColor(String escalera, ParseCartas parseCartas){
 		boolean  impar=false;
 		ParseCartas parseCartas = new ParseCartas();
 		char[] aux = mano.toCharArray();
-		arrayMano = new int[13];
 		
 		//Inicializa el array de enteros correspondiente a la mano.
 		for(int i=0; i<aux.length; i++){
