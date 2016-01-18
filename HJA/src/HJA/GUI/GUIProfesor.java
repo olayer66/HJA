@@ -15,8 +15,10 @@ import javax.swing.JPanel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Random;
+
 import javax.swing.JComboBox;
 
 import HJA.controlador.controlador;
@@ -37,11 +39,15 @@ public class GUIProfesor {
 	private JButton[] btnRandom;
 	private JTextField[] equitys;
 	private JLabel lblDecision;
+	private JLabel lblResultadoEquity;
 	private JRadioButton rbFold;
 	private JRadioButton rbCall;
 	private JTextField tfEquity;
 	private JComboBox<String> cbAleatoriasMesa;
 	private ButtonGroup botones;
+	private Color colorGanador= Color.GREEN;
+	private Color colorPerdedor= Color.RED;
+	private Color colorEmpate= Color.YELLOW;
 	public GUIProfesor(controlador miCont) {
 		control= miCont;
 		acciones= new accionesProfesor(this);
@@ -108,9 +114,8 @@ public class GUIProfesor {
 		tfEquity.addKeyListener(new KeyAdapter() {
 		    public void keyTyped(KeyEvent e) {
 		        char c = e.getKeyChar();
-		        if (!((c >= '0') && (c <= '9') ||
-		           (c == KeyEvent.VK_BACK_SPACE) ||
-		           (c == KeyEvent.VK_DELETE))) {
+		        if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) ||(c == KeyEvent.VK_DELETE) || (c==','))) 
+		        {
 		          e.consume();
 		        }
 		      }
@@ -211,6 +216,11 @@ public class GUIProfesor {
 		lblDecision.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDecision.setBounds(293, 10, 151, 38);
 		panelProfesor.add(lblDecision);
+		
+		lblResultadoEquity = new JLabel("Acertaste");
+		lblResultadoEquity.setHorizontalAlignment(SwingConstants.CENTER);
+		lblResultadoEquity.setBounds(83, 32, 98, 16);
+		panelProfesor.add(lblResultadoEquity);
 	}
 	//Crea los campos de texto
 	private void creaEquitys()
@@ -408,10 +418,74 @@ public class GUIProfesor {
 		return correcto;
 	}
 	//Introduce los valores obtenidos del calculo
-	public void introduceResultado(ArrayList<String> equitys)
+	public void introduceResultado(ArrayList<String> equity)
 	{
-		
+		float jug1= round(Float.parseFloat(equity.get(0)), 2);
+		float jug2= round(Float.parseFloat(equity.get(1)), 2);
+		float decision= Float.parseFloat( tfEquity.getText());
+		equitys[0].setText(Float.toString(jug1));
+		equitys[1].setText(Float.toString(jug2));
+		if(jug1>jug2)
+		{
+			equitys[0].setBackground(colorGanador);
+			equitys[1].setBackground(colorPerdedor);
+			if(rbCall.isSelected())
+			{
+				lblDecision.setText("Correcto");
+				lblDecision.setForeground(colorGanador);
+				
+			}
+			else
+			{
+				lblDecision.setText("Error");
+				lblDecision.setForeground(colorPerdedor);
+			}
+		}
+		else if(jug1<jug2)
+		{
+			equitys[1].setBackground(colorGanador);
+			equitys[0].setBackground(colorPerdedor);
+			if(rbFold.isSelected())
+			{
+				lblDecision.setText("Correcto");
+				lblDecision.setForeground(colorGanador);
+				
+			}
+			else
+			{
+				lblDecision.setText("Error");
+				lblDecision.setForeground(colorPerdedor);
+			}
+		}
+		else
+		{
+			equitys[0].setBackground(colorEmpate);
+			equitys[1].setBackground(colorEmpate);
+			lblDecision.setText("Empate");
+			lblDecision.setForeground(colorEmpate);
+		}
+		if(jug1>decision)
+		{
+			lblResultadoEquity.setText("Te pasaste");
+			lblDecision.setForeground(colorPerdedor);
+		}
+		else if(jug1<decision)
+		{
+			lblResultadoEquity.setText("Te quedaste corto");
+			lblDecision.setForeground(colorPerdedor);
+		}
+		else
+		{
+			lblResultadoEquity.setText("Acertaste");
+			lblDecision.setForeground(colorGanador);
+		}
 	}
+	//redondea los float
+	public float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
 	/*-------------------------------------- Getters y setters-------------------------------------------------*/
 	public JFrame getFrmPokermaster() {
 		return frmPokermaster;
