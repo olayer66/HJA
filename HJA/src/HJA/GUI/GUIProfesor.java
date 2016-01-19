@@ -25,6 +25,7 @@ import HJA.controlador.controlador;
 
 import java.awt.Toolkit;
 import java.awt.Color;
+import javax.swing.ImageIcon;
 
 public class GUIProfesor {
 
@@ -32,21 +33,26 @@ public class GUIProfesor {
 	private accionesProfesor acciones;
 	private JFrame frmPokermaster;
 	private JPanel panelProfesor;
-	private JButton btnCalcular;
-	private JButton[] btnSeleccionar;
+	private JPanel jpRango;
 	private ImagePanel[] ipCartas;
 	private ImagePanel[] ipMesa;
+	private JButton btnCalcular;
+	private JButton[] btnSeleccionar;
 	private JButton[] btnRandom;
+	private JButton btnSiguienteFase;
 	private JTextField[] equitys;
 	private JLabel lblDecision;
 	private JLabel lblMano ;
 	private JRadioButton rbFold;
 	private JRadioButton rbCall;
 	private JComboBox<String> cbAleatoriasMesa;
+	private JComboBox<String> cbRango; 
+	private JComboBox<String> cbPosicion;
 	private ButtonGroup botones;
 	private Color colorGanador= Color.GREEN;
 	private Color colorPerdedor= Color.RED;
 	private Color colorEmpate= Color.ORANGE;
+	private JButton btnMostrarRival;
 	public GUIProfesor(controlador miCont) {
 		control= miCont;
 		acciones= new accionesProfesor(this);
@@ -61,7 +67,7 @@ public class GUIProfesor {
 		frmPokermaster = new JFrame();
 		frmPokermaster.setIconImage(Toolkit.getDefaultToolkit().getImage(GUIProfesor.class.getResource("/HJA/GUI/icon.png")));
 		frmPokermaster.setTitle("PokerMaster");
-		frmPokermaster.setBounds(100, 100, 490, 533);
+		frmPokermaster.setBounds(100, 100, 490, 602);
 		frmPokermaster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPokermaster.getContentPane().setLayout(null);
 		
@@ -88,29 +94,66 @@ public class GUIProfesor {
 			
 		panelProfesor = new JPanel();
 		panelProfesor.setBorder(null);
-		panelProfesor.setBounds(10, 425, 454, 59);
+		panelProfesor.setBounds(10, 425, 454, 128);
 		frmPokermaster.getContentPane().add(panelProfesor);
 		panelProfesor.setLayout(null);
 		
+		jpRango = new JPanel();
+		jpRango.setBounds(10, 425, 162, 62);
+		frmPokermaster.getContentPane().add(jpRango);
+		
+		lblMano = new JLabel("poker");
+		lblMano.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMano.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblMano.setBounds(36, 78, 152, 37);
+		panelProfesor.add(lblMano);
+
+
+		lblDecision = new JLabel("correcto");
+		lblDecision.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblDecision.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDecision.setBounds(271, 75, 127, 42);
+		panelProfesor.add(lblDecision);
+		
+		JLabel lblPosicion = new JLabel("Posicion:");
+		lblPosicion.setBounds(10, 40, 46, 14);
+		panelProfesor.add(lblPosicion);
+		
+		JLabel lblRango = new JLabel("Rango:");
+		lblRango.setBounds(10, 14, 46, 14);
+		panelProfesor.add(lblRango);
+		
 		rbCall = new JRadioButton("Call");
 		rbCall.setSelected(true);
-		rbCall.setBounds(87, 6, 46, 23);
+		rbCall.setBounds(186, 10, 46, 23);
 		panelProfesor.add(rbCall);
 		
 		rbFold = new JRadioButton("Fold");
-		rbFold.setBounds(87, 32, 71, 23);
+		rbFold.setBounds(186, 36, 51, 23);
 		panelProfesor.add(rbFold);
+		
 		cbAleatoriasMesa = new JComboBox<String>();
-		cbAleatoriasMesa.setBounds(238, 399, 41, 20);
+		cbAleatoriasMesa.setBounds(169, 399, 41, 20);
 		frmPokermaster.getContentPane().add(cbAleatoriasMesa);
 		cbAleatoriasMesa.addItem("0");
 		cbAleatoriasMesa.addItem("3");
 		cbAleatoriasMesa.addItem("4");
 		cbAleatoriasMesa.addItem("5");
 		
+		cbRango = new JComboBox<String>();
+		cbRango.setBounds(55, 11, 92, 20);
+		panelProfesor.add(cbRango);
+				
+		cbPosicion = new JComboBox<String>();
+		cbPosicion.setBounds(65, 37, 82, 20);
+		panelProfesor.add(cbPosicion);
+			
 		//ButtonGroup
 		botones.add(rbFold);
 		botones.add(rbCall);
+		
+		
+		
 		//Inicializadores
 		creaCartas();
 		creaBotones();
@@ -164,7 +207,7 @@ public class GUIProfesor {
 		}
 		
 		btnSeleccionar[2]= new JButton("Seleccionar Mesa");
-		btnSeleccionar[2].setBounds(79, 398, 149, 23);
+		btnSeleccionar[2].setBounds(10, 398, 149, 23);
 		frmPokermaster.getContentPane().add(btnSeleccionar[2]);
 		btnSeleccionar[2].addActionListener(acciones);
 		btnSeleccionar[2].setActionCommand("3");
@@ -174,55 +217,35 @@ public class GUIProfesor {
 		{
 			btnRandom[i] = new JButton("Aleatorias");
 			btnRandom[i].setBounds(y, 202, 100, 23);
-			y=303;
+			y=293;
 			frmPokermaster.getContentPane().add(btnRandom[i]);
 			btnRandom[i].addActionListener(acciones);
 			btnRandom[i].setActionCommand(Integer.toString(i+4));
 		}	
 		btnRandom[2]= new JButton("Aleatorias");
-		btnRandom[2].setBounds(283, 398, 100, 23);
+		btnRandom[2].setBounds(214, 398, 100, 23);
 		frmPokermaster.getContentPane().add(btnRandom[2]);
 		btnRandom[2].addActionListener(acciones);
 		btnRandom[2].setActionCommand("6");
 		
 		btnCalcular = new JButton("Calcular");
-		btnCalcular.setBounds(191, 6, 92, 42);
+		btnCalcular.setBounds(292, 10, 92, 42);
 		btnCalcular.setEnabled(false);
 		panelProfesor.add(btnCalcular);
 		btnCalcular.addActionListener(acciones);
 		btnCalcular.setActionCommand("7");
 		
-		lblDecision = new JLabel("");
-		lblDecision.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblDecision.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDecision.setBounds(293, 1, 151, 23);
-		panelProfesor.add(lblDecision);
+		btnSiguienteFase = new JButton("Siguiente fase");
+		btnSiguienteFase.setBounds(316, 398, 148, 23);
+		btnSiguienteFase.setEnabled(false);
+		btnSiguienteFase.addActionListener(acciones);
+		btnSiguienteFase.setActionCommand("8");
+		frmPokermaster.getContentPane().add(btnSiguienteFase);
 		
-		lblMano = new JLabel("");
-		lblMano.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMano.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblMano.setBounds(293, 27, 151, 23);
-		panelProfesor.add(lblMano);
-	}
-	//Crea los campos de texto
-	private void creaEquitys()
-	{
-		equitys= new JTextField[2];
-		int y=125;
-		for(int i=0; i<equitys.length;i++)
-		{
-			equitys[i] = new JTextField();
-			equitys[i].setFont(new Font("Tahoma", Font.PLAIN, 22));
-			equitys[i].setHorizontalAlignment(SwingConstants.RIGHT);
-			equitys[i].setEnabled(true);
-			equitys[i].setEditable(false);
-			equitys[i].setForeground(Color.BLACK);
-			equitys[i].setBounds(y, 11, 60, 27);
-			y=329;
-			frmPokermaster.getContentPane().add(equitys[i]);
-			equitys[i].setColumns(10);
-			equitys[i].setText("0%");
-		}
+		btnMostrarRival = new JButton("New button");
+		btnMostrarRival.setIcon(new ImageIcon(GUIProfesor.class.getResource("/HJA/GUI/eye.png")));
+		btnMostrarRival.setBounds(403, 202, 35, 23);
+		frmPokermaster.getContentPane().add(btnMostrarRival);
 	}
 	//devuelve las cartas que han de ser bloqueadas
 	public ArrayList<String> getBloqueadas(int posicion)
@@ -417,12 +440,14 @@ public class GUIProfesor {
 			{
 				lblDecision.setText("Correcto");
 				lblDecision.setForeground(colorGanador);
+				lblMano.setText("");
 				
 			}
 			else
 			{
 				lblDecision.setText("Error");
 				lblDecision.setForeground(colorPerdedor);
+				lblMano.setText("");
 			}
 			break;
 			
@@ -431,21 +456,6 @@ public class GUIProfesor {
 			lblDecision.setForeground(colorEmpate);
 			break;
 		}
-		/*if(jug1>decision)
-		{
-			lblResultadoEquity.setText("Te pasaste");
-			lblDecision.setForeground(colorPerdedor);
-		}
-		else if(jug1<decision)
-		{
-			lblResultadoEquity.setText("Te quedaste corto");
-			lblDecision.setForeground(colorPerdedor);
-		}
-		else
-		{
-			lblResultadoEquity.setText("Acertaste");
-			lblDecision.setForeground(colorGanador);
-		}*/
 	}
 	//Devuleve si se permite calcular
 	private void activaCalcular()
