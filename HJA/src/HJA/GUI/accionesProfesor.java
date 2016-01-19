@@ -62,6 +62,12 @@ public class accionesProfesor implements ActionListener
 					vtnProfesor.introduceResultado(vtnProfesor.getControl().caculoProfesor(vtnProfesor.getJugadores(), vtnProfesor.getMesa()));
 				}				
 				break;
+			case "8"://nueva carta en el board
+				vtnProfesor.nuevaCartaBoard();
+				break;
+			case "9"://mostrar cartas del rival
+				vtnProfesor.muestraRival();
+				break;
 			case "20":
 				if(vtnCartas.esMesaValida(jug))
 				{
