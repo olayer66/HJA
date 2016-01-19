@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class profesor 
 {
 	private ProcesarMano procesar;
+	private String mano;
 	public int calculaEquity(ArrayList<String> jugadores, ArrayList<String> mesa)
 	{
 		procesar = new ProcesarMano();
@@ -47,6 +48,18 @@ public class profesor
 			else
 				ganador=0;
 		}
+		calculaMano(valorJugada);
 		return ganador;
 	}
+	private void calculaMano(int[] valorJugada)
+	{
+		ParseJugadas parser= new ParseJugadas();
+		int num= valorJugada[0]/100;
+		mano=parser.intToHand(num);
+	}
+	public String getMano() {
+		return mano;
+	}
+	
 }
+

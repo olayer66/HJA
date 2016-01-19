@@ -55,10 +55,13 @@ public class controlador
 		salida=calculo.getMiSalida();
 		return eq;
 	}
-	public int caculoProfesor(ArrayList<String> jugadores, ArrayList<String> mesa)
+	public String[] caculoProfesor(ArrayList<String> jugadores, ArrayList<String> mesa)
 	{
+		String[] resultado= new String[2];
 		profesor prof = new profesor();
-		return prof.calculaEquity(jugadores, mesa);
+		resultado[0]=Integer.toString(prof.calculaEquity(jugadores, mesa));
+		resultado[1]=prof.getMano();
+		return resultado;
 	}
 	public String getSalida() {
 		return salida;

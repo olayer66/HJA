@@ -39,13 +39,14 @@ public class GUIProfesor {
 	private JButton[] btnRandom;
 	private JTextField[] equitys;
 	private JLabel lblDecision;
+	private JLabel lblMano ;
 	private JRadioButton rbFold;
 	private JRadioButton rbCall;
 	private JComboBox<String> cbAleatoriasMesa;
 	private ButtonGroup botones;
 	private Color colorGanador= Color.GREEN;
 	private Color colorPerdedor= Color.RED;
-	private Color colorEmpate= Color.YELLOW;
+	private Color colorEmpate= Color.ORANGE;
 	public GUIProfesor(controlador miCont) {
 		control= miCont;
 		acciones= new accionesProfesor(this);
@@ -186,15 +187,22 @@ public class GUIProfesor {
 		
 		btnCalcular = new JButton("Calcular");
 		btnCalcular.setBounds(191, 6, 92, 42);
+		btnCalcular.setEnabled(false);
 		panelProfesor.add(btnCalcular);
 		btnCalcular.addActionListener(acciones);
 		btnCalcular.setActionCommand("7");
 		
-		lblDecision = new JLabel("Correcto");
+		lblDecision = new JLabel("");
 		lblDecision.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		lblDecision.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDecision.setBounds(293, 10, 151, 38);
+		lblDecision.setBounds(293, 1, 151, 23);
 		panelProfesor.add(lblDecision);
+		
+		lblMano = new JLabel("");
+		lblMano.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMano.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblMano.setBounds(293, 27, 151, 23);
+		panelProfesor.add(lblMano);
 	}
 	//Crea los campos de texto
 	private void creaEquitys()
@@ -310,6 +318,7 @@ public class GUIProfesor {
 			}
 			break;
 		}
+		activaCalcular();
 	}
 	//Genera cartas aleatorias
 	public void cartasAleatorias(int jug)
@@ -385,28 +394,25 @@ public class GUIProfesor {
 		return correcto;
 	}
 	//Introduce los valores obtenidos del calculo
-	public void introduceResultado(int ganador)
+	public void introduceResultado(String[] ganador)
 	{
-		if(ganador==1)
+		switch (ganador[0]) 
 		{
-			//equitys[0].setBackground(colorGanador);
-			//equitys[1].setBackground(colorPerdedor);
+		case "1":
 			if(rbCall.isSelected())
 			{
 				lblDecision.setText("Correcto");
 				lblDecision.setForeground(colorGanador);
-				
+				lblMano.setText(ganador[1]);
 			}
 			else
 			{
 				lblDecision.setText("Error");
 				lblDecision.setForeground(colorPerdedor);
+				lblMano.setText("");
 			}
-		}
-		else if(ganador==2)
-		{
-			//equitys[1].setBackground(colorGanador);
-			//equitys[0].setBackground(colorPerdedor);
+			break;
+		case "2":
 			if(rbFold.isSelected())
 			{
 				lblDecision.setText("Correcto");
@@ -418,13 +424,12 @@ public class GUIProfesor {
 				lblDecision.setText("Error");
 				lblDecision.setForeground(colorPerdedor);
 			}
-		}
-		else
-		{
-			//equitys[0].setBackground(colorEmpate);
-			//equitys[1].setBackground(colorEmpate);
+			break;
+			
+		default:
 			lblDecision.setText("Empate");
 			lblDecision.setForeground(colorEmpate);
+			break;
 		}
 		/*if(jug1>decision)
 		{
@@ -441,6 +446,14 @@ public class GUIProfesor {
 			lblResultadoEquity.setText("Acertaste");
 			lblDecision.setForeground(colorGanador);
 		}*/
+	}
+	//Devuleve si se permite calcular
+	private void activaCalcular()
+	{
+		if(ipCartas[0].getName()!="bc" && ipCartas[2].getName()!="bc")
+			btnCalcular.setEnabled(true);
+		else
+			btnCalcular.setEnabled(false);
 	}
 	//redondea los float
 	public float round(float d, int decimalPlace) {
