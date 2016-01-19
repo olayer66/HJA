@@ -180,7 +180,7 @@ public class GUIProfesor {
 		int y=43;
 		for(int i=0; i< ipCartas.length;i++)
 		{
-			ipCartas[i] = new ImagePanel("back.jpg");
+			ipCartas[i] = new ImagePanel("bc.png");
 			ipCartas[i].setName("bc");
 			ipCartas[i].setBounds(x, y, witdh, heigth);
 			frmPokermaster.getContentPane().add(ipCartas[i]);
@@ -193,7 +193,7 @@ public class GUIProfesor {
 		y=267;
 		for(int i=0;i<ipMesa.length;i++)
 		{
-			ipMesa[i] = new ImagePanel("back.jpg");
+			ipMesa[i] = new ImagePanel("bc.png");
 			ipMesa[i].setName("bc");
 			ipMesa[i].setBounds(x, y, witdh, heigth);
 			frmPokermaster.getContentPane().add(ipMesa[i]);
