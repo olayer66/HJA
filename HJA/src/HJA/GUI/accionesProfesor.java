@@ -68,6 +68,9 @@ public class accionesProfesor implements ActionListener
 			case "9"://mostrar cartas del rival
 				vtnProfesor.muestraRival();
 				break;
+			case "10":
+				vtnProfesor.LimpiarVentana();
+				break;
 			case "20":
 				if(vtnCartas.esMesaValida(jug))
 				{

@@ -4,7 +4,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
@@ -12,8 +11,6 @@ import java.awt.Font;
 
 import javax.swing.JPanel;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -40,7 +37,8 @@ public class GUIProfesor {
 	private JButton[] btnSeleccionar;
 	private JButton[] btnRandom;
 	private JButton btnSiguienteFase;
-	private JTextField[] equitys;
+	private JButton btnMostrarRival;
+	private JButton btnLimpiar;
 	private JLabel lblDecision;
 	private JLabel lblMano ;
 	private JRadioButton rbFold;
@@ -52,7 +50,7 @@ public class GUIProfesor {
 	private Color colorGanador= Color.GREEN;
 	private Color colorPerdedor= Color.RED;
 	private Color colorEmpate= Color.ORANGE;
-	private JButton btnMostrarRival;
+	
 	private int numCartasMesa;
 	private String[] nombreCartas={"Ah","Kh","Qh","Jh","Th","9h","8h","7h","6h","5h","4h","3h","2h","Ad","Kd","Qd","Jd","Td","9d","8d","7d","6d","5d","4d","3d","2d","Ac","Kc","Qc","Jc","Tc","9c","8c","7c","6c","5c","4c","3c","2c","As","Ks","Qs","Js","Ts","9s","8s","7s","6s","5s","4s","3s","2s"};
 	public GUIProfesor(controlador miCont) {
@@ -97,7 +95,7 @@ public class GUIProfesor {
 			
 		panelProfesor = new JPanel();
 		panelProfesor.setBorder(null);
-		panelProfesor.setBounds(10, 425, 454, 128);
+		panelProfesor.setBounds(0, 425, 474, 138);
 		frmPokermaster.getContentPane().add(panelProfesor);
 		panelProfesor.setLayout(null);
 		
@@ -241,11 +239,18 @@ public class GUIProfesor {
 		btnRandom[2].setActionCommand("6");
 		
 		btnCalcular = new JButton("Calcular");
-		btnCalcular.setBounds(292, 10, 92, 42);
+		btnCalcular.setBounds(238, 8, 117, 46);
 		btnCalcular.setEnabled(false);
 		panelProfesor.add(btnCalcular);
 		btnCalcular.addActionListener(acciones);
 		btnCalcular.setActionCommand("7");
+		
+		btnLimpiar = new JButton("Limpiar");
+		btnLimpiar.setEnabled(false);
+		btnLimpiar.setBounds(375, 8, 89, 46);
+		btnLimpiar.addActionListener(acciones);
+		btnLimpiar.setActionCommand("10");
+		panelProfesor.add(btnLimpiar);
 		
 		btnSiguienteFase = new JButton("Siguiente fase");
 		btnSiguienteFase.setBounds(316, 398, 148, 23);
@@ -254,7 +259,8 @@ public class GUIProfesor {
 		btnSiguienteFase.setActionCommand("8");
 		frmPokermaster.getContentPane().add(btnSiguienteFase);
 		
-		btnMostrarRival = new JButton("New button");
+		btnMostrarRival = new JButton("");
+		btnMostrarRival.setEnabled(false);
 		btnMostrarRival.setIcon(new ImageIcon(GUIProfesor.class.getResource("/HJA/GUI/eye.png")));
 		btnMostrarRival.addActionListener(acciones);
 		btnMostrarRival.setActionCommand("9");
@@ -322,7 +328,7 @@ public class GUIProfesor {
 			{
 				if(i==1 && cartas.size()==1)
 				{
-					ipCartas[i].repintar("back.jpg");
+					ipCartas[i].repintar("bc.jpg");
 					ipCartas[i].setName("bc");
 				}
 				else
@@ -336,7 +342,7 @@ public class GUIProfesor {
 		case 2:
 				if(cartas.size()==1)
 				{
-					ipCartas[3].repintar("back.jpg");
+					ipCartas[3].repintar("bc.jpg");
 					ipCartas[3].setName("bc");
 				}
 				else
@@ -346,8 +352,7 @@ public class GUIProfesor {
 					ipCartas[3].repintar(cartas.get(1)+".png");
 					ipCartas[3].setName(cartas.get(1));
 				}
-				//ipCartas[2].repaint();
-				//ipCartas[3].repaint();
+				btnMostrarRival.setEnabled(true);
 			break;
 		case 3:
 			for(int i=0; i<cartas.size();i++)
@@ -360,7 +365,7 @@ public class GUIProfesor {
 			{
 				for(int i=cartas.size(); i<5;i++)
 				{
-					ipMesa[i].repintar("back.jpg");
+					ipMesa[i].repintar("bc.jpg");
 					ipMesa[i].setName("bc");
 					ipMesa[i].repaint();
 				}
@@ -403,7 +408,7 @@ public class GUIProfesor {
 				}
 				while(bloqueadas.contains(nombreCartas[carta]));
 				bloqueadas.add(nombreCartas[carta]);
-				cartas.add(nombreCartas[carta]);			
+				cartas.add(nombreCartas[carta]);	
 			}
 			break;	
 		case 3:
@@ -482,6 +487,7 @@ public class GUIProfesor {
 			lblDecision.setForeground(colorEmpate);
 			break;
 		}
+		btnLimpiar.setEnabled(true);
 	}
 	//Devuleve si se permite calcular
 	private void activaCalcular()
@@ -498,6 +504,34 @@ public class GUIProfesor {
 		ipCartas[3].repaint();
 		btnMostrarRival.setEnabled(false);
 		btnRandom[1].setEnabled(false);
+	}
+	//Limpia la ventana
+	public void LimpiarVentana() 
+	{
+		try {
+			cargaCartas(CreaArrayBack(2), 1);
+			cargaCartas(CreaArrayBack(2), 2);
+			cargaCartas(CreaArrayBack(5), 3);
+		} catch (IOException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		}
+		muestraRival();
+		btnCalcular.setEnabled(false);
+		btnMostrarRival.setEnabled(false);
+		btnRandom[1].setEnabled(true);
+		btnSiguienteFase.setEnabled(false);
+		btnLimpiar.setEnabled(false);
+	}
+	//Crea arrayList de cartas
+	private ArrayList<String> CreaArrayBack(int num)
+	{
+		ArrayList<String> cartas= new ArrayList<>();
+		for(int i=0;i<num ;i++)
+		{
+			cartas.add("bc");
+		}
+		return cartas;
 	}
 	//redondea los float
 	public float round(float d, int decimalPlace) {
