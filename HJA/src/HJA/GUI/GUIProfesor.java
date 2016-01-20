@@ -5,7 +5,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.awt.Font;
 
@@ -19,6 +22,7 @@ import java.util.Random;
 import javax.swing.JComboBox;
 
 import HJA.controlador.controlador;
+import HJA.modelo.procesarJugada;
 
 import java.awt.Toolkit;
 import java.awt.Color;
@@ -50,14 +54,15 @@ public class GUIProfesor {
 	private Color colorGanador= Color.GREEN;
 	private Color colorPerdedor= Color.RED;
 	private Color colorEmpate= Color.ORANGE;
-	
 	private int numCartasMesa;
+	private int contFase;
 	private String[] nombreCartas={"Ah","Kh","Qh","Jh","Th","9h","8h","7h","6h","5h","4h","3h","2h","Ad","Kd","Qd","Jd","Td","9d","8d","7d","6d","5d","4d","3d","2d","Ac","Kc","Qc","Jc","Tc","9c","8c","7c","6c","5c","4c","3c","2c","As","Ks","Qs","Js","Ts","9s","8s","7s","6s","5s","4s","3s","2s"};
 	public GUIProfesor(controlador miCont) {
 		control= miCont;
 		acciones= new accionesProfesor(this);
 		botones= new ButtonGroup();
 		numCartasMesa=0;
+		contFase=0;
 		initialize();
 	}
 
@@ -68,8 +73,9 @@ public class GUIProfesor {
 		frmPokermaster = new JFrame();
 		frmPokermaster.setIconImage(Toolkit.getDefaultToolkit().getImage(GUIProfesor.class.getResource("/HJA/GUI/icon.png")));
 		frmPokermaster.setTitle("PokerMaster");
-		frmPokermaster.setBounds(100, 100, 490, 602);
+		frmPokermaster.setBounds(100, 100, 490, 582);
 		frmPokermaster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmPokermaster.setResizable(false);
 		frmPokermaster.getContentPane().setLayout(null);
 		
 		
@@ -103,17 +109,17 @@ public class GUIProfesor {
 		jpRango.setBounds(10, 425, 162, 62);
 		frmPokermaster.getContentPane().add(jpRango);
 		
-		lblMano = new JLabel("poker");
+		lblMano = new JLabel("");
 		lblMano.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMano.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblMano.setBounds(36, 78, 152, 37);
+		lblMano.setBounds(248, 78, 152, 37);
 		panelProfesor.add(lblMano);
 
 
-		lblDecision = new JLabel("correcto");
+		lblDecision = new JLabel("");
 		lblDecision.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		lblDecision.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDecision.setBounds(271, 75, 127, 42);
+		lblDecision.setBounds(60, 75, 127, 42);
 		panelProfesor.add(lblDecision);
 		
 		JLabel lblPosicion = new JLabel("Posicion:");
@@ -144,8 +150,8 @@ public class GUIProfesor {
 		cbRango = new JComboBox<String>();
 		cbRango.setBounds(55, 11, 92, 20);
 		panelProfesor.add(cbRango);
-		cbRango.addItem("Janda");
 		cbRango.addItem("MA");
+		cbRango.addItem("Janda");	
 		
 		cbPosicion = new JComboBox<String>();
 		cbPosicion.setBounds(65, 37, 82, 20);
@@ -216,18 +222,18 @@ public class GUIProfesor {
 			btnSeleccionar[i].setActionCommand(Integer.toString(i+1));
 		}
 		
-		btnSeleccionar[2]= new JButton("Seleccionar Mesa");
+		btnSeleccionar[2]= new JButton("Seleccionar cartas");
 		btnSeleccionar[2].setBounds(10, 398, 149, 23);
 		frmPokermaster.getContentPane().add(btnSeleccionar[2]);
 		btnSeleccionar[2].addActionListener(acciones);
 		btnSeleccionar[2].setActionCommand("3");
 		
-		y=68;
+		y=73;
 		for(int i=0;i<2;i++)
 		{
 			btnRandom[i] = new JButton("Aleatorias");
 			btnRandom[i].setBounds(y, 202, 100, 23);
-			y=293;
+			y=300;
 			frmPokermaster.getContentPane().add(btnRandom[i]);
 			btnRandom[i].addActionListener(acciones);
 			btnRandom[i].setActionCommand(Integer.toString(i+4));
@@ -252,7 +258,11 @@ public class GUIProfesor {
 		btnLimpiar.setActionCommand("10");
 		panelProfesor.add(btnLimpiar);
 		
-		btnSiguienteFase = new JButton("Siguiente fase");
+		JLabel lblResultado = new JLabel("Resultado:");
+		lblResultado.setBounds(10, 65, 82, 14);
+		panelProfesor.add(lblResultado);
+		
+		btnSiguienteFase = new JButton("Añadir carta");
 		btnSiguienteFase.setBounds(316, 398, 148, 23);
 		btnSiguienteFase.setEnabled(false);
 		btnSiguienteFase.addActionListener(acciones);
@@ -264,9 +274,11 @@ public class GUIProfesor {
 		btnMostrarRival.setIcon(new ImageIcon(GUIProfesor.class.getResource("/HJA/GUI/eye.png")));
 		btnMostrarRival.addActionListener(acciones);
 		btnMostrarRival.setActionCommand("9");
-		btnMostrarRival.setBounds(403, 202, 35, 23);
+		btnMostrarRival.setBounds(408, 202, 35, 23);
 		frmPokermaster.getContentPane().add(btnMostrarRival);
 	}
+
+	/*--------------------------Metodos de uso-------------------------------------------------*/
 	//Añade una carta al board
 	public void nuevaCartaBoard()
 	{
@@ -278,7 +290,85 @@ public class GUIProfesor {
 		if(numCartasMesa==5)
 			btnSiguienteFase.setEnabled(false);
 	}
-	/*--------------------------Metodos de uso-------------------------------------------------*/
+	
+	//Carga las nuevas cartas recibidas
+	public void cargaCartas (ArrayList<String> cartas, int jug, boolean selecionar) throws IOException
+	{
+		switch (jug) {
+		case 1:
+			for(int i=0;i<2;i++)
+			{
+				if(i==1 && cartas.size()==1)
+				{
+					ipCartas[i].repintar("bc.jpg");
+					ipCartas[i].setName("bc");
+				}
+				else
+				{
+					ipCartas[i].repintar(cartas.get(i)+".png");
+					ipCartas[i].setName(cartas.get(i));
+				}
+				ipCartas[i].repaint();
+			}
+			break;
+		case 2:
+				if(cartas.size()==1)
+				{
+					ipCartas[3].repintar("bc.jpg");
+					ipCartas[3].setName("bc");
+				}
+				else
+				{	
+					ipCartas[2].setName(cartas.get(0));
+					ipCartas[3].setName(cartas.get(1));
+				if(selecionar==true)
+				{
+					ipCartas[2].repintar(cartas.get(0)+".png");
+					ipCartas[3].repintar(cartas.get(1)+".png");
+					ipCartas[2].repaint();
+					ipCartas[3].repaint();
+					muestraRival();
+					btnSeleccionar[1].setEnabled(true);
+					btnRandom[1].setEnabled(true);
+				}
+				else
+				{
+					ipCartas[2].repintar("bc.png");
+					ipCartas[3].repintar("bc.png");
+					ipCartas[2].repaint();
+					ipCartas[3].repaint();
+					btnMostrarRival.setEnabled(true);
+					btnSeleccionar[1].setEnabled(false);
+					btnRandom[1].setEnabled(false);
+				}
+				}
+				
+			break;
+		case 3:
+			for(int i=0; i<cartas.size();i++)
+			{
+				ipMesa[i].repintar(cartas.get(i)+".png");
+				ipMesa[i].setName(cartas.get(i));
+				ipMesa[i].repaint();
+			}
+			if(cartas.size()<5)
+			{
+				for(int i=cartas.size(); i<5;i++)
+				{
+					ipMesa[i].repintar("bc.png");
+					ipMesa[i].setName("bc");
+					ipMesa[i].repaint();
+				}
+			}
+			numCartasMesa=cartas.size();
+			if(numCartasMesa==5)
+				btnSiguienteFase.setEnabled(false);
+			else
+				btnSiguienteFase.setEnabled(true);
+			break;
+		}
+		activaCalcular();
+	}
 	//devuelve las cartas que han de ser bloqueadas
 	public ArrayList<String> getBloqueadas(int posicion)
 	{
@@ -318,66 +408,6 @@ public class GUIProfesor {
 				break;
 		}
 		return bloqueadas;
-	}
-	//Carga las nuevas cartas recibidas
-	public void cargaCartas (ArrayList<String> cartas, int jug) throws IOException
-	{
-		switch (jug) {
-		case 1:
-			for(int i=0;i<2;i++)
-			{
-				if(i==1 && cartas.size()==1)
-				{
-					ipCartas[i].repintar("bc.jpg");
-					ipCartas[i].setName("bc");
-				}
-				else
-				{
-					ipCartas[i].repintar(cartas.get(i)+".png");
-					ipCartas[i].setName(cartas.get(i));
-				}
-				ipCartas[i].repaint();
-			}
-			break;
-		case 2:
-				if(cartas.size()==1)
-				{
-					ipCartas[3].repintar("bc.jpg");
-					ipCartas[3].setName("bc");
-				}
-				else
-				{
-					ipCartas[2].repintar(cartas.get(0)+".png");
-					ipCartas[2].setName(cartas.get(0));
-					ipCartas[3].repintar(cartas.get(1)+".png");
-					ipCartas[3].setName(cartas.get(1));
-				}
-				btnMostrarRival.setEnabled(true);
-			break;
-		case 3:
-			for(int i=0; i<cartas.size();i++)
-			{
-				ipMesa[i].repintar(cartas.get(i)+".png");
-				ipMesa[i].setName(cartas.get(i));
-				ipMesa[i].repaint();
-			}
-			if(cartas.size()<5)
-			{
-				for(int i=cartas.size(); i<5;i++)
-				{
-					ipMesa[i].repintar("bc.jpg");
-					ipMesa[i].setName("bc");
-					ipMesa[i].repaint();
-				}
-			}
-			numCartasMesa=cartas.size();
-			if(numCartasMesa==5)
-				btnSiguienteFase.setEnabled(false);
-			else
-				btnSiguienteFase.setEnabled(true);
-			break;
-		}
-		activaCalcular();
 	}
 	//Genera cartas aleatorias
 	public void cartasAleatorias(int jug)
@@ -428,7 +458,7 @@ public class GUIProfesor {
 			break;
 		}
 		try {
-			cargaCartas(cartas, jug);
+			cargaCartas(cartas, jug, false);
 		} catch (IOException e) {
 			// TODO Bloque catch generado automáticamente
 			e.printStackTrace();
@@ -446,6 +476,68 @@ public class GUIProfesor {
 			}
 		}
 		return correcto;
+	}
+	//Ejecuta la opcion de calculo elegida
+	public void calcular()
+	{
+		String[] datos= new String[4];
+		StringBuilder mano= new StringBuilder();
+		switch (faseDeJuego()) 
+		{
+			case 1://Preflop
+				datos[0]= Integer.toString(cbRango.getSelectedIndex());
+				datos[1]=mano.append(ipCartas[0].getName()).append(ipCartas[1].getName()).toString();
+				datos[2]= Integer.toString(cbPosicion.getSelectedIndex());
+				if(rbCall.isSelected())
+					datos[3]="0";
+				else
+					datos[3]="1";
+				if(control.evaluarJugada(datos))
+				{
+					lblDecision.setText("Correcto");
+					lblDecision.setForeground(colorGanador);
+					btnCalcular.setText("Continuar");
+				}
+				else
+				{
+					lblDecision.setText("Error");
+					lblDecision.setForeground(colorPerdedor);
+					btnCalcular.setEnabled(false);
+					btnLimpiar.setEnabled(true);
+				}
+				contFase++;
+				break;
+			case 2://flop
+				lblDecision.setText("");
+				mano= new StringBuilder();
+				mano.append(ipCartas[0].getName()).append(ipCartas[1].getName()).append(String.join("",getMesa() ));
+				lblMano.setText(control.valorMano(mano.toString()));
+				contFase++;
+				break;
+			case 3://turn
+				
+				break;
+			case 4://river
+		
+				break;
+			default:
+				JOptionPane.showMessageDialog(getFrmPokermaster(), "Faltan datos");
+				break;
+		}
+	}
+	//seleciona la fase de juego
+	private int faseDeJuego()
+	{	
+		if(ipCartas[0].getName()!="bc" && ipCartas[2].getName()!="bc" && ipMesa[4].getName()!="bc" && contFase==3)
+			return 4;//river
+		else if(ipCartas[0].getName()!="bc" && ipMesa[3].getName()!="bc" && contFase==2)
+			return 3;//turn
+		else if(ipCartas[0].getName()!="bc" && ipMesa[2].getName()!="bc" && contFase==1)
+			return 2;//flop
+		else if(ipCartas[0].getName()!="bc" &&ipCartas[2].getName()=="bc" && contFase==0)
+			return 1;//Preflop
+		else
+			return 0;
 	}
 	//Introduce los valores obtenidos del calculo
 	public void introduceResultado(String[] ganador)
@@ -500,6 +592,8 @@ public class GUIProfesor {
 	//Muestra las cartas del rival
 	public void muestraRival()
 	{
+		ipCartas[2].repintar(ipCartas[2].getName()+".png");
+		ipCartas[3].repintar(ipCartas[3].getName()+".png");
 		ipCartas[2].repaint();
 		ipCartas[3].repaint();
 		btnMostrarRival.setEnabled(false);
@@ -509,9 +603,9 @@ public class GUIProfesor {
 	public void LimpiarVentana() 
 	{
 		try {
-			cargaCartas(CreaArrayBack(2), 1);
-			cargaCartas(CreaArrayBack(2), 2);
-			cargaCartas(CreaArrayBack(5), 3);
+			cargaCartas(CreaArrayBack(2), 1, false);
+			cargaCartas(CreaArrayBack(2), 2, false);
+			cargaCartas(CreaArrayBack(5), 3, false);
 		} catch (IOException e) {
 			// TODO Bloque catch generado automáticamente
 			e.printStackTrace();
@@ -520,8 +614,13 @@ public class GUIProfesor {
 		btnCalcular.setEnabled(false);
 		btnMostrarRival.setEnabled(false);
 		btnRandom[1].setEnabled(true);
+		btnSeleccionar[1].setEnabled(true);
 		btnSiguienteFase.setEnabled(false);
 		btnLimpiar.setEnabled(false);
+		btnCalcular.setText("Calcular");
+		lblDecision.setText("");
+		lblMano.setText("");
+		contFase=0;
 	}
 	//Crea arrayList de cartas
 	private ArrayList<String> CreaArrayBack(int num)

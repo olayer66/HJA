@@ -98,7 +98,7 @@ public class GUISeleccionCartas {
 			{
 				if(cuadroImagenes[x].getName()==cartasBloqueadas.get(i))
 				{
-					cuadroImagenes[x].repintar("back.jpg");
+					cuadroImagenes[x].repintar("bc.png");
 					cuadroImagenes[x].repaint();
 				}
 			}

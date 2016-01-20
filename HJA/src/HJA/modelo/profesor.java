@@ -48,17 +48,23 @@ public class profesor
 			else
 				ganador=0;
 		}
-		calculaMano(valorJugada);
+		mano= calculaMano(valorJugada[0]);
 		return ganador;
 	}
-	private void calculaMano(int[] valorJugada)
+	private String calculaMano(int valorJugada)
 	{
 		ParseJugadas parser= new ParseJugadas();
-		int num= valorJugada[0]/100;
-		mano=parser.intToHand(num);
+		int num= valorJugada/100;
+		return parser.intToHand(num);
 	}
 	public String getMano() {
 		return mano;
+	}
+	//Devuelve la mano que se tiene para flop, turn y river
+	public String calculaValorMano(String mano)
+	{
+		procesar = new ProcesarMano();
+		return calculaMano(procesar.procesarBestHand(mano));
 	}
 	
 }

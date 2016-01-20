@@ -63,6 +63,11 @@ public class controlador
 		resultado[1]=prof.getMano();
 		return resultado;
 	}
+	public String valorMano(String mano)
+	{
+		profesor prof = new profesor();
+		return prof.calculaValorMano(mano);
+	}
 	public String getSalida() {
 		return salida;
 	}

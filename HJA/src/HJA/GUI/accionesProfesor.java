@@ -9,6 +9,7 @@ public class accionesProfesor implements ActionListener
 	private GUIProfesor vtnProfesor;
 	private GUISeleccionCartas vtnCartas;
 	private int jug;
+	private boolean seleccion=false;
 	public accionesProfesor(GUIProfesor vtnProf) 
 	{
 		vtnProfesor=vtnProf;
@@ -30,6 +31,7 @@ public class accionesProfesor implements ActionListener
 			case "2"://seleccion cartas jug2
 			try {
 				vtnCartas= new GUISeleccionCartas(vtnProfesor.getAcciones(),2, null,vtnProfesor.getBloqueadas(2),  null);
+				seleccion=true;
 			} catch (IOException e3) {
 				// TODO Bloque catch generado automáticamente
 				e3.printStackTrace();
@@ -57,10 +59,7 @@ public class accionesProfesor implements ActionListener
 				vtnProfesor.cartasAleatorias(3);
 				break;
 			case "7":// boton calcular
-				if(vtnProfesor.calcularActivo())
-				{
-					vtnProfesor.introduceResultado(vtnProfesor.getControl().caculoProfesor(vtnProfesor.getJugadores(), vtnProfesor.getMesa()));
-				}				
+					vtnProfesor.calcular();			
 				break;
 			case "8"://nueva carta en el board
 				vtnProfesor.nuevaCartaBoard();
@@ -74,9 +73,13 @@ public class accionesProfesor implements ActionListener
 			case "20":
 				if(vtnCartas.esMesaValida(jug))
 				{
+					boolean seleccionar=false;
 					try 
 					{
-						vtnProfesor.cargaCartas(vtnCartas.getCartasSeleccionadas(),jug);
+						if(seleccion)	
+							seleccionar=true;
+						seleccion=false;
+						vtnProfesor.cargaCartas(vtnCartas.getCartasSeleccionadas(),jug, seleccionar);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
