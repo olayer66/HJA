@@ -130,7 +130,7 @@ public class GUIProfesor {
 		lblRango.setBounds(10, 14, 46, 14);
 		panelProfesor.add(lblRango);
 		
-		rbCall = new JRadioButton("Call");
+		rbCall = new JRadioButton("OR");
 		rbCall.setSelected(true);
 		rbCall.setBounds(186, 10, 46, 23);
 		panelProfesor.add(rbCall);
@@ -497,6 +497,7 @@ public class GUIProfesor {
 					lblDecision.setText("Correcto");
 					lblDecision.setForeground(colorGanador);
 					btnCalcular.setText("Continuar");
+					rbCall.setText("Call");
 				}
 				else
 				{
@@ -508,17 +509,31 @@ public class GUIProfesor {
 				contFase++;
 				break;
 			case 2://flop
-				lblDecision.setText("");
-				mano= new StringBuilder();
-				mano.append(ipCartas[0].getName()).append(ipCartas[1].getName()).append(String.join("",getMesa() ));
-				lblMano.setText(control.valorMano(mano.toString()));
-				contFase++;
+				if(rbCall.isSelected())
+				{
+					lblDecision.setText("");
+					mano= new StringBuilder();
+					mano.append(ipCartas[0].getName()).append(ipCartas[1].getName()).append(String.join("",getMesa() ));
+					lblMano.setText(control.valorMano(mano.toString()));
+					contFase++;
+				}
+				else	
+					generaRestoJugada();
 				break;
 			case 3://turn
-				
+				if(rbCall.isSelected())
+				{
+					lblDecision.setText("");
+					mano= new StringBuilder();
+					mano.append(ipCartas[0].getName()).append(ipCartas[1].getName()).append(String.join("",getMesa() ));
+					lblMano.setText(control.valorMano(mano.toString()));
+					contFase++;
+				}
+				else	
+					generaRestoJugada();
 				break;
-			case 4://river
-		
+			case 4://river	
+					generaRestoJugada();
 				break;
 			default:
 				JOptionPane.showMessageDialog(getFrmPokermaster(), "Faltan datos");
@@ -538,6 +553,15 @@ public class GUIProfesor {
 			return 1;//Preflop
 		else
 			return 0;
+	}
+	//Genera el resto de la jugada en caso de hacer fold
+	private void generaRestoJugada()
+	{
+		for(int i=contFase;i<4;i++)
+		{
+			generaCartaAleatoria();
+		}
+		introduceResultado(control.caculoProfesor(getJugadores(), getMesa()));
 	}
 	//Introduce los valores obtenidos del calculo
 	public void introduceResultado(String[] ganador)
