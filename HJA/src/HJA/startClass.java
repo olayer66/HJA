@@ -38,8 +38,12 @@ public class startClass
 		//iniciamos los objetos
 		miControlador=new controlador();
 		new constante();
+		
+		//practica 3
 		/*vtnPlayers=new GUIPlayers(miControlador);	
 		vtnPlayers.getFrame().setVisible(true);*/
+		
+		//Practica 4
 		vtnProfesor= new GUIProfesor(miControlador);
 		vtnProfesor.getFrmPokermaster().setVisible(true);
 		

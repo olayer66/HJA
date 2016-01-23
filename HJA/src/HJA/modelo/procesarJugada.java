@@ -1,5 +1,8 @@
 package HJA.modelo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class procesarJugada {
 
 	private int rango; // 0->MA, 1->janda
@@ -15,10 +18,7 @@ public class procesarJugada {
 		accion = Integer.valueOf(datos[3]);
 	}
 	public boolean evaluarJugada(){
-		String[] pares = null;
-		int i=0;
-		boolean encontrado=false;
-		
+		ArrayList<String> pares = new ArrayList<String>();
 		//MA
 		if(rango==0){
 			if(posicion==1){//BB
@@ -31,54 +31,55 @@ public class procesarJugada {
 				if(accion==0)return true;
 				else return false;
 			}else pares=evaluarJanda();
-		}
-		
-		while(i<pares.length && !encontrado){
-			if(pares[i].equalsIgnoreCase(mano))encontrado=true;
-			else i++;
-		}
-		if(encontrado){
-			if(accion==0)return true;
-			else return false;
-		}else{
-			if(accion==0)return false;
-			else return true;
+		}	
+		if(pares.contains(mano))
+		{
+			if(accion==0)
+				return true;
+			else 
+				return false;
+		}else
+		{
+			if(accion==0)
+				return false;
+			else 
+				return true;
 		}
 	}
 	
 	//Devuelve array con los pares de cartas del rango Janda segun la posicion
-	public String[] evaluarJanda(){
+	public ArrayList<String> evaluarJanda(){
 		String rangoJanda="";
 		if(posicion==0)//SB
-			rangoJanda="AA-22,AKo-A7o,KQo-K9o,QJo-Q9o,JTo-J9o,T9o,98o,AKs-A2s,KQs-K2s,QJs-Q4s,JTs-J7s,T9s-T7s,98s-97s,87s-86s,76s-75s,65s-64s,54s";
+			rangoJanda="22+,A2s+,K2s+,Q8s+,J9s+,A2o+,K4o+,Q9o+,JTo";
 		else if (posicion==2)//UTG
-			rangoJanda="AA-33,AKo-AJo,KQo,AKs-ATs,KQs-KTs,QJs-QTs,JTs-J9s,T9s,98s,87s,76s,65s";	
+			rangoJanda="44+,A4s+,KJs+,A8o+";	
 		else if(posicion==3)//MP
-			rangoJanda="AA-22,AKo-ATo,KQo,AKs-A7s,A5s,KQs-KTs,QJs-QTs,JTs-J9s,T9s-T8s,98s-97s,87s-86s,76s-75s,65s,54s";
+			rangoJanda="33+,A2s+,KTs+,A7o+,A5o,KQo";
 		else if(posicion==4)//CO
-			rangoJanda="AA-22,AKo-ATo,KQo-KJo,QJo,AKs-A2s,KQs-K6s,QJs-Q7s,JTs-J8s,T9s-T8s,98s-97s,87s-86s,76s-75s,65s-64s,54s";
+			rangoJanda="22+,A2s+,K8s+,QTs+,A2o+,KTo+";
 		else{//BTN
-			rangoJanda="AA-22,AKo-A2o,KQo-K7o,QJo-Q9o,JTo-J9o,T9o-T8o,98o,87o,AKs-A2s,KQs-K2s,QJs-Q2s,JTs-J5s,T9s-T6s,98s-96s,87s-85s,76s-74s,65s-64s,54s-53s,43s";
+			rangoJanda="22+,A2s+,K2s+,Q2s+,J4s+,T7s+,98s,A2o+,K2o+,Q4o+,J7o+,T9o";
 		}
 		transformarString trans = new transformarString(rangoJanda);
-		return trans.procesarString();
+		return new ArrayList<String>(Arrays.asList(trans.procesarString()));
 	}
 	
 	//Devuelve array con los pares de cartas del rango Ma segun la posicion
-	public String[] evaluarMa(){
+	public ArrayList<String> evaluarMa(){
 		String rangoMa="";
 		if(posicion==0)//SB
-			rangoMa="22+,A2s+,JTo,QTo+,KTo+,A9o+,32s,43s,54s,65s,76s,87s,98s,T9s,JTs,QTs+,KTs+";
+			rangoMa="22+,A2s+,K2s+,Q2s+,J2s+,T2s+,92s+,82s+,73s+,63s+,53s+,43s,A2o+,K2o+,Q2o+,J2o+,T2o+,92o+,84o+,74o+,65o";
 		else if (posicion==2)//UTG
 			rangoMa="88+,AJs+,KQs,AQo+";	
 		else if(posicion==3)//MP
 			rangoMa="77+,AJo+,KQo,ATs+,KQs";
 		else if(posicion==4)//CO
-			rangoMa="66+,ATo+,A9s+,KJs+,KQo";
+			rangoMa="22+,A2s+,K4s+,Q9s+,JTs,A2o+,K7o+,QTo";
 		else{//BTN
-			rangoMa="55+,A8s+,A9o+,KJo+,JTs,QTs+,KTs+";
+			rangoMa="22+,A2s+,K2s+,Q2s+,J3s+,T6s+,97s+,A2o+,K2o+,Q2o+,J7o+,T8o+";
 		}
 		transformarString trans = new transformarString(rangoMa);
-		return trans.procesarString();
+		return new ArrayList<String>(Arrays.asList(trans.procesarString()));
 	}
 }
