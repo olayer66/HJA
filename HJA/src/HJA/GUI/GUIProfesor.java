@@ -121,16 +121,16 @@ public class GUIProfesor {
 		cbPosicion.addItem("CO");
 		cbPosicion.addItem("BTN");
 		
-		JLabel lblJugador = new JLabel("Jugador:");
+		JLabel lblJugador = new JLabel("Jugador");
 		lblJugador.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		lblJugador.setHorizontalAlignment(SwingConstants.LEFT);
-		lblJugador.setBounds(35, 11, 94, 27);
+		lblJugador.setBounds(86, 11, 94, 27);
 		frmPokermaster.getContentPane().add(lblJugador);
 		
-		JLabel lblJugador_1 = new JLabel("Rival:");
+		JLabel lblJugador_1 = new JLabel("Rival");
 		lblJugador_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblJugador_1.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblJugador_1.setBounds(267, 11, 63, 27);
+		lblJugador_1.setBounds(332, 11, 63, 27);
 		frmPokermaster.getContentPane().add(lblJugador_1);	
 		
 		JLabel lblMesa = new JLabel("Mesa");
@@ -178,7 +178,6 @@ public class GUIProfesor {
 		//Inicializadores
 		creaCartas();
 		creaBotones();
-		//creaEquitys();
 	}
 	//Crea Las cartas
 	private void creaCartas()
