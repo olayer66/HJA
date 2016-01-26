@@ -145,6 +145,7 @@ public class GUIProfesor {
 		cbAleatoriasMesa.addItem("3");
 		cbAleatoriasMesa.addItem("4");
 		cbAleatoriasMesa.addItem("5");
+		cbAleatoriasMesa.setVisible(false);
 		
 		rbFold = new JRadioButton("Fold");
 		rbFold.setBounds(6, 32, 78, 23);
@@ -291,8 +292,7 @@ public class GUIProfesor {
 		ipMesa[numCartasMesa].setName(imagen);
 		ipMesa[numCartasMesa].repaint();
 		numCartasMesa++;
-		if(numCartasMesa==5)
-			btnSiguienteFase.setEnabled(false);
+		btnSiguienteFase.setEnabled(false);
 		btnCalcular.setEnabled(true);
 	}
 	//Carga las nuevas cartas recibidas
@@ -354,26 +354,26 @@ public class GUIProfesor {
 				
 			break;
 		case 3:
-			for(int i=0; i<cartas.size();i++)
+			int posicion=0;
+			int fin=0;
+			int cont=0;
+			while(ipMesa[posicion].getName()!="bc" )
+				posicion++;
+			if(posicion==0)
+				fin=3;
+			else if(posicion==3)
+				fin=4;
+			else
+				fin=5;
+			for(int i=posicion; i<fin;i++)
 			{
-				ipMesa[i].repintar(cartas.get(i)+".png");
-				ipMesa[i].setName(cartas.get(i));
+				ipMesa[i].repintar(cartas.get(cont)+".png");
+				ipMesa[i].setName(cartas.get(cont));
 				ipMesa[i].repaint();
-			}
-			if(cartas.size()<5)
-			{
-				for(int i=cartas.size(); i<5;i++)
-				{
-					ipMesa[i].repintar("bc.png");
-					ipMesa[i].setName("bc");
-					ipMesa[i].repaint();
-				}
+				cont++;
 			}
 			numCartasMesa=cartas.size();
-			if(numCartasMesa==5)
-				btnSiguienteFase.setEnabled(false);
-			else
-				btnSiguienteFase.setEnabled(true);
+			
 			break;
 		}
 		activaCalcular();
@@ -413,6 +413,14 @@ public class GUIProfesor {
 				{
 					if(ipCartas[i].getName()!="bc")
 						bloqueadas.add(ipCartas[i].getName());
+				}
+				if(contFase!=1)
+				{
+					for(int i=0;i<ipMesa.length;i++)
+					{
+						if(ipMesa[i].getName()!="bc")
+							bloqueadas.add(ipMesa[i].getName());
+					}
 				}
 				break;
 		}
@@ -465,6 +473,8 @@ public class GUIProfesor {
 					cartas.add(nombreCartas[carta]);			
 				}
 				btnCalcular.setEnabled(true);
+				btnRandom[2].setEnabled(false);
+				btnSiguienteFase.setEnabled(false);
 			}
 			break;
 		}
@@ -514,6 +524,7 @@ public class GUIProfesor {
 					btnSeleccionar[2].setEnabled(true);
 					btnCalcular.setEnabled(false);
 					rbCall.setText("Call");
+					jpRango.setVisible(false);
 				}
 				else
 				{
@@ -533,6 +544,7 @@ public class GUIProfesor {
 					mano.append(ipCartas[0].getName()).append(ipCartas[1].getName()).append(String.join("",getMesa() ));
 					lblMano.setText(control.valorMano(mano.toString()));
 					btnCalcular.setEnabled(false);
+					btnSiguienteFase.setEnabled(true);
 					contFase++;
 				}
 				else
@@ -551,6 +563,7 @@ public class GUIProfesor {
 					contFase++;
 					btnRandom[1].setEnabled(true);
 					btnSeleccionar[1].setEnabled(true);
+					btnSiguienteFase.setEnabled(true);
 					btnCalcular.setEnabled(false);
 				}
 				else	
@@ -657,10 +670,16 @@ public class GUIProfesor {
 		try {
 			cargaCartas(CreaArrayBack(2), 1, false);
 			cargaCartas(CreaArrayBack(2), 2, false);
-			cargaCartas(CreaArrayBack(5), 3, false);
+
 		} catch (IOException e) {
 			// TODO Bloque catch generado automáticamente
 			e.printStackTrace();
+		}
+		for(int i=0; i<ipMesa.length;i++)
+		{
+			ipMesa[i].repintar("bc.png");
+			ipMesa[i].setName("bc");
+			ipMesa[i].repaint();
 		}
 		muestraRival();
 		btnCalcular.setEnabled(false);
@@ -669,9 +688,10 @@ public class GUIProfesor {
 		btnSeleccionar[0].setEnabled(true);
 		btnRandom[1].setEnabled(false);
 		btnSeleccionar[1].setEnabled(false);
+		btnSeleccionar[2].setEnabled(false);
 		btnSiguienteFase.setEnabled(false);
 		btnLimpiar.setEnabled(false);
-		jpRango.setEnabled(true);
+		jpRango.setVisible(true);
 		btnCalcular.setText("Calcular");
 		lblDecision.setText("");
 		lblMano.setText("");

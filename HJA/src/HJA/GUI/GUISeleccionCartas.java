@@ -26,10 +26,27 @@ public class GUISeleccionCartas {
 	public GUISeleccionCartas(ActionListener acc,int cartas, String sC,ArrayList<String> bloq,ArrayList<String> cartasSel) throws IOException
 	{
 		accion=acc;
-		cMax=cartas;
+		
 		//cartas que no se pueden tocar
 		cartasBloqueadas=bloq;
 		cartasSeleccionadas= new ArrayList<String>();
+		switch (cartasBloqueadas.size()) {
+		case 0:
+			cMax=cartas;
+			break;
+		case 2:
+			if(cartas==2)
+				cMax=cartas;
+			else
+				cMax=3;
+			break;
+		case 5:
+			cMax=1;
+			break;
+		case 6:
+			cMax=1;
+			break;
+		}
 		initialize();
 	}
 
@@ -141,23 +158,11 @@ public class GUISeleccionCartas {
 	//control de la mesa
 	public boolean esMesaValida(int jug)
 	{
-		if(jug==3)
+		if(cartasSeleccionadas.size()!=cMax)
 		{
-			if(cartasSeleccionadas.size()==1 ||cartasSeleccionadas.size()==2)
-			{
-				return false;
-			}
-			else
-				return true;
+			return false;
 		}
 		else
-		{
-			if(cartasSeleccionadas.size()!=2)
-			{
-				return false;
-			}
-			else
-				return true;
-		}
+			return true;
 	}
 }
